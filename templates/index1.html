@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Dashboard - Bajaj</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+
+ <!-- {{ url_for('static', filename='image/apple-touch-icon1.png')}} -->
+
+  <link href="{{url_for('static', filename='image/apple-touch-icon1.png')}}" rel="icon">
+  <link href="{{url_for('static', filename='image/apple-touch-icon1.png')}}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+
+  <link href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/quill/quill.snow.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/quill/quill.bubble.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/remixicon/remixicon.css')}}" rel="stylesheet">
+ <link href= "{{url_for('static', filename='vendor/simple-datatables/style.css')}}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin - v2.5.0
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="nav-link nav-profile d-flex align-items-center pe-0">
+      <a href="templates/index.html" class="logo d-flex align-items-center">
+        
+        <img src="{{url_for('static', filename='image/Bajaj_Logo.png')}}" alt="">
+        <span class="d-none d-lg-block">Bajaj Finserv</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+
+  
+    <div class="">
+      <a href="#New Hypo" class="button-18">+</a>
+    </div>
+    
+   
+
+    <!-- End Logo -->
+
+ 
+              <hr class="dropdown-divider">
+  
+     
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="templates/index1.html">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+     
+         
+        </ul>
+      </li><!-- End Components Nav -->
+
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="templates/index1.html">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+
+
+    <section class="section dashboard">
+      <div class="row">
+
+        
+                <!-- Reports -->
+                <div class="col-12">
+                  <div class="card">
+    
+                    <div class="filter">
+                      <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <li class="dropdown-header text-start">
+                          <h6>Filter</h6>
+                        </li>
+    
+                        <li><a class="dropdown-item" href="#">Today</a></li>
+                        <li><a class="dropdown-item" href="#">This Month</a></li>
+                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                      </ul>
+                    </div>
+    
+                    <div class="card-body">
+                      <h5 class="card-title">Reports <span>/Today</span></h5>
+    
+                      <!-- Line Chart -->
+                      <div id="reportsChart"></div>
+    
+                      <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                          new ApexCharts(document.querySelector("#reportsChart"), {
+                            series: [{
+                              name: 'Variant A',
+                              data: [31, 40, 28, 51, 42, 82, 56],
+                            }, {
+                              name: 'Variant B',
+                              data: [11, 32, 45, 32, 34, 52, 41]
+                            }],
+                            chart: {
+                              height: 350,
+                              type: 'area',
+                              toolbar: {
+                                show: false
+                              },
+                            },
+                            markers: {
+                              size: 4
+                            },
+                            colors: ['#4154f1', '#2eca6a'],
+                            fill: {
+                              type: "gradient",
+                              gradient: {
+                                shadeIntensity: 1,
+                                opacityFrom: 0.3,
+                                opacityTo: 0.4,
+                                stops: [0, 90, 100]
+                              }
+                            },
+                            dataLabels: {
+                              enabled: false
+                            },
+                            stroke: {
+                              curve: 'smooth',
+                              width: 2
+                            },
+                            xaxis: {
+                              type: 'datetime',
+                              categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                            },
+                            tooltip: {
+                              x: {
+                                format: 'dd/MM/yy HH:mm'
+                              },
+                            }
+                          }).render();
+                        });
+                      </script>
+                      <!-- End Line Chart -->
+    
+                    </div>
+    
+                  </div>
+                </div><!-- End Reports -->
+
+
+            <!-- Sales Card -->
+            <div class="col-xxl-4 col-md-4">
+              <div class="card info-card sales-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Variant A <span>| Today</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-cart"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>145</h6>
+                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+            <div class="col-xxl-4 col-xl-4">
+
+              <div class="card info-card customers-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Variant B<span>| This Year</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-people"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>1244</h6>
+                      <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+            <!-- Revenue Card -->
+            <div class="col-xxl-4 col-md-4">
+              <div class="card info-card revenue-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Total<span>| This Month</span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>$3,264</h6>
+                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Revenue Card -->
+
+
+  
+
+          <!-- Recent Activity -->
+          <div class="card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body">
+              <h5 class="card-title">Recent Activity <span>| Today</span></h5>
+
+              <div class="activity">
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">10 days</div>
+                  <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                  <div class="activity-content">
+                   Hypothesis 5 started testing
+                  </div>
+                </div><!-- End activity item-->
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">20 days</div>
+                  <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
+                  <div class="activity-content">
+                    Hypothesis 4 completed started 
+                  </div>
+                </div><!-- End activity item-->
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">30 days</div>
+                  <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
+                  <div class="activity-content">
+                    Hypothesis 3 abruptly stopped
+                  </div>
+                </div><!-- End activity item-->
+
+                <div class="activity-item d-flex">
+                  <div class="activite-label">40 days</div>
+                  <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
+                  <div class="activity-content">
+                    Hypothesis 2 completed 
+                  </div>
+                </div><!-- End activity item-->
+
+              </div>
+
+            </div>
+          </div><!-- End Recent Activity --> 
+
+       
+          <!-- News & Updates Traffic -->
+          
+
+        </div><!-- End Right side columns -->
+
+      </div>
+    </section>
+
+    <hr id = "New Hypo"> 
+
+    <div class="pagetitle">
+      <h1>New Hypothesis</h1>
+      
+    </div><!-- End Page Title -->
+
+    
+    <div class="col-xxl-4 col-md-12">
+      <div class="card info-card revenue-card">
+
+        <div class="card-body">
+          <h5 class="card-title">Hypothesis 1</span></h5>
+
+          <div class="d-flex align-items-center">
+            <div class="ps-3">
+              <h6>"Reducing the frequency of mobile app notifications from 5 times per day to 2 times per day will increase mobile app retention rates."</h6>
+              <span class="text-success small pt-1 fw-bold">Type : </span> <span class="text-muted small pt-2 ps-1">Splitting</span>
+              <br>
+<br>
+<a href="#about" class="button-18">Choose</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xxl-4 col-md-12">
+      <div class="card info-card revenue-card">
+
+        <div class="card-body">
+          <h5 class="card-title">Hypothesis 2</span></h5>
+
+          <div class="d-flex align-items-center">
+            <div class="ps-3">
+              <h6>"Using featured images that are more contextually related to our blog posts will contribute to a lower bounce rate. "</h6>
+
+              <span class="text-success small pt-1 fw-bold">Type : </span> <span class="text-muted small pt-2 ps-1">Multivariant</span>
+              <br>
+              <br>
+
+              <a href="#about" class="button-18">Choose</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xxl-4 col-md-12">
+      <div class="card info-card revenue-card">
+
+        <div class="card-body">
+          <h5 class="card-title">Hypothesis 3</span></h5>
+
+          <div class="d-flex align-items-center">
+            <div class="ps-3">
+              <h6>"Greeting customers by name in emails will increase the total number of clicks"</h6>
+              <span class="text-success small pt-1 fw-bold">Type : </span> <span class="text-muted small pt-2 ps-1">Splitting</span>
+              <br>
+              <br>
+
+              <a href="#about" class="button-18">Choose</a>
+              
+           
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr> 
+
+    <div class="col-xxl-4 col-md-12">
+      <div class="card info-card revenue-card">
+        <div class="card-body">
+          <h5 class="card-title">Upload the dataset</span></h5>
+          <form action = "{{ url_for('success') }}" method = "POST" 
+          enctype = "multipart/form-data">
+          <input type = "file" name = "file" />
+          <input type = "submit"/>
+            </form>
+            <hr>
+           {% for file in files %}
+             <img src="{{ url_for('success', name=file) }}" style="width: 64px">
+           {% endfor %}
+        </div>
+      </div>
+    </div>
+    <hr> 
+
+    <!--New Sample size selection-->
+
+    <div id="about">
+    <div id = "abount" class="pagetitle">
+      <h1>Sample Size selection</h1>
+      
+    </div><!-- End Page Title -->
+
+    
+    <div class="col-xxl-4 col-md-12">
+      <div class="card info-card revenue-card">
+
+        <div class="card-body">
+
+          <div class="d-flex align-items-center">
+            <div class="ps-3">
+             <br> 
+              <h5>For the available data, <B>Evan Miller</B>'s Calculator is suggested</B></h5>
+               
+     
+<br> 
+<label for="cars">Choose:</label> 
+<select name="cars" id="cars">
+  <option value="EMC">Evan Miller's Calculator</option>
+  <option value="BSSF">Bayesian sample size formula</option>
+  <option value="PDF">Proportion difference formula</option>
+  <option value="SSUCI">Sample size using Confidence Interval </option>
+  <option value="ATSSC">Adobe target Sample size calculation</option>
+  <option value="PA">Power Analysis </option>
+
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+ <br> 
+ <br> 
+            
+</select>
+      
+
+              <br>
+
+<br> 
+<!--
+<div id: "formula"  display: block> 
+ 
+<h8>Baseline conversion rate (BCR) : </h8> 
+<input type="text">
+<br><br> 
+<h8>Minimum Detectable Effect (MDE) :</h8>
+<input type="text"></td>
+<br><br>
+<h8>Statistical Power (SP) :</h8>
+<input type="text"></td>
+<br><br>
+<h8>Statistical level (SL) :</h8>
+<input type="text"></td>
+<br></div>
+<br> <br> 
+-->
+<!--<a class="button-18" onclick="myFunction()" >Select</a>-->
+
+<br/> 
+<br/> 
+
+<div id="myDIV" class="text.a">
+<h1>Evan Miller's calculator</h1>
+    <form method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
+        <label for="Input1">Baseline Conversion: </label>
+        <input type="text" name="Input1" id="Input1">
+        <br/>
+        <br/>
+        <label for="Input2">Minimum detectable rate:</label>
+        <input type="text" name="Input2" id="Input2">
+        <br/>
+        <br/>
+        <label for="Input3">statistical power:</label>
+        <input type="text" name="Input3" id="Input3">
+        <br/>
+        <br/>
+        <label for="Input4">statistic level:</label>
+        <input type="text" name="Input4" id="Input4">
+        <br/>
+        <br/>
+        <input type="submit" value="Submit"/>
+    </form>
+     {% if calculation_success == True %}
+        <br/>
+        <p>Sample Size : {{result}}</p>
+    {% endif %}
+    {% if calculation_success == False %}
+        <br/>
+        <p>{{error}}</p>
+        <p>Sample Size : {{result}}"</p>
+    {% endif %}
+    <br>
+
+    <a class="button-18" href="#Clustering" >Continue</a>
+    
+  </div>
+
+
+</div>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<script>
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.visibility === "hidden") {
+    x.style.visibility = "visible";
+  } else {
+    x.style.visibility = "hidden";
+  }
+}
+</script>      
+
+       <!--      <h8>Baseline conversion rate : </h8> 
+              <input type="text">
+              
+ <br> 
+ <br> 
+              <h8>Minimum Detectable Effect (MDE) :</h8>
+              <input type="text"></td>
+
+              <br>
+<br> -->
+
+<!--
+<h1>Evan Miller's calculator</h1>
+    <form method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
+        <label for="Input1">Baseline Conversion: </label>
+        <input type="text" name="Input1" id="Input1">
+        <br/>
+        <label for="Input2">Minimum detectable rate:</label>
+        <input type="text" name="Input2" id="Input2">
+        <br/>
+        <label for="Input3">statistical power:</label>
+        <input type="text" name="Input3" id="Input3">
+        <br/>
+        <label for="Input4">statistic level:</label>
+        <input type="text" name="Input4" id="Input4">
+        <br/>
+        <br/>
+        <input type="submit" value="Submit"/>
+        <input type="reset"  value="RESET" style="color: red;"/>
+    </form>
+     {% if calculation_success == True %}
+        <br/>
+        <p>Sample Size : {{result}}</p>
+    {% endif %}
+    {% if calculation_success == False %}
+        <br/>
+        <p>{{error}}</p>
+        <p>Sample Size : {{result}}"</p>
+    {% endif %}
+-->
+
+
+<br> 
+<!--
+<hr id = "Clustering"> 
+
+<div class="pagetitle">
+  <h1>Sampling</h1>
+  
+</div>
+<div class="col-xxl-4 col-md-12">
+  <div class="card info-card revenue-card">
+    <div class="card-body">
+      <h5 class="card-title">Clustering</span></h5>
+
+      <h1>Normal Sampling calculator</h1>
+      <form method="post" action="{{ url_for('Calculator') }}" id="sample_form">
+          <label for="Error">Error: </label>
+          <input type="text" name="Error" id="Error">
+          <br/>
+          <br/>
+          <label for="Std deviation">Standard Deviation:</label>
+          <input type="text" name="Std deviation" id="Std deviation">
+          <br/>
+          <br/>
+          <label for="Z-value">Z-value:</label>
+          <input type="text" name="Z-value" id="Z-value">
+          <br/>
+          <br/>
+          <input type="submit" value="Submit"/>
+      </form>
+       {% if calculation_success == True %}
+          <br/>
+          <p>Sample Size : {{result}}</p>
+      {% endif %}
+      {% if calculation_success == False %}
+          <br/>
+          <p>{{error}}</p>
+          <p>Sample Size : {{result}}"</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<hr> 
+-->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{{url_for('static', filename='vendor/apexcharts/apexcharts.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/chart.js/chart.umd.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/echarts/echarts.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/quill/quill.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/simple-datatables/simple-datatables.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/tinymce/tinymce.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/php-email-form/validate.js')}}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{{url_for('static', filename='js/main.js')}}"></script>
+
+</body>
+
+</html>
