@@ -8,6 +8,8 @@ from sklearn.cluster import KMeans
 from sklearn.cluster import Birch
 from kneed import KneeLocator
 import os 
+from pathlib import Path
+
 
 sample_size_glob = 0
 file_name = None 
@@ -63,18 +65,19 @@ def operation_result():
 
 @Flask_App.route('/download')
 def download():
-    path = 'C://Users//Sandhya//OneDrive//Desktop//AB Testing_Folder//ABTesting_v2//ABTesting_V2.0//AB_testing_V3'
-    default = '//Blood Transfusion Service Centre Dataset.csv'
+    THIS_FOLDER = Path(__file__).parent.resolve()
+    #path = 'C://Users//Sandhya//OneDrive//Desktop//AB Testing_Folder//ABTesting_v2//ABTesting_V2.0//AB_testing_V3'
+    #default = '//Blood Transfusion Service Centre Dataset.csv'
     #To download the available file in the folder only 
-    if (os.path.exists(path+"\\result_SystematicSample.csv")): 
+    if (os.path.exists(str(THIS_FOLDER)+"\\result_SystematicSample.csv")): 
         second = "\\result_SystematicSample.csv"
-    elif (os.path.exists(path+"\\result_StratifiedSample_KMeans.csv")): 
+    elif (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")): 
         second = "\\result_StratifiedSample_KMeans.csv"
-    elif (os.path.exists(path+"\\result_StratifiedSample_BIRCH.csv")) : 
+    elif (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")) : 
         second = "\\result_StratifiedSample_BIRCH.csv" 
     else : 
         second = "\\result_RandomSample.csv"
-    final_path = path + second
+    final_path = str(THIS_FOLDER) + str(second)
     return send_file(final_path, as_attachment=True)
 
 #To take the input in a dropdown for sampling - Simple Random sampling, Stratified sampling - KMeans, Stratified Sampling - BIRCH, Systematic Sampling
@@ -85,9 +88,13 @@ def sampling_result():
     first_input = request.form['operator']  
     input1 = first_input
     sample_size = 100
+    THIS_FOLDER = Path(__file__).parent.resolve()
+    final_data = str(THIS_FOLDER)+"\\Blood Transfusion Service Centre Dataset.csv"
+    data = pd.read_csv(final_data)
+
 
     if (input1 == "SR"):
-        data = pd.read_csv(r"C:\Users\Sandhya\OneDrive\Desktop\AB Testing_Folder\ABTesting_v2\ABTesting_V2.0\AB_testing_V3\Blood Transfusion Service Centre Dataset.csv")
+        #data = pd.read_csv(r"C:\Users\Sandhya\OneDrive\Desktop\AB Testing_Folder\ABTesting_v2\ABTesting_V2.0\AB_testing_V3\Blood Transfusion Service Centre Dataset.csv")
         #sample_size = 100
         def Random_sample(data,sample_size): 
            new_data_random = pd.DataFrame()
@@ -109,7 +116,7 @@ def sampling_result():
         result = sample_size
 
     elif (input1 == "SyC"):
-        data = pd.read_csv(r"C:\Users\Sandhya\OneDrive\Desktop\AB Testing_Folder\ABTesting_v2\ABTesting_V2.0\AB_testing_V3\Blood Transfusion Service Centre Dataset.csv")
+        #data = pd.read_csv(r"C:\Users\Sandhya\OneDrive\Desktop\AB Testing_Folder\ABTesting_v2\ABTesting_V2.0\AB_testing_V3\Blood Transfusion Service Centre Dataset.csv")
         #sample_size = 100 
         def Systematic_sample(data,sample_size): 
              #sample_size = sample_size
@@ -133,7 +140,7 @@ def sampling_result():
         result = sample_size
 
     elif (input1 == "StCK") :
-        data = pd.read_csv(r"C:\Users\Sandhya\OneDrive\Desktop\AB Testing_Folder\ABTesting_v2\ABTesting_V2.0\AB_testing_V3\Blood Transfusion Service Centre Dataset.csv")
+        #data = pd.read_csv(r"C:\Users\Sandhya\OneDrive\Desktop\AB Testing_Folder\ABTesting_v2\ABTesting_V2.0\AB_testing_V3\Blood Transfusion Service Centre Dataset.csv")
         #sample_size = 100 
         def Stratified_sample_KMeans(data,sample_size):
              new_data_stratified = data
@@ -172,7 +179,7 @@ def sampling_result():
         result = sample_size
 
     else : 
-        data = pd.read_csv(r"C:\Users\Sandhya\OneDrive\Desktop\AB Testing_Folder\ABTesting_v2\ABTesting_V2.0\AB_testing_V3\Blood Transfusion Service Centre Dataset.csv")
+        #data = pd.read_csv(r"C:\Users\Sandhya\OneDrive\Desktop\AB Testing_Folder\ABTesting_v2\ABTesting_V2.0\AB_testing_V3\Blood Transfusion Service Centre Dataset.csv")
         #sample_size = 100 
         def Stratified_sample_Birch(data, sample_size):
             model = Birch()
@@ -234,4 +241,4 @@ def success():
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(host='0.0.0.0', port=510)
+    Flask_App.run(host='0.0.0.0', port=536)
