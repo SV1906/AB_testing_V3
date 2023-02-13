@@ -59,16 +59,9 @@
     <div class="">
       <a href="#New Hypo" class="button-18">+</a>
     </div>
-    
-   
-
     <!-- End Logo -->
-
  
               <hr class="dropdown-divider">
-  
-     
-
   </header><!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
@@ -81,20 +74,12 @@
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
-      </li><!-- End Dashboard Nav -->
-
-     
-         
+      </li><!-- End Dashboard Nav -->  
         </ul>
       </li><!-- End Components Nav -->
-
-
     </ul>
-
   </aside><!-- End Sidebar-->
-
   <main id="main" class="main">
-
     <div class="pagetitle">
       <h1>Dashboard</h1>
       <nav>
@@ -342,7 +327,6 @@
                     Hypothesis 3 abruptly stopped
                   </div>
                 </div><!-- End activity item-->
-
                 <div class="activity-item d-flex">
                   <div class="activite-label">40 days</div>
                   <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
@@ -461,8 +445,6 @@
       <h1>Sample Size selection</h1>
       
     </div><!-- End Page Title -->
-
-    
     <div class="col-xxl-4 col-md-12">
       <div class="card info-card revenue-card">
 
@@ -472,56 +454,7 @@
             <div class="ps-3">
              <br> 
               <h5>For the available data, <B>Evan Miller</B>'s Calculator is suggested</B></h5>
-               
-     
-<br> 
-<label for="cars">Choose:</label> 
-<select name="cars" id="cars">
-  <option value="EMC">Evan Miller's Calculator</option>
-  <option value="BSSF">Bayesian sample size formula</option>
-  <option value="PDF">Proportion difference formula</option>
-  <option value="SSUCI">Sample size using Confidence Interval </option>
-  <option value="ATSSC">Adobe target Sample size calculation</option>
-  <option value="PA">Power Analysis </option>
-
-            </div>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
- <br> 
- <br> 
-            
-</select>
-      
-
-              <br>
-
-<br> 
-<!--
-<div id: "formula"  display: block> 
- 
-<h8>Baseline conversion rate (BCR) : </h8> 
-<input type="text">
-<br><br> 
-<h8>Minimum Detectable Effect (MDE) :</h8>
-<input type="text"></td>
-<br><br>
-<h8>Statistical Power (SP) :</h8>
-<input type="text"></td>
-<br><br>
-<h8>Statistical level (SL) :</h8>
-<input type="text"></td>
-<br></div>
-<br> <br> 
--->
-<!--<a class="button-18" onclick="myFunction()" >Select</a>-->
-
 <br/> 
-<br/> 
-
 <div id="myDIV" class="text.a">
 <h1>Evan Miller's calculator</h1>
     <form method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
@@ -533,11 +466,11 @@
         <input type="text" name="Input2" id="Input2">
         <br/>
         <br/>
-        <label for="Input3">statistical power:</label>
+        <label for="Input3">Statistical power:</label>
         <input type="text" name="Input3" id="Input3">
         <br/>
         <br/>
-        <label for="Input4">statistic level:</label>
+        <label for="Input4">Statistic level:</label>
         <input type="text" name="Input4" id="Input4">
         <br/>
         <br/>
@@ -553,119 +486,107 @@
         <p>Sample Size : {{result}}"</p>
     {% endif %}
     <br>
-
     <a class="button-18" href="#Clustering" >Continue</a>
-    
   </div>
-
-
-</div>
-
-
 </div>
 </div>
 </div>
 </div>
 </div>
-
-
-<script>
-function myFunction() {
-  var x = document.getElementById("myDIV");
-  if (x.style.visibility === "hidden") {
-    x.style.visibility = "visible";
-  } else {
-    x.style.visibility = "hidden";
-  }
-}
-</script>      
-
-       <!--      <h8>Baseline conversion rate : </h8> 
-              <input type="text">
-              
- <br> 
- <br> 
-              <h8>Minimum Detectable Effect (MDE) :</h8>
-              <input type="text"></td>
-
-              <br>
-<br> -->
-
-<!--
-<h1>Evan Miller's calculator</h1>
-    <form method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
-        <label for="Input1">Baseline Conversion: </label>
-        <input type="text" name="Input1" id="Input1">
-        <br/>
-        <label for="Input2">Minimum detectable rate:</label>
-        <input type="text" name="Input2" id="Input2">
-        <br/>
-        <label for="Input3">statistical power:</label>
-        <input type="text" name="Input3" id="Input3">
-        <br/>
-        <label for="Input4">statistic level:</label>
-        <input type="text" name="Input4" id="Input4">
-        <br/>
-        <br/>
-        <input type="submit" value="Submit"/>
-        <input type="reset"  value="RESET" style="color: red;"/>
-    </form>
-     {% if calculation_success == True %}
-        <br/>
-        <p>Sample Size : {{result}}</p>
-    {% endif %}
-    {% if calculation_success == False %}
-        <br/>
-        <p>{{error}}</p>
-        <p>Sample Size : {{result}}"</p>
-    {% endif %}
--->
-
-
-<br> 
-<!--
+</div>
 <hr id = "Clustering"> 
-
 <div class="pagetitle">
-  <h1>Sampling</h1>
-  
+ <!-- <h1>Sampling</h1>-->
 </div>
 <div class="col-xxl-4 col-md-12">
   <div class="card info-card revenue-card">
     <div class="card-body">
-      <h5 class="card-title">Clustering</span></h5>
+      <h5 class="card-title">Sampling</span></h5>
+    <!-- <label for="cars">Choose:</label> 
+ <select name="select" id="select">
+  <option value="SS">Simple Random Sampling</option>
+  <option value="SyS">Systematic Sampling</option>
+  <option value="StS">Stratified Sampling</option>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<br> 
+ <br> 
+            </select> --> 
 
-      <h1>Normal Sampling calculator</h1>
-      <form method="post" action="{{ url_for('Calculator') }}" id="sample_form">
-          <label for="Error">Error: </label>
-          <input type="text" name="Error" id="Error">
-          <br/>
-          <br/>
-          <label for="Std deviation">Standard Deviation:</label>
-          <input type="text" name="Std deviation" id="Std deviation">
-          <br/>
-          <br/>
-          <label for="Z-value">Z-value:</label>
-          <input type="text" name="Z-value" id="Z-value">
-          <br/>
-          <br/>
-          <input type="submit" value="Submit"/>
-      </form>
-       {% if calculation_success == True %}
-          <br/>
-          <p>Sample Size : {{result}}</p>
-      {% endif %}
-      {% if calculation_success == False %}
-          <br/>
-          <p>{{error}}</p>
-          <p>Sample Size : {{result}}"</p>
-      {% endif %}
+<!--
+  <button onclick="getOption()">Select</button>
+          <p><span class="output"></span></p>
+          <script type="text/javascript">
+          function getOption() {
+              selectElement = document.querySelector('#select');
+              output = selectElement.options[selectElement.selectedIndex].value;
+              if (output == 'SS')
+              {
+                output ='Simple Random Sampling'
+                document.querySelector('.output').textContent = output;
+
+              }
+              else if (output == 'StS'){
+                output = 'Stratified Sampling'
+                document.querySelector('.output').textContent = output; 
+
+              }
+              else 
+              {
+                output = 'Systematic Sampling'
+                document.querySelector('.output').textContent = output;  
+
+              }
+          }
+          </script> -->
+
+<div id="myDIV" class="text.a">
+<h1>Sampling</h1>
+<!--
+    <form method="post" action="{{ url_for('sampling_result') }}" id="sample_form">
+        <label for="Input1">Sampling: </label>
+        <input type="text" name="Input1" id="Input1">
+        <br/>
+        <input type="submit" value="Submit"/>
+    </form> --> 
+    <form method="post" action="{{ url_for('sampling_result') }}">
+      <select id="sample_form" name="operator">
+          <option value="SR">Simple Random Sampling</option>
+          <option value="SyC">Systematic Sampling</option>
+          <option value="StCK">Stratified Sampling - KMeans</option>
+          <option value="StCB">Stratified Sampling - BIRCH</option>
+
+      </select>
+      <input type="submit" value="Submit">
+    </form> 
+
+     {% if sample_success == True %}
+        <br/>
+        <p>Sample : {{sample_result}}</p>
+    {% endif %}
+    {% if sample_success == False %}
+        <br/>
+        <p>{{error}}</p>
+        <p>Sample : {{sample_result}}"</p>
+    {% endif %}
+    <br>
+    <a class="button-18" href="{{url_for('download')}}">Download</a>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>          
+
     </div>
   </div>
 </div>
-
 <hr> 
--->
 
   </main><!-- End #main -->
 
