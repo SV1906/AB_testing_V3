@@ -92,7 +92,6 @@ def sampling_result():
     final_data = str(THIS_FOLDER)+"\\Blood Transfusion Service Centre Dataset.csv"
     data = pd.read_csv(final_data)
 
-
     if (input1 == "SR"):
         #data = pd.read_csv(r"C:\Users\Sandhya\OneDrive\Desktop\AB Testing_Folder\ABTesting_v2\ABTesting_V2.0\AB_testing_V3\Blood Transfusion Service Centre Dataset.csv")
         #sample_size = 100
@@ -103,14 +102,14 @@ def sampling_result():
            for i in range(sample_size): 
                  number = random.randint(1,data.shape[0])
                  new_data_random = pd.concat([new_data_random,data.iloc[number:number+1]])
-           path = "C:\\Users\\Sandhya\\OneDrive\\Desktop\\AB Testing_Folder\\ABTesting_v2\\ABTesting_V2.0\\AB_testing_V3"
-           file = new_data_random.to_csv(path+"\\result_RandomSample.csv") 
-           if (os.path.exists(path+"\\result_SystematicSample.csv")): 
-                os.remove(path+"\\result_SystematicSample.csv")
-           if (os.path.exists(path+"\\result_StratifiedSample_BIRCH.csv")): 
-               os.remove(path+"\\result_StratifiedSample_BIRCH.csv")      
-           if (os.path.exists(path+"\\result_StratifiedSample_KMeans.csv")): 
-               os.remove(path+"\\result_StratifiedSample_KMeans.csv")      
+           #path = "C:\\Users\\Sandhya\\OneDrive\\Desktop\\AB Testing_Folder\\ABTesting_v2\\ABTesting_V2.0\\AB_testing_V3"
+           file = new_data_random.to_csv(str(THIS_FOLDER)+"\\result_RandomSample.csv") 
+           if (os.path.exists(str(THIS_FOLDER)+"\\result_SystematicSample.csv")): 
+                os.remove(str(THIS_FOLDER)+"\\result_SystematicSample.csv")
+           if (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")): 
+               os.remove(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")      
+           if (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")): 
+               os.remove(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")      
            return file 
         Random_sample(data,sample_size)
         result = sample_size
@@ -126,14 +125,14 @@ def sampling_result():
                 new_data_systematic = pd.concat([new_data_systematic,data.iloc[i:i+1]])
                 if(new_data_systematic.shape[0]==sample_size): 
                  break 
-             path = "C:\\Users\\Sandhya\\OneDrive\\Desktop\\AB Testing_Folder\\ABTesting_v2\\ABTesting_V2.0\\AB_testing_V3"
-             file = new_data_systematic.to_csv(path+"\\result_SystematicSample.csv") 
-             if (os.path.exists(path+"\\result_StratifiedSample_BIRCH.csv")): 
-                 os.remove(path+"\\result_StratifiedSample_BIRCH.csv")
-             if (os.path.exists(path+"\\result_StratifiedSample_KMeans.csv")): 
-                 os.remove(path+"\\result_StratifiedSample_KMeans.csv")                 
-             if (os.path.exists(path+"\\result_RandomSample.csv")): 
-                 os.remove(path+"\\result_RandomSample.csv")                
+             #path = "C:\\Users\\Sandhya\\OneDrive\\Desktop\\AB Testing_Folder\\ABTesting_v2\\ABTesting_V2.0\\AB_testing_V3"
+             file = new_data_systematic.to_csv(str(THIS_FOLDER)+"\\result_SystematicSample.csv") 
+             if (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")): 
+                 os.remove(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")
+             if (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")): 
+                 os.remove(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")                 
+             if (os.path.exists(str(THIS_FOLDER)+"\\result_RandomSample.csv")): 
+                 os.remove(str(THIS_FOLDER)+"\\result_RandomSample.csv")                
              return file 
              #return new_data_systematic
         Systematic_sample(data,sample_size)
@@ -165,14 +164,14 @@ def sampling_result():
              final_data = []
              final_data = pd.concat([l_data[0],l_data[1],l_data[2],l_data[3]])
              #Random_sample(data,sample_size).to_csv('C:/Users/Sandhya/Downloads/result.csv')
-             path = "C:\\Users\\Sandhya\\OneDrive\\Desktop\\AB Testing_Folder\\ABTesting_v2\\ABTesting_V2.0\\AB_testing_V3"
-             file = final_data.to_csv(path+"\\result_StratifiedSample_KMeans.csv")
-             if (os.path.exists(path+"\\result_SystematicSample.csv")): 
-                 os.remove(path+"\\result_SystematicSample.csv")
-             if (os.path.exists(path+"\\result_RandomSample.csv")): 
-                 os.remove(path+"\\result_RandomSample.csv")       
-             if (os.path.exists(path+"\\result_StratifiedSample_BIRCH.csv")): 
-                 os.remove(path+"\\result_StratifiedSample_BIRCH.csv")                             
+             #path = "C:\\Users\\Sandhya\\OneDrive\\Desktop\\AB Testing_Folder\\ABTesting_v2\\ABTesting_V2.0\\AB_testing_V3"
+             file = final_data.to_csv(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")
+             if (os.path.exists(str(THIS_FOLDER)+"\\result_SystematicSample.csv")): 
+                 os.remove(str(THIS_FOLDER)+"\\result_SystematicSample.csv")
+             if (os.path.exists(str(THIS_FOLDER)+"\\result_RandomSample.csv")): 
+                 os.remove(str(THIS_FOLDER)+"\\result_RandomSample.csv")       
+             if (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")): 
+                 os.remove(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")                             
              return file 
              #return final_data
         Stratified_sample_KMeans(data,sample_size)
@@ -206,14 +205,14 @@ def sampling_result():
             final_data = []
             final_data = pd.concat([l_data[i] for i in new_array], ignore_index = True)
             #return final_data
-            path = "C:\\Users\\Sandhya\\OneDrive\\Desktop\\AB Testing_Folder\\ABTesting_v2\\ABTesting_V2.0\\AB_testing_V3"
-            file = final_data.to_csv(path+"\\result_StratifiedSample_BIRCH.csv")
-            if (os.path.exists(path+"\\result_SystematicSample.csv")): 
-               os.remove(path+"\\result_SystematicSample.csv")
-            if (os.path.exists(path+"\\result_RandomSample.csv")): 
-               os.remove(path+"\\result_RandomSample.csv")   
-            if(os.path.exists(path+"\\result_StratifiedSample_KMeans.csv")):   
-               os.remove(path+"\\result_StratifiedSample_KMeans.csv")                    
+            #path = "C:\\Users\\Sandhya\\OneDrive\\Desktop\\AB Testing_Folder\\ABTesting_v2\\ABTesting_V2.0\\AB_testing_V3"
+            file = final_data.to_csv(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")
+            if (os.path.exists(str(THIS_FOLDER)+"\\result_SystematicSample.csv")): 
+               os.remove(str(THIS_FOLDER)+"\\result_SystematicSample.csv")
+            if (os.path.exists(str(THIS_FOLDER)+"\\result_RandomSample.csv")): 
+               os.remove(str(THIS_FOLDER)+"\\result_RandomSample.csv")   
+            if(os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")):   
+               os.remove(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")                    
             return file 
         Stratified_sample_Birch(data,sample_size)
         result = sample_size
@@ -241,4 +240,4 @@ def success():
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(host='0.0.0.0', port=536)
+    Flask_App.run(host='0.0.0.0', port=5010)
