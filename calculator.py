@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, redirect, url_for
+from flask import Flask, render_template, request, send_file, redirect, url_for, abort, flash
 import math
 import scipy.stats as stats 
 from werkzeug.utils import secure_filename
@@ -11,9 +11,11 @@ import os
 from pathlib import Path
 
 
+
 sample_size_glob = 0
 file_name = None 
 Flask_App = Flask(__name__) # Creating our Flask Instance
+Flask_App.config['UPLOAD_EXTENSIONS'] = ['.csv', '.xlsx']
 
 #To display the intial page 
 @Flask_App.route('/', methods=['GET'])
@@ -89,7 +91,7 @@ def sampling_result():
     input1 = first_input
     sample_size = 100
     THIS_FOLDER = Path(__file__).parent.resolve()
-    final_data = str(THIS_FOLDER)+"\\Blood Transfusion Service Centre Dataset.csv"
+    final_data = str(THIS_FOLDER)+"\\Blood Transfusion2.csv"
     data = pd.read_csv(final_data)
 
     if (input1 == "SR"):
@@ -224,20 +226,34 @@ def sampling_result():
             sample_success=True
         )
 
-@Flask_App.route('/success', methods = ['POST'])  
-def success():  
+@Flask_App.route('/uploadfile', methods = ['POST'])  
+def uploadfile():  
     if request.method == 'POST':  
         #sample_size = 100
         f = request.files['file']
-        f.save(f.filename)  
+        
+        filename = secure_filename(f.filename)
+        if filename != '':
+            file_ext = os.path.splitext(filename)[1]
+        if file_ext not in Flask_App.config['UPLOAD_EXTENSIONS']:
+            error = 'Please upload a file with the extenstion .csv or .xlsx only. Please try again.'
+            #return render_template("index1.html", error = error)
+            #flash("Uploaded the wrong extension. Please upload either .csv or .xlsx") 
+        else : 
+            error = "Successfully uploaded"
+            f.filename = "Blood Transfusion2.csv"
+            f.save(f.filename)
+            #flash("The file has been successfully saved!")
+        return render_template("index1.html", name = f.filename, error = error)
+
+        #f.save(f.filename) 
         #data = pd.read_csv(f)
         #print(sample_size)
-        return render_template("index1.html", name = f.filename)  
+        #return render_template("index1.html", name = f.filename, error = error)  
 
 #@Flask_App.route('/select', methods=['POST', 'GET'])
 #def select():
  #   value = request.form.get('operator')  
 
 if __name__ == '__main__':
-    Flask_App.debug = True
-    Flask_App.run(host='0.0.0.0', port=5010)
+    Flask_App.run(host='0.0.0.0', port=5050)

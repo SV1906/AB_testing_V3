@@ -439,15 +439,26 @@
       <div class="card info-card revenue-card">
         <div class="card-body">
           <h5 class="card-title">Upload the dataset</span></h5>
-          <form action = "{{ url_for('success') }}" method = "POST" 
+          <form action = "{{ url_for('uploadfile') }}" method = "POST" 
           enctype = "multipart/form-data">
           <input type = "file" name = "file" />
           <input type = "submit"/>
             </form>
             <hr>
            {% for file in files %}
-             <img src="{{ url_for('success', name=file) }}" style="width: 64px">
-           {% endfor %}
+             <img src="{{ url_for('uploadfile', name=file) }}" style="width: 64px">
+           {% endfor %} 
+          <!-- {% with messages = get_flashed_messages() %}  
+           {% if messages %}  
+                 {% for message in messages %}  
+                      <p>{{ message }}</p>  
+                 {% endfor %}  
+           {% endif %}  
+        {% endwith %}  -->
+        {% if error %}  
+        <!--<font color = "red"><p><strong>Error:</strong>{{error}}</p></font>-->
+        <p><strong>{{error}}</strong></p>
+    {% endif %}  
         </div>
       </div>
     </div>
@@ -516,7 +527,7 @@
 <div class="col-xxl-4 col-md-12">
   <div class="card info-card revenue-card">
     <div class="card-body">
-      <h5 class="card-title">Clustering</span></h5>
+      <h5 class="card-title">Sampling</span></h5>
     <!-- <label for="cars">Choose:</label> 
  <select name="select" id="select">
   <option value="SS">Simple Random Sampling</option>
@@ -567,7 +578,10 @@
         <input type="text" name="Input1" id="Input1">
         <br/>
         <input type="submit" value="Submit"/>
-    </form> --> 
+    </form> -->
+
+   
+
     <form method="post" action="{{ url_for('sampling_result') }}">
       <select id="sample_form" name="operator">
           <option value="SR">Simple Random Sampling</option>
@@ -601,6 +615,11 @@
   </div>
 </div>
 <hr> 
+
+<!--
+<div class="tooltip">Hover over me
+  <span class="tooltiptext">Tooltip text</span>
+</div>--> 
 
   </main><!-- End #main -->
 
