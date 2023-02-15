@@ -33,12 +33,6 @@
   <!-- Template Main CSS File -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin - v2.5.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -54,13 +48,9 @@
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
-
-  
-    <div class="">
-      <a href="#New Hypo" class="button-18">+</a>
-    </div>
-    
-   
+    <!--<a href="#New Hypo" class="button-18" style = "width: 50px; height: 50px; position: relative;display: flex;  transform: translateX(+100%);" title = "New Hypothesis">New Hypothesis</a>
+    --> 
+    <a href="#New Hypo" class ="button-18" style="display: flex;  transform: translateX(+450%);">New Hypothesis</a>
 
     <!-- End Logo -->
 
@@ -484,22 +474,22 @@
 <div id="myDIV" class="text.a">
 <h1>Evan Miller's calculator</h1>
     <form method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
-        <label for="Input1">Baseline Conversion: </label>
+        <label for="Input1"><p>Baseline Conversion Rate <sup><b title="Baseline Conversion Rate is the division of number of sucessful actions on the test page over the number of visitors that view the page."><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
+        </label>
         <input type="text" name="Input1" id="Input1">
-        <br/>
-        <br/>
-        <label for="Input2">Minimum detectable rate:</label>
+        <br>
+        <label for="Input2"><p>Minimum Detectable Effect <sup><b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
+        </label>
         <input type="text" name="Input2" id="Input2">
-        <br/>
-        <br/>
-        <label for="Input3">Statistical power:</label>
+        <br>
+        <label for="Input3"><p>Statistical Power <sup><b title="Stastical Power is the likelihood that you will detect a difference between variant A and variant B. &#013; A Higher power is always prefered.&#013; Minimum of 80% is usually recommended"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
+        </label>
         <input type="text" name="Input3" id="Input3">
-        <br/>
-        <br/>
-        <label for="Input4">Statistic level:</label>
+        <br>
+        <label for="Input4"><p>Statistic level <sup><b title="Statistic level is the level of error you're willing to accept in your test. &#013; Usually 1% to 5%. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
+        </label>
         <input type="text" name="Input4" id="Input4">
-        <br/>
-        <br/>
+        <br> 
         <input type="submit" value="Submit"/>
     </form>
      {% if calculation_success == True %}
@@ -528,6 +518,7 @@
   <div class="card info-card revenue-card">
     <div class="card-body">
       <h5 class="card-title">Sampling</span></h5>
+
     <!-- <label for="cars">Choose:</label> 
  <select name="select" id="select">
   <option value="SS">Simple Random Sampling</option>
@@ -570,8 +561,19 @@
           }
           </script> -->
 
+
 <div id="myDIV" class="text.a">
 <h1>Sampling</h1>
+<p>Simple Random Sampling <sup><b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
+<p>Systematic Sampling <sup> <b title = "In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
+<p>Stratified Sampling - KMeans <sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. Kmeans is the method that is used for the formation of clusters. KMeans is used when there is a small datasets. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
+<p>Stratified Sampling - BIRCH <sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. BIRCH (Balanced Iterative Reducing and Clustering using Hierarchies) is the method that is used for the formation of clusters. BIRCH is used when there is a big dataset. - Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
+  <!-- <sup> <b title="In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. BIRCH (Balanced Iterative Reducing and Clustering using Hierarchies) is the method that is used for the formation of clusters. BIRCH is used when there is a big dataset. - Wiki"><i>info</i></b></sup>
+--> 
+<!-- <p title="Hello world">Hover this one</p>
+<br> 
+<p title="Hello world">Systematic Sampling</p> --> 
+
 <!--
     <form method="post" action="{{ url_for('sampling_result') }}" id="sample_form">
         <label for="Input1">Sampling: </label>
@@ -579,16 +581,12 @@
         <br/>
         <input type="submit" value="Submit"/>
     </form> -->
-
-   
-
     <form method="post" action="{{ url_for('sampling_result') }}">
       <select id="sample_form" name="operator">
           <option value="SR">Simple Random Sampling</option>
           <option value="SyC">Systematic Sampling</option>
           <option value="StCK">Stratified Sampling - KMeans</option>
           <option value="StCB">Stratified Sampling - BIRCH</option>
-
       </select>
       <input type="submit" value="Submit">
     </form> 
@@ -620,6 +618,27 @@
 <div class="tooltip">Hover over me
   <span class="tooltiptext">Tooltip text</span>
 </div>--> 
+</div>
+</div>
+</div>
+
+<!-- <div class = "hovera">Hover over this text</div>
+<div class="hide">I am shown when someone hovers over the div above.</div> -->
+
+
+<!-- <a href="#New Hypo" class="button-18">+</a> --> 
+<!--
+ <span class="hovertext" data-hover="Hello, this is the tooltip">
+  Try hover over me
+</span> 
+
+<div class = "ahover"
+onMouseOver="this.style.backgroundColor='red'"
+onMouseOut="this.style.backgroundColor='orange'">
+Hover Over Me!
+</div>
+
+<abbr title="Hypertext Markup Language">HTML</abbr> 
 
   </main><!-- End #main -->
 

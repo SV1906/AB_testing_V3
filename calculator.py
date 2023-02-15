@@ -15,7 +15,7 @@ from pathlib import Path
 sample_size_glob = 0
 file_name = None 
 Flask_App = Flask(__name__) # Creating our Flask Instance
-Flask_App.config['UPLOAD_EXTENSIONS'] = ['.csv', '.xlsx']
+Flask_App.config['UPLOAD_EXTENSIONS'] = ['.csv', '.xlsx', '.xls']
 
 #To display the intial page 
 @Flask_App.route('/', methods=['GET'])
@@ -256,4 +256,4 @@ def uploadfile():
  #   value = request.form.get('operator')  
 
 if __name__ == '__main__':
-    Flask_App.run(host='0.0.0.0', port=5050)
+    Flask_App.run(host='0.0.0.0', port=5155)

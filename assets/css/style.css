@@ -1,10 +1,3 @@
-/**
-* Template Name: NiceAdmin - v2.5.0
-* Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
@@ -35,7 +28,41 @@ h4,
 h5,
 h6 {
   font-family: "Nunito", sans-serif;
+} 
+/* h7 {
+  font-family: "Nunito", sans-serif;
+  background-color: green;
 }
+h7:hover{
+  background-color: pink;
+} */
+
+/*
+.hovertext {
+  position: relative;
+  border-bottom: 1px dotted black;
+}
+.hovertext:before {
+  content: attr(data-hover);
+  visibility: hidden;
+  opacity: 0;
+  width: 140px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 0;
+  transition: opacity 1s ease-in-out;
+
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 110%;
+}
+.hovertext:hover:before {
+  opacity: 1 !important;
+  visibility: visible !important;
+} */ 
 
 /*--------------------------------------------------------------
 # Main
@@ -63,6 +90,10 @@ h6 {
   font-weight: 600;
   color: #012970;
 }
+
+
+
+
 
 /*--------------------------------------------------------------
 # Back to top button
@@ -101,6 +132,7 @@ h6 {
 # Override some default Bootstrap stylings
 --------------------------------------------------------------*/
 /* Dropdown menus */
+
 .dropdown-menu {
   border-radius: 4px;
   padding: 10px 0;
@@ -269,6 +301,8 @@ h6 {
 }
 
 
+
+
 /* Alerts */
 .alert-heading {
   font-weight: 500;
@@ -309,52 +343,57 @@ h6 {
 
 
 /* CSS */
+
+.myHover{
+  align-items: center !important;
+  background-color: red !important;
+}
+.myHover a:hover,
+.myHover a:focus{
+  background-color: #012970 !important;
+}
+
 .button-18 {
   align-items: center;
   background-color: #0A66C2;
   border: 0;
-  border-radius: 100px;
+  border-radius: 50px;
   box-sizing: border-box;
   color: #ffffff;
   cursor: pointer;
   display: inline-flex;
   font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  /*font-size: 30px; */ 
   font-weight: 600;
   justify-content: center;
+   
   line-height: 20px;
   max-width: 480px;
   min-height: 40px;
   min-width: 0px;
   overflow: hidden;
-  padding: 0px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 20 px; 
   text-align: center;
   touch-action: manipulation;
   transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
   user-select: none;
   -webkit-user-select: none;
-  vertical-align: middle;
+  vertical-align: left;
 }
-
 .button-18:hover,
 .button-18:focus { 
   background-color: #16437E;
   color: #ffffff;
 }
-
 .button-18:active {
   background: #09223b;
   color: rgb(255, 255, 255, .7);
 }
-
 .button-18:disabled { 
   cursor: not-allowed;
   background: rgba(0, 0, 0, .08);
   color: rgba(0, 0, 0, .3);
 }
-
 .tooltip {
   position: relative;
   display: inline-block;
@@ -542,6 +581,8 @@ h6 {
 .header .search-form button i {
   color: #012970;
 }
+
+
 
 /*--------------------------------------------------------------
 # Header Nav
@@ -973,6 +1014,8 @@ h6 {
   padding-bottom: 0;
 }
 
+
+
 /* News & Updates */
 .dashboard .news .post-item+.post-item {
   margin-top: 15px;
@@ -1341,3 +1384,51 @@ h6 {
   background-color: lightblue;
   margin-top: 20px;
 }
+
+#ahover{
+  background-color: orange;
+    padding: 20px;
+}
+
+
+/*
+.hovertext {
+  position: relative;
+  border-bottom: 1px dotted black;
+}
+.hovertext:before {
+  content: attr(data-hover);
+  visibility: hidden;
+  opacity: 0;
+  width: 140px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 0;
+  transition: opacity 1s ease-in-out;
+
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 110%;
+}
+.hovertext:hover:before {
+  opacity: 1 ;
+  visibility: visible;
+}
+/*
+
+
+/* #myID {
+  color: purple !important;
+} */
+/* .hide {
+  display: none ;
+}
+.hovera:hover + .hide{
+  display: block ;
+  color: blue !important;
+  
+}  */
+
