@@ -355,26 +355,20 @@
     </section>
 
     <hr id = "New Hypo"> 
-
     <div class="pagetitle">
       <h1>New Hypothesis</h1>
-      
     </div><!-- End Page Title -->
-
-    
     <div class="col-xxl-4 col-md-12">
       <div class="card info-card revenue-card">
-
         <div class="card-body">
           <h5 class="card-title">Hypothesis 1</span></h5>
-
           <div class="d-flex align-items-center">
             <div class="ps-3">
               <h6>"Reducing the frequency of mobile app notifications from 5 times per day to 2 times per day will increase mobile app retention rates."</h6>
               <span class="text-success small pt-1 fw-bold">Type : </span> <span class="text-muted small pt-2 ps-1">Splitting</span>
               <br>
 <br>
-<a href="#about" class="button-18">Choose</a>
+<a href="#dataset" class="button-18">Choose</a> 
             </div>
           </div>
         </div>
@@ -395,7 +389,7 @@
               <br>
               <br>
 
-              <a href="#about" class="button-18">Choose</a>
+              <a href="#dataset" class="button-18">Choose</a> 
             </div>
           </div>
         </div>
@@ -414,10 +408,7 @@
               <span class="text-success small pt-1 fw-bold">Type : </span> <span class="text-muted small pt-2 ps-1">Splitting</span>
               <br>
               <br>
-
-              <a href="#about" class="button-18">Choose</a>
-              
-           
+              <a href="#dataset" class="button-18">Choose</a>  
             </div>
           </div>
         </div>
@@ -425,6 +416,9 @@
     </div>
     <hr> 
 
+    <div id = "dataset" class="pagetitle">
+      <h1>Uploading the dataset</h1>
+    </div>
     <div class="col-xxl-4 col-md-12">
       <div class="card info-card revenue-card">
         <div class="card-body">
@@ -457,7 +451,7 @@
     <!--New Sample size selection-->
 
     <div id="about">
-    <div id = "abount" class="pagetitle">
+    <div id = "about" class="pagetitle">
       <h1>Sample Size selection</h1>
       
     </div><!-- End Page Title -->
@@ -478,7 +472,8 @@
         </label>
         <input type="text" name="Input1" id="Input1">
         <br>
-        <label for="Input2"><p>Minimum Detectable Effect <sup><b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
+        <label for="Input2" 
+        placeholder="this text will show in the textarea"><p>Minimum Detectable Effect <sup><b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
         </label>
         <input type="text" name="Input2" id="Input2">
         <br>
@@ -510,6 +505,27 @@
 </div>
 </div>
 </div>
+
+<!--Start of a trail-->
+<!-- 
+<div id="myDIV" class="text.a">
+  <h1>Evan Miller's calculator</h1>
+      <form method="post" action="{{ url_for('suggesting_method') }}" id="Sugessting_method">
+          <input type="submit" value="Suggest a Sampling method"/>
+      </form>
+          <br/>
+          <p>Sample Size : {{result}}</p>
+      <br>
+      <a class="button-18" href="#Clustering" >Continue</a>
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div> --> 
+
+<!-- End of trial-->
 <hr id = "Clustering"> 
 <div class="pagetitle">
   <h1>Sampling</h1>
@@ -517,8 +533,7 @@
 <div class="col-xxl-4 col-md-12">
   <div class="card info-card revenue-card">
     <div class="card-body">
-      <h5 class="card-title">Sampling</span></h5>
-
+      <h5 class="card-title"></span></h5>
     <!-- <label for="cars">Choose:</label> 
  <select name="select" id="select">
   <option value="SS">Simple Random Sampling</option>
@@ -562,12 +577,27 @@
           </script> -->
 
 
+
 <div id="myDIV" class="text.a">
-<h1>Sampling</h1>
+<form method="post" action="{{ url_for('suggesting_method') }}" id="Sugessting_method">
+  <input type="submit" value="Suggest a Sampling method"/>
+</form>
+  <br/>
+  <p>Suggested Sampling: {{Sample_Suggested}}</p>
+<hr> 
+<h4>Choose your Sampling Technique: </h4>
+<br>
 <p>Simple Random Sampling <sup><b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
 <p>Systematic Sampling <sup> <b title = "In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
 <p>Stratified Sampling - KMeans <sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. Kmeans is the method that is used for the formation of clusters. KMeans is used when there is a small datasets. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
 <p>Stratified Sampling - BIRCH <sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. BIRCH (Balanced Iterative Reducing and Clustering using Hierarchies) is the method that is used for the formation of clusters. BIRCH is used when there is a big dataset. - Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
+  {% if calculation_success == True %}
+  <p>Sample Size : {{result}}</p>
+{% endif %}
+{% if calculation_success == False %}
+  <p>{{error}}</p>
+  <p>Sample Size : {{result}}"</p>
+{% endif %}
   <!-- <sup> <b title="In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. BIRCH (Balanced Iterative Reducing and Clustering using Hierarchies) is the method that is used for the formation of clusters. BIRCH is used when there is a big dataset. - Wiki"><i>info</i></b></sup>
 --> 
 <!-- <p title="Hello world">Hover this one</p>
@@ -592,13 +622,14 @@
     </form> 
      {% if sample_success == True %}
         <br/>
-        <p>Sample : {{sample_result}}</p>
+        <p>Suggested Sample Size : {{sample_result}}</p>
     {% endif %}
+    <!--
     {% if sample_success == False %}
         <br/>
         <p>{{error}}</p>
         <p>Sample : {{sample_result}}"</p>
-    {% endif %}
+    {% endif %}  -->
     <br>
     <a class="button-18" href="{{url_for('download')}}">Download</a>
   </div>
@@ -640,7 +671,7 @@ Hover Over Me!
 
 <abbr title="Hypertext Markup Language">HTML</abbr> 
 
-  </main><!-- End #main -->
+  </main> <!-- End #main -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">

@@ -9,6 +9,7 @@ from sklearn.cluster import Birch
 from kneed import KneeLocator
 import os 
 from pathlib import Path
+import numpy as np
 
 
 
@@ -21,6 +22,105 @@ Flask_App.config['UPLOAD_EXTENSIONS'] = ['.csv', '.xlsx', '.xls']
 @Flask_App.route('/', methods=['GET'])
 def index():
     return render_template('index1.html')
+
+@Flask_App.route('/Suggesting_method', methods = ['POST'])
+def suggesting_method():
+        THIS_FOLDER = Path(__file__).parent.resolve()
+        final_data = str(THIS_FOLDER)+"\\Blood Transfusion2.csv"
+        original_data = pd.read_csv(final_data)
+        data_dummy = original_data.copy()
+        data_dummy = data_dummy.drop_duplicates()
+        missing_values_count = data_dummy.isnull().sum()
+        names = np.where(missing_values_count > 0)
+        percent_missing = (missing_values_count.sum()/np.product(data_dummy.shape))*100       
+        if(percent_missing < 5): 
+            data_dummy = data_dummy.dropna()
+        else: 
+            for i in data_dummy:
+                if (data_dummy[i].dtypes == "int64" or data_dummy[i].dtypes == "float64"):
+                    if(data_dummy[i].skew()>=0.5 or data_dummy[i].skew()<=-0.5):
+                        #Median; Skewed;range : more than 0.5 and less than -0.5
+                        mean_value = data_dummy[i].mean()
+                        data_dummy[i].fillna(value = mean_value, inplace = True)
+                    else : 
+                         #Mean; Not Skewed: Symmetric; range : more than -0.5 and less than 0.5
+                         median_value = data_dummy[i].median()
+                         data_dummy[i].fillna(value = median_value, inplace = True)
+        listing_int = []
+        listing_string_object = []
+        j = 0
+        for i in data_dummy.dtypes: 
+            if (i == 'int64' or i == 'float64'):
+                listing_int.append(data_dummy.columns[j])  
+            else: 
+                listing_string_object.append(data_dummy.columns[j])
+            j = j+1
+        Q1 = data_dummy.quantile(0.25)
+        Q3 = data_dummy.quantile(0.75)
+        IQR = Q3 - Q1
+        data_dummy = data_dummy[~((data_dummy< (Q1 - 1.5 * IQR)) |(data_dummy > (Q3 + 1.5 * IQR))).any(axis=1)]
+        for k in listing_int:
+            unique_values = len(data_dummy[k].unique())
+            if (unique_values == len(data_dummy)):
+                data_dummy = data_dummy.drop([k], axis=1)
+                listing_int.remove(k)
+                continue 
+            elif (unique_values<=5) : 
+                data_dummy = pd.get_dummies(data_dummy, columns = [k]) 
+                listing_int.remove(k)
+                continue  
+            if(((data_dummy[k].skew()) > 0.5) or ((data_dummy[k].skew()) < -0.5)): 
+                data_dummy[k] = np.log(data_dummy[k])
+        for k in listing_string_object: 
+            data_dummy[k] = data_dummy[k].apply(str.lower)
+            data_dummy[k] = data_dummy[k].apply(str.strip)
+            unique_values = len(data_dummy[k].unique())
+            if (unique_values<=5): 
+                data_dummy = pd.get_dummies(data_dummy, columns = [k])  
+            else : 
+                data_dummy = data_dummy.drop([k], axis=1)
+        Sample = "" 
+        if (len(original_data)-len(data_dummy) < 0.20*len(original_data)):
+            if(len(original_data.columns) > 1):   
+              #  after_strat = input("Do you want to choose a sampling method other than Stratified sampling? ").lower()
+              #  if (after_strat == "yes" or after_strat == "y"):
+                    #print("Random Sampling or Systematic Sampling")
+               #     random_systematic = input("Do you want to use Random Sampling? ").lower()
+                #    if(random_systematic == "yes" or random_systematic == "y"):
+                        #print("Random Sampling")
+                        Sample = "Random Sampling"
+                 #   else: 
+                        #print("Systematic Sampling")
+                  #      Sample = "Systematic Sampling"
+              #  else: 
+                    #print("Stratified Sampling") 
+               #     if (np.product(data_dummy.shape) > 50000):
+                        #print("stratified Sampling - BIRCH")
+                #        Sample = "Stratified Sampling - BIRCH"
+                 #   else : 
+                        #print("Stratified Sampling - Kmeans")
+                  #      Sample = "Stratified Sampling - Kmeans"
+            else: 
+                #print("Random Sampling or Systematic Sampling")
+             #   random_systematic = input("Do you want to use Random Sampling? ").lower()
+             #   if(random_systematic == "yes" or random_systematic == "y"):
+                    #print("Random Sampling")
+             #       Sample = "Random Sampling"
+             #   else: 
+                    #print("Systematic Sampling")
+                    Sample = "Systematic Sampling"
+        else : 
+        #    cluster = input("Is the data uploaded in clusters? ").lower()
+        #    if(cluster == "yes" or cluster == "y"): 
+                #print("Cluster Sampling")
+         #       Sample = "Cluster Sampling"
+         #   else : 
+                #print("Systematic Sampling")
+                Sample = "Systematic Sampling"
+        return render_template(
+           'index1.html',
+            Sample_Suggested = Sample
+        )
 
 #To display the calculations of Evan Miller's Sample Size 
 @Flask_App.route('/operation_result/', methods=['POST'])
@@ -253,7 +353,7 @@ def uploadfile():
 
 #@Flask_App.route('/select', methods=['POST', 'GET'])
 #def select():
- #   value = request.form.get('operator')  
+ #   value = request.form.get('operator') 
 
 if __name__ == '__main__':
-    Flask_App.run(host='0.0.0.0', port=5155)
+    Flask_App.run(host='0.0.0.0', port=5183)
