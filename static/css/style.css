@@ -354,6 +354,11 @@ h6 {
   color: rgba(0, 0, 0, .3);
 }
 
+u.dotted{
+  border-bottom: 1px dashed #999;
+  text-decoration: none; 
+}
+
 strong{
   display: block;
 }
@@ -406,17 +411,20 @@ strong{
   margin-bottom: -2px;
   border: none;
   color: #2c384e;
+  text-align: center;
 }
 
 .nav-tabs-bordered .nav-link:hover,
 .nav-tabs-bordered .nav-link:focus {
   color: #4154f1;
+  text-align: center;
 }
 
 .nav-tabs-bordered .nav-link.active {
   background-color: #fff;
   color: #4154f1;
   border-bottom: 2px solid #4154f1;
+  text-align: center;
 }
 
 /*--------------------------------------------------------------
@@ -678,7 +686,7 @@ strong{
   padding: 20px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #aab7cf transparent;
+  scrollbar-color: #012970 transparent;
   box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
   background-color: #fff;
 }
@@ -696,7 +704,7 @@ strong{
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-  background-color: #aab7cf;
+  background-color: #012970;
 }
 
 @media (min-width: 1200px) {
@@ -738,7 +746,9 @@ strong{
 }
 
 .sidebar-nav .nav-item {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+
 }
 
 .sidebar-nav .nav-heading {
@@ -747,6 +757,7 @@ strong{
   color: #899bbd;
   font-weight: 600;
   margin: 10px 0 5px 15px;
+  text-align: center;
 }
 
 .sidebar-nav .nav-link {
@@ -754,22 +765,25 @@ strong{
   align-items: center;
   font-size: 15px;
   font-weight: 600;
-  color: #4154f1;
+  color: #012970;
   transition: 0.3;
   background: #f6f9ff;
   padding: 10px 15px;
   border-radius: 4px;
+  text-align: center;
 }
 
 .sidebar-nav .nav-link i {
   font-size: 16px;
   margin-right: 10px;
-  color: #4154f1;
+  color: #012970;
+  text-align: center;
 }
 
 .sidebar-nav .nav-link.collapsed {
   color: #012970;
   background: #fff;
+  text-align: center;
 }
 
 .sidebar-nav .nav-link.collapsed i {
@@ -777,12 +791,12 @@ strong{
 }
 
 .sidebar-nav .nav-link:hover {
-  color: #4154f1;
+  color: #012970;
   background: #f6f9ff;
 }
 
 .sidebar-nav .nav-link:hover i {
-  color: #4154f1;
+  color:#012970;
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {
@@ -1319,4 +1333,20 @@ strong{
   text-align: center;
   background-color: lightblue;
   margin-top: 20px;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
 }

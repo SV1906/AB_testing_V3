@@ -11,9 +11,6 @@ import os
 from pathlib import Path
 import numpy as np
 
-
-
-sample_size_glob = 0
 file_name = None 
 Flask_App = Flask(__name__) # Creating our Flask Instance
 Flask_App.config['UPLOAD_EXTENSIONS'] = ['.csv', '.xlsx', '.xls']
@@ -21,10 +18,12 @@ Flask_App.config['UPLOAD_EXTENSIONS'] = ['.csv', '.xlsx', '.xls']
 #To display the intial page 
 @Flask_App.route('/', methods=['GET'])
 def index():
-    return render_template('index1.html')
+    return render_template('index1.html', _anchor ='main')
 
+#
 @Flask_App.route('/Suggesting_method', methods = ['POST'])
 def suggesting_method():
+        #Preprocessing Technique
         THIS_FOLDER = Path(__file__).parent.resolve()
         final_data = str(THIS_FOLDER)+"\\Blood Transfusion2.csv"
         original_data = pd.read_csv(final_data)
@@ -119,7 +118,8 @@ def suggesting_method():
                 Sample = "Systematic Sampling"
         return render_template(
            'index1.html',
-            Sample_Suggested = Sample
+            section = 'section_upload',
+            Sample_Suggested = "Sampling technique : " + Sample
         )
 
 #To display the calculations of Evan Miller's Sample Size 
@@ -127,7 +127,6 @@ def suggesting_method():
 def operation_result():
     error = None
     result = None
-
     #To take the input of Baseline Conversion rate 
     first_input = request.form['Input1']  
     #To take the input of Minimum detectable rate
@@ -154,23 +153,16 @@ def operation_result():
     part_2 = z_score_beta*math.sqrt(p1*(1-p1) + p2*(1-p2))
     deno = math.pow(p2 - p1, 2) 
     n = (math.pow((part_1+part_2),2))/(deno)
-    sample_size_glob = n
-    #result = round(n)
-    #return redirect(url_for('sampling_result', name = result))
+    result = round(n)
     return render_template(
            'index1.html',
-            input1=input1,
-            input2=input2,
-            result= sample_size_glob,
+            sampling_result= result,
             calculation_success=True
         )
 
 @Flask_App.route('/download')
 def download():
     THIS_FOLDER = Path(__file__).parent.resolve()
-    #path = 'C://Users//Sandhya//OneDrive//Desktop//AB Testing_Folder//ABTesting_v2//ABTesting_V2.0//AB_testing_V3'
-    #default = '//Blood Transfusion Service Centre Dataset.csv'
-    #To download the available file in the folder only 
     if (os.path.exists(str(THIS_FOLDER)+"\\result_SystematicSample.csv")): 
         second = "\\result_SystematicSample.csv"
     elif (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")): 
@@ -188,8 +180,9 @@ def sampling_result():
     error = None
     result = None
     first_input = request.form['operator']  
+    second_input = request.form['Sample_Size_input']
     input1 = first_input
-    sample_size = 100
+    sample_size = int(second_input)
     THIS_FOLDER = Path(__file__).parent.resolve()
     final_data = str(THIS_FOLDER)+"\\Blood Transfusion2.csv"
     data = pd.read_csv(final_data)
@@ -321,8 +314,7 @@ def sampling_result():
         
     return render_template(
            'index1.html',
-            input1=input1,
-            sample_result=result,
+           # result="Sample Size : " + sampling_result,
             sample_success=True
         )
 
@@ -331,7 +323,6 @@ def uploadfile():
     if request.method == 'POST':  
         #sample_size = 100
         f = request.files['file']
-        
         filename = secure_filename(f.filename)
         if filename != '':
             file_ext = os.path.splitext(filename)[1]
@@ -340,11 +331,11 @@ def uploadfile():
             #return render_template("index1.html", error = error)
             #flash("Uploaded the wrong extension. Please upload either .csv or .xlsx") 
         else : 
-            error = "Successfully uploaded"
+            error = "Successfully uploaded. Please continue. "
             f.filename = "Blood Transfusion2.csv"
             f.save(f.filename)
             #flash("The file has been successfully saved!")
-        return render_template("index1.html", name = f.filename, error = error)
+        return render_template("index1.html", section = 'about', name = f.filename, error = error)
 
         #f.save(f.filename) 
         #data = pd.read_csv(f)
@@ -356,4 +347,6 @@ def uploadfile():
  #   value = request.form.get('operator') 
 
 if __name__ == '__main__':
-    Flask_App.run(host='0.0.0.0', port=5183)
+    
+    Flask_App.run(host='0.0.0.0', port=5469)
+

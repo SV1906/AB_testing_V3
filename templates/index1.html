@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -38,19 +40,21 @@
 <body>
 
   <!-- ======= Header ======= -->
+  
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="nav-link nav-profile d-flex align-items-center pe-0">
       <a href="templates/index.html" class="logo d-flex align-items-center">
         
-        <img src="{{url_for('static', filename='image/Bajaj_Logo.png')}}" alt="">
+        <img src="{{url_for('static', filename='image/apple-touch-icon1.png')}}" alt="">
         <span class="d-none d-lg-block">Bajaj Finserv</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
     <!--<a href="#New Hypo" class="button-18" style = "width: 50px; height: 50px; position: relative;display: flex;  transform: translateX(+100%);" title = "New Hypothesis">New Hypothesis</a>
     --> 
-    <a href="#New Hypo" class ="button-18" style="display: flex;  transform: translateX(+450%);">New Hypothesis</a>
+
+    <a href="#section_new" class ="button-18" style="display: flex;  transform: translateX(+450%);">New Hypothesis</a>
 
     <!-- End Logo -->
 
@@ -67,17 +71,36 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="templates/index1.html">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
+        <a class="nav-link " href="#main">
+          <i class="bi bi-graph-up"></i>
+          <span>Reports</span>
         </a>
-      </li><!-- End Dashboard Nav -->
+        <a class="nav-link " href="#section_new">
+          <i class = "bi-clipboard-plus"></i>
+          <span>New Hypothesis</span>
+        </a>
+        <a class="nav-link " href="#section_upload">
+          <i class="bi-upload"></i>
+          <span>Upload Dataset</span>
+        </a>
+        <a class="nav-link " href="#section_size">
+          <i class="bi-calendar-month"></i>
+          <span>Sample Size</span>
+        </a>
+        <a class="nav-link " href="#section_sampling">
+          <i class="bi-download"></i>
+          <span>Sampling</span>
+        </a>
+      </li>
+      
+      
+      <!-- End Dashboard Nav -->
 
      
          
         </ul>
       </li><!-- End Components Nav -->
-
+      
 
     </ul>
 
@@ -86,6 +109,7 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
+
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
@@ -99,8 +123,6 @@
 
     <section class="section dashboard">
       <div class="row">
-
-        
                 <!-- Reports -->
                 <div class="col-12">
                   <div class="card">
@@ -117,34 +139,36 @@
                         <li><a class="dropdown-item" href="#">This Year</a></li>
                       </ul>
                     </div>
-    
+
                     <div class="card-body">
-                      <h5 class="card-title">Reports <span>/Today</span></h5>
-    
+                      <h5 class="card-title">Total Conversion <span>/Today</span></h5>
                       <!-- Line Chart -->
                       <div id="reportsChart"></div>
-    
                       <script>
                         document.addEventListener("DOMContentLoaded", () => {
                           new ApexCharts(document.querySelector("#reportsChart"), {
                             series: [{
-                              name: 'Variant A',
-                              data: [31, 40, 28, 51, 42, 82, 56],
+                              name: 'Control',
+                              data: [31, 40, 28, 51, 42, 82, 56, 78, 19, 20, 13, 14, 23, 17, 16, 18, 19],
                             }, {
-                              name: 'Variant B',
-                              data: [11, 32, 45, 32, 34, 52, 41]
+                              name: 'Test',
+                              data: [11, 32, 45, 32, 34, 52, 41, 54, 23, 24, 32, 54, 67, 44, 65, 57, 45]
+                            },
+                            {
+                              name: 'Total',
+                              data: [42, 72, 73, 83, 76, 134, 97, 132, 42, 44, 45, 68, 90, 61, 81, 75, 64]
                             }],
                             chart: {
                               height: 350,
-                              type: 'area',
+                              type: 'line',
                               toolbar: {
-                                show: false
+                                show: true
                               },
                             },
                             markers: {
-                              size: 4
+                              size: 8
                             },
-                            colors: ['#4154f1', '#2eca6a'],
+                            colors: ['#4154f1', '#2eca6a', '#012970'],
                             fill: {
                               type: "gradient",
                               gradient: {
@@ -155,15 +179,15 @@
                               }
                             },
                             dataLabels: {
-                              enabled: false
+                              enabled: true
                             },
                             stroke: {
-                              curve: 'smooth',
-                              width: 2
+                              curve: 'straight',
+                              width: 4
                             },
                             xaxis: {
                               type: 'datetime',
-                              categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                              categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z", "2018-09-19T07:30:00.000Z", "2018-09-19T08:30:00.000Z", "2018-09-19T09:30:00.000Z", "2018-09-19T10:30:00.000Z", "2018-09-19T11:30:00.000Z", "2018-09-19T12:30:00.000Z","2018-09-19T13:30:00.000Z", "2018-09-19T14:30:00.000Z", "2018-09-19T15:30:00.000Z", "2018-09-19T16:30:00.000Z"]
                             },
                             tooltip: {
                               x: {
@@ -174,11 +198,72 @@
                         });
                       </script>
                       <!-- End Line Chart -->
-    
+                      <table>
+                        <tr>
+                          <th>Campaign Name</th>
+                          <th>Click</th>
+                          <th>Impressions</th>
+                          <th>CTR</th>
+                          <th>CI</th>
+                          <th>P-value</th>
+                          <th>Z-score</th>
+                        </tr>
+                        <tr>
+                          <td>Control</td>
+                          <td>7016</td>
+                          <td>82702</td>
+                          <td>8.483</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Test</td>
+                          <td>3038</td>
+                          <td>39550</td>
+                          <td>7.681</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Total</td>
+                          <td>10054</td>
+                          <td>122252</td>
+                          <td>8.22</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      </table>
                     </div>
-    
                   </div>
                 </div><!-- End Reports -->
+
+
+                <!-- Start Another Report -->
+
+                <div class="col-12">
+                  <div class="card">
+    
+                <!--     <div class="filter">
+                      <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <li class="dropdown-header text-start">
+                          <h6>Filter</h6>
+                        </li>
+    
+                        <li><a class="dropdown-item" href="#">Today</a></li>
+                        <li><a class="dropdown-item" href="#">This Month</a></li>
+                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                      </ul>
+                    </div> --> 
+
+                    </div>
+                    </div>
+
+
+                <!--End Another Resport-->
 
 
             <!-- Sales Card -->
@@ -197,18 +282,17 @@
                     <li><a class="dropdown-item" href="#">This Year</a></li>
                   </ul>
                 </div>
-
                 <div class="card-body">
-                  <h5 class="card-title">Variant A <span>| Today</span></h5>
+                  <h5 class="card-title">Control <span>| Today</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-cart"></i>
+                      <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>145</h6>
-                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
+                      <h6>69.4%</h6>
+                      <span class="text-muted small pt-2 ps-1">Conversions:</span> <span class="text-success small pt-1 fw-bold">18146</span>
+                      <span class="text-muted small pt-2 ps-1">Visitors:</span> <span class="text-success small pt-1 fw-bold">26157</span> 
                     </div>
                   </div>
                 </div>
@@ -233,16 +317,17 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Variant B<span>| This Year</span></h5>
+                  <h5 class="card-title">Test <span>| Today</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>1244</h6>
-                      <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
-
+                      <h6>68.9%</h6>
+                      <span class="text-muted small pt-2 ps-1">Conversions:</span> <span class="text-success small pt-1 fw-bold">17791</span>
+                      <span class="text-muted small pt-2 ps-1">Visitors:</span> <span class="text-success small pt-1 fw-bold">25833</span> 
+                  
                     </div>
                   </div>
 
@@ -269,92 +354,101 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Total<span>| This Month</span></h5>
+                  <h5 class="card-title">Total<span>| Today</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-currency-dollar"></i>
+                      <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>$3,264</h6>
-                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
+                      <h6>69.1%</h6>
+                      <span class="text-muted small pt-2 ps-1">Conversions:</span> <span class="text-success small pt-1 fw-bold">35937</span>
+                      <span class="text-muted small pt-2 ps-1">Visitors:</span> <span class="text-success small pt-1 fw-bold">51990</span> 
+                  
                     </div>
                   </div>
                 </div>
 
               </div>
             </div><!-- End Revenue Card -->
-
-
   
 
-          <!-- Recent Activity -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
+             <!-- Recent Sales -->
+             <div class="col-12">
+              <div class="card recent-sales overflow-auto">
 
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
 
-            <div class="card-body">
-              <h5 class="card-title">Recent Activity <span>| Today</span></h5>
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    <li><a class="dropdown-item" href="#">This Month</a></li>
+                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                  </ul>
+                </div>
 
-              <div class="activity">
+                <div class="card-body">
+                  <h5 class="card-title">Recent Hypothesis <span>| Today</span></h5>
 
-                <div class="activity-item d-flex">
-                  <div class="activite-label">10 days</div>
-                  <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                  <div class="activity-content">
-                   Hypothesis 5 started testing
-                  </div>
-                </div><!-- End activity item-->
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">Hypothesis number</th>
+                        <th scope="col">Campaign Name</th>
+                        <th scope="col">Campaign Type</th>
+                        <th scope="col">Start Date</th>
+                        <th scope = "col">End Date</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row"><a href="#">#23</a></th>
+                        <td>ABC</td>
+                        <td><a href="#" class="text-primary">Type 1</a></td>
+                        <td>19/06/22</td>
+                        <td>30/06/22</td>
+                        <td><span class="badge bg-success">Approved</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">#24</a></th>
+                        <td>DEF</td>
+                        <td><a href="#" class="text-primary">Type 2</a></td>
+                        <td>1/07/22</td>
+                        <td>15/07/22</td>
+                        <td><span class="badge bg-danger">Rejected</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">#25</a></th>
+                        <td>GHI</td>
+                        <td><a href="#" class="text-primary">Type 1</a></td>
+                        <td>15/07/22</td>
+                        <td>31/07/22</td>
+                        <td><span class="badge bg-success">Approved</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><a href="#">#26</a></th>
+                        <td>JKL</td>
+                        <td><a href="#" class="text-primary">Type 1</a></td>
+                        <td>1/08/22</td>
+                        <td>20/08/22</td>
+                        <td><span class="badge bg-success">Approved</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
 
-                <div class="activity-item d-flex">
-                  <div class="activite-label">20 days</div>
-                  <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
-                  <div class="activity-content">
-                    Hypothesis 4 completed started 
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">30 days</div>
-                  <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
-                  <div class="activity-content">
-                    Hypothesis 3 abruptly stopped
-                  </div>
-                </div><!-- End activity item-->
-                <div class="activity-item d-flex">
-                  <div class="activite-label">40 days</div>
-                  <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
-                  <div class="activity-content">
-                    Hypothesis 2 completed 
-                  </div>
-                </div><!-- End activity item-->
+                </div>
 
               </div>
-
-            </div>
-          </div><!-- End Recent Activity --> 
-
-       
-          <!-- News & Updates Traffic -->
-          
-
-        </div><!-- End Right side columns -->
+            </div><!-- End Recent Sales -->
 
       </div>
     </section>
 
-    <hr id = "New Hypo"> 
+    <hr id = "section_new"> 
     <div class="pagetitle">
       <h1>New Hypothesis</h1>
     </div><!-- End Page Title -->
@@ -364,11 +458,11 @@
           <h5 class="card-title">Hypothesis 1</span></h5>
           <div class="d-flex align-items-center">
             <div class="ps-3">
-              <h6>"Reducing the frequency of mobile app notifications from 5 times per day to 2 times per day will increase mobile app retention rates."</h6>
+              <h6>Given that <u class="dotted">a significant number of users drop off during the onboarding process</u>, <u class = "dotted">sending personalized welcome messages to new users </u>will result <u class ="dotted">in a higher retention rate.</u></h6>
               <span class="text-success small pt-1 fw-bold">Type : </span> <span class="text-muted small pt-2 ps-1">Splitting</span>
               <br>
 <br>
-<a href="#dataset" class="button-18">Choose</a> 
+<a href="#section_upload" class="button-18">Choose</a> 
             </div>
           </div>
         </div>
@@ -383,13 +477,13 @@
 
           <div class="d-flex align-items-center">
             <div class="ps-3">
-              <h6>"Using featured images that are more contextually related to our blog posts will contribute to a lower bounce rate. "</h6>
+              <h6>Given that <u class = "dotted">users are more likely to engage with the app during certain times of the day</u>, <u class = "dotted">sending push notifications at those times </u>will result <u class = "dotted">in a higher engagement rate.</u></h6>
 
               <span class="text-success small pt-1 fw-bold">Type : </span> <span class="text-muted small pt-2 ps-1">Multivariant</span>
               <br>
               <br>
 
-              <a href="#dataset" class="button-18">Choose</a> 
+              <a href="#section_upload" class="button-18">Choose</a> 
             </div>
           </div>
         </div>
@@ -404,11 +498,11 @@
 
           <div class="d-flex align-items-center">
             <div class="ps-3">
-              <h6>"Greeting customers by name in emails will increase the total number of clicks"</h6>
+              <h6>Given that <u class = "dotted">users who complete in-app surveys are more likely to become loyal customers</u>, <u class = "dotted">prompting users to complete a survey after a successful transaction</u> will result in <u class = "dotted">a higher user retention rate.</u></h6>
               <span class="text-success small pt-1 fw-bold">Type : </span> <span class="text-muted small pt-2 ps-1">Splitting</span>
               <br>
               <br>
-              <a href="#dataset" class="button-18">Choose</a>  
+              <a href="#section_upload" class="button-18">Choose</a>  
             </div>
           </div>
         </div>
@@ -416,8 +510,9 @@
     </div>
     <hr> 
 
-    <div id = "dataset" class="pagetitle">
+    <div id = "section_upload" class="pagetitle">
       <h1>Uploading the dataset</h1>
+      <h9>Please upload .csv, .xlsx, .xls form only</h9>
     </div>
     <div class="col-xxl-4 col-md-12">
       <div class="card info-card revenue-card">
@@ -428,10 +523,9 @@
           <input type = "file" name = "file" />
           <input type = "submit"/>
             </form>
-            <hr>
            {% for file in files %}
-             <img src="{{ url_for('uploadfile', name=file) }}" style="width: 64px">
-           {% endfor %} 
+             <img src="{{ url_for('uploadfile', name=file) }}" style="width: 64px"> 
+           {% endfor %}  
           <!-- {% with messages = get_flashed_messages() %}  
            {% if messages %}  
                  {% for message in messages %}  
@@ -443,6 +537,8 @@
         <!--<font color = "red"><p><strong>Error:</strong>{{error}}</p></font>-->
         <p><strong>{{error}}</strong></p>
     {% endif %}  
+    <br> 
+    <a class="button-18" href="#section_size" id = "myButton">Continue</a> 
         </div>
       </div>
     </div>
@@ -450,9 +546,11 @@
 
     <!--New Sample size selection-->
 
-    <div id="about">
-    <div id = "about" class="pagetitle">
+    
+    <div id="#section_size">
+    <div id = "#section_size" class="pagetitle">
       <h1>Sample Size selection</h1>
+      <h9>Please fill in the information for accurate sample size calculation</h9>
       
     </div><!-- End Page Title -->
     <div class="col-xxl-4 col-md-12">
@@ -462,31 +560,34 @@
 
           <div class="d-flex align-items-center">
             <div class="ps-3">
-             <br> 
+           
+             <!--
               <h5>For the available data, <B>Evan Miller</B>'s Calculator is suggested</B></h5>
-<br/> 
-<div id="myDIV" class="text.a">
-<h1>Evan Miller's calculator</h1>
-    <form method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
-        <label for="Input1"><p>Baseline Conversion Rate <sup><b title="Baseline Conversion Rate is the division of number of sucessful actions on the test page over the number of visitors that view the page."><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
-        </label>
-        <input type="text" name="Input1" id="Input1">
+-->
+            
+<div id="section_sampling" class="text.a">
+<!--<h1>Evan Miller's calculator</h1> -->
+<h5 class="card-title">Sample Size</span></h5>
+<h9>Required values for the calculation are - <b>Baseline Conversion Rate </b><sup><b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>, <b>Minimum Detectable Effect </b><sup><b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>, <b>Statistical Power </b><sup><b title="Stastical Power is the likelihood that you will detect a difference between variant A and variant B. &#013; A Higher power is always prefered.&#013; Minimum of 80% is usually recommended"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup> and <b>Statistical level </b><sup><b title="Statistic level is the level of error you're willing to accept in your test. &#013; Usually 1% to 5%. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>. The default values for Statistical Power and Statistical Level are already mentioned below.</h9>
+<br>    
+<br> 
+<form method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
+        <label for="Input1">Baseline Conversion Rate</label>
+        <input type="text" name="Input1" id="Input1" value = "">
         <br>
-        <label for="Input2" 
-        placeholder="this text will show in the textarea"><p>Minimum Detectable Effect <sup><b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
-        </label>
-        <input type="text" name="Input2" id="Input2">
+        <label for="Input2">Minimum Detectable Effect</label>
+        <input type="text" name="Input2" id="Input2" value = "">
         <br>
-        <label for="Input3"><p>Statistical Power <sup><b title="Stastical Power is the likelihood that you will detect a difference between variant A and variant B. &#013; A Higher power is always prefered.&#013; Minimum of 80% is usually recommended"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
-        </label>
-        <input type="text" name="Input3" id="Input3">
+        <label for="Input3">Statistical Power</label>
+        <input type="text" name="Input3" id="Input3" value = "80">
         <br>
-        <label for="Input4"><p>Statistic level <sup><b title="Statistic level is the level of error you're willing to accept in your test. &#013; Usually 1% to 5%. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
-        </label>
-        <input type="text" name="Input4" id="Input4">
+        <label for="Input4">Statistic level</label>
+        <input type="text" name="Input4" id="Input4" value = "1">
         <br> 
         <input type="submit" value="Submit"/>
     </form>
+    <p><b>{{sampling_result}}</b></p>
+    <!-- <br> 
      {% if calculation_success == True %}
         <br/>
         <p>Sample Size : {{result}}</p>
@@ -496,8 +597,8 @@
         <p>{{error}}</p>
         <p>Sample Size : {{result}}"</p>
     {% endif %}
-    <br>
-    <a class="button-18" href="#Clustering" >Continue</a>
+    <br> --> 
+    <a class="button-18" href="#section_sampling" >Continue</a>
   </div>
 </div>
 </div>
@@ -526,9 +627,10 @@
   </div> --> 
 
 <!-- End of trial-->
-<hr id = "Clustering"> 
+<hr id = "section_sampling"> 
 <div class="pagetitle">
   <h1>Sampling</h1>
+  <h9>Download a sample of the data uploaded</h9>
 </div>
 <div class="col-xxl-4 col-md-12">
   <div class="card info-card revenue-card">
@@ -576,28 +678,41 @@
           }
           </script> -->
 
-
-
 <div id="myDIV" class="text.a">
 <form method="post" action="{{ url_for('suggesting_method') }}" id="Sugessting_method">
-  <input type="submit" value="Suggest a Sampling method"/>
+  <h5 class="card-title">Sampling Suggestion</span></h5>
+  <h9>Click the button for suggesting the most appropriate Sampling Technique for the uploaded data</h9>
+  <input type="submit" value="Suggest Sampling Technique"/>
 </form>
   <br/>
-  <p>Suggested Sampling: {{Sample_Suggested}}</p>
-<hr> 
-<h4>Choose your Sampling Technique: </h4>
-<br>
-<p>Simple Random Sampling <sup><b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
-<p>Systematic Sampling <sup> <b title = "In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
-<p>Stratified Sampling - KMeans <sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. Kmeans is the method that is used for the formation of clusters. KMeans is used when there is a small datasets. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
-<p>Stratified Sampling - BIRCH <sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. BIRCH (Balanced Iterative Reducing and Clustering using Hierarchies) is the method that is used for the formation of clusters. BIRCH is used when there is a big dataset. - Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
+  <p>{{Sample_Suggested}}</p>
+
+  <!-- 
   {% if calculation_success == True %}
+  <br/>
+  <p>Sample Size : {{result}}</p>
+{% endif %}
+{% if calculation_success == False %}
+  <br/>
+  <p>{{error}}</p>
+  <p>Sample Size : {{result}}"</p>
+{% endif %} -->
+
+<hr>
+<h5 class="card-title">Downloading Sampling Data</span></h5> 
+<p>The types of Sampling Techniques are : <b>Simple Random Sampling </b><sup><b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"><img></b></sup>, 
+  <b>Systematic Sampling </b><sup> <b title = "In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b> </sup>, 
+<b>Stratified Sampling - KMeans </b><sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. Kmeans is the method that is used for the formation of clusters. KMeans is used when there is a small datasets. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>
+and <b>Stratified Sampling - BIRCH </b><sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. BIRCH (Balanced Iterative Reducing and Clustering using Hierarchies) is the method that is used for the formation of clusters. BIRCH is used when there is a big dataset. - Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup></p>
+
+
+<!--   {% if calculation_success == True %}
   <p>Sample Size : {{result}}</p>
 {% endif %}
 {% if calculation_success == False %}
   <p>{{error}}</p>
   <p>Sample Size : {{result}}"</p>
-{% endif %}
+{% endif %} --> 
   <!-- <sup> <b title="In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. BIRCH (Balanced Iterative Reducing and Clustering using Hierarchies) is the method that is used for the formation of clusters. BIRCH is used when there is a big dataset. - Wiki"><i>info</i></b></sup>
 --> 
 <!-- <p title="Hello world">Hover this one</p>
@@ -611,6 +726,13 @@
         <br/>
         <input type="submit" value="Submit"/>
     </form> -->
+
+   <!-- <form method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
+      <label for="Input1"><p>Baseline Conversion Rate <sup><b title="Baseline Conversion Rate is the division of number of sucessful actions on the test page over the number of visitors that view the page."><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
+      </label>
+      <input type="text" name="Input1" id="Input1" value = "">
+      <br> --> 
+
     <form method="post" action="{{ url_for('sampling_result') }}">
       <select id="sample_form" name="operator">
           <option value="SR">Simple Random Sampling</option>
@@ -618,13 +740,21 @@
           <option value="StCK">Stratified Sampling - KMeans</option>
           <option value="StCB">Stratified Sampling - BIRCH</option>
       </select>
+      <br> 
+      <br> 
+      <!-- <p>Suggested Sample Size : {{sample_result}}</p> --> 
+      <label for="Input1"><p>Sample Size</p>
+      </label>
+      <input type="text" name="Sample_Size_input" id="Input1" value = "">
+      <br>
       <input type="submit" value="Submit">
     </form> 
+     <!--
      {% if sample_success == True %}
         <br/>
         <p>Suggested Sample Size : {{sample_result}}</p>
     {% endif %}
-    <!--
+   
     {% if sample_success == False %}
         <br/>
         <p>{{error}}</p>
