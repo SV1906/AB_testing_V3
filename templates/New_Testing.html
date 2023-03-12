@@ -151,6 +151,8 @@
                 <!--   <input type="submit" value="Submit"/> -->
                 <br> 
                 <br> 
+                <br> 
+                <br> 
 
                   <div class="text-center">
                     <button type="submit" class="button-18">Submit</button>
@@ -158,9 +160,9 @@
                   </div>
 
               </form>
-
+<!-- 
               {{hypothesis_result}}
-
+-->
 
 
               
@@ -299,7 +301,9 @@
           </form> 
 
           <br> 
+          <!-- 
           {{array_cond_input_2}}
+          -->
 
 
         </div>
@@ -374,7 +378,7 @@
     border: 1px solid #ccc;
     background-color: #f1f1f1;
     width: 30%;
-    height: 500px;
+    height: 330px;
   }
 
 /* Style the buttons inside the tab */
@@ -409,7 +413,7 @@
      border: 1px solid #ccc;
      width: 70%;
      border-left: none;
-     height: 500px;
+     height: 330px;
     }
 </style>
 
@@ -423,34 +427,59 @@
   <h9>Required values for the calculation are - <b>Baseline Conversion Rate </b><sup><b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>, <b>Minimum Detectable Effect </b><sup><b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>, <b>Statistical Power </b><sup><b title="Statistical Power is the likelihood that you will detect a difference between variant A and variant B. &#013; A Higher power is always prefered.&#013; Minimum of 80% is usually recommended"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup> and <b>Statistical level </b><sup><b title="Statistic level is the level of error you're willing to accept in your test. &#013; Usually 1% to 5%. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>. The default values for Statistical Power and Statistical Level are already mentioned below.</h9>
   <br>    
   <br> 
-  <form method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
+  <form class = "row g-12"method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
 
-    <div class="col-md-12"> 
-      <label for="Input1" class="form-label">Baseline Conversion Rate</label>
+
+ <!--  <form class = "row g-12" method="post" action="{{ url_for('Hypothesis') }}" id="Hypothesis_form">
+      <div class="col-md-4"> 
+      <label for="Insight_input" class="form-label">Define Hypothesis</label>
+      </div>
+      <div class="col-md-8"> 
+      <input type="text" class="form-control" name="Insight_input">
+    </div>  --> 
+
+    <div class="col-md-8"> 
+      <label for="Input1" class="form-label">Baseline Conversion Rate (In Percentage)</label>
+    </div>
+    <div class="col-md-4"> 
       <input type="text" class="form-control" name="Input1">
    </div> 
+   <br> 
 
-   <div class="col-md-12"> 
-    <label for="Input2" class="form-label">Minimum Detectable Effect</label>
+   <div class="col-md-8"> 
+    <label for="Input2" class="form-label">Minimum Detectable Effect (In Percentage)</label>
+  </div>
+  <div class="col-md-4"> 
     <input type="text" class="form-control" name="Input2">
  </div> 
+ <br> 
 
- <div class="col-md-12"> 
-  <label for="Input3" class="form-label">Statistical Power</label>
+ <div class="col-md-8"> 
+  <label for="Input3" class="form-label">Statistical Power (In Percentage)</label>
+</div>
+<div class="col-md-4"> 
   <input type="text" class="form-control" name="Input3">
 </div> 
+<br>
 
-<div class="col-md-12"> 
-  <label for="Input4" class="form-label">Statistic level</label>
+<div class="col-md-8"> 
+  <label for="Input4" class="form-label">Statistic level (In Percentage)</label>
+</div>
+<div class="col-md-4"> 
   <input type="text" class="form-control" name="Input4">
 </div> 
+<br>
 <br> 
+<br> 
+
 
           <div class="text-center">
             <button type="submit" class="button-18">Submit</button>
             <button type="reset" class="btn btn-secondary">Reset</button>
           </div>
       </form>
+
+     
 
     <!--   <div class="row mb-5">
         <label class="col-sm-2 col-form-label">Ranges</label>
@@ -479,17 +508,25 @@
   <br> 
  
 
-  <form method="post" action="{{ url_for('operation_result_basic') }}" id="calculator_form">
+  <form class = "row g-12" method="post" action="{{ url_for('operation_result_basic') }}" id="calculator_form">
 
-    <div class="col-md-6"> 
+
+    <div class="col-md-8"> 
       <label for="Input1" class="form-label">Confidence Interval (In percentage)</label>
+    </div>
+    <div class="col-md-4"> 
       <input type="text" class="form-control" name="Input1">
-   </div> 
+    </div> 
+
    <br> 
-   <div class="col-md-6"> 
+
+   
+   <div class="col-md-8"> 
     <label for="Input2" class="form-label">Margin of Error (In percentage)</label>
+  </div>
+  <div class="col-md-4"> 
     <input type="text" class="form-control" name="Input2">
- </div> 
+  </div> 
  <br> 
           <div class="text-center">
             <button type="submit" class="button-18">Submit</button>
@@ -497,7 +534,7 @@
           </div>
       </form>
 
-      {{basic_sampling_result}}
+      
 </div>
 
 <script>
@@ -519,6 +556,8 @@ function openCity(evt, cityName) {
 document.getElementById("defaultOpen").click();
 </script>
 
+<br> 
+<br> 
     
    <!-- <div id = "something">
       {% if scroll %}
@@ -535,6 +574,10 @@ document.getElementById("defaultOpen").click();
   <br> 
 
   <br> 
+  <br> 
+  <br> 
+  {{basic_sampling_result}}
+  {{sampling_result}}
   <br> 
   <br> 
       <a class="button-18" href="#section_sampling" >Continue</a>
@@ -597,11 +640,15 @@ document.getElementById("defaultOpen").click();
           }
           </script> -->
 
-
+          <hr> 
+          <div id = "section_samplesize_a" class="pagetitle">
+            <h1>Sampling Technique</h1>
+            <h9></h9>
+          </div>
           <div class="col-xxl-4 col-md-12">
             <div class="card info-card revenue-card">
               <div class="card-body">
-                <h5 class="card-title">Sampling Technique</h5>
+               <!--  <h5 class="card-title">Sampling Technique</h5> -->
                 <div class="d-flex align-items-center">
                   <div class="ps-3">
                   <!--   <h9>Click the button for suggesting the most appropriate Sampling Technique for the uploaded data</h9> -->
@@ -612,16 +659,16 @@ document.getElementById("defaultOpen").click();
                       <br/>
                       <p>{{Sample_Suggested}}</p>     
                       <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b><sup><b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"><img></b></sup>, 
-                        <b>Systematic Sampling </b><sup> <b title = "In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b> </sup>, 
-                      <b>Stratified Sampling - KMeans </b><sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. Kmeans is the method that is used for the formation of clusters. KMeans is used when there is a small datasets. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>
-                      and <b>Stratified Sampling - BIRCH </b><sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. BIRCH (Balanced Iterative Reducing and Clustering using Hierarchies) is the method that is used for the formation of clusters. BIRCH is used when there is a big dataset. - Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup></p>           
+                        <b>Systematic Sampling </b><sup> <b title = "In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b> </sup> and <b>Stratified Sampling</b><sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations.-Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup></p>
+                      <!-- <b>Stratified Sampling - KMeans </b><sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. Kmeans is the method that is used for the formation of clusters. KMeans is used when there is a small datasets. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>
+                      and <b>Stratified Sampling - BIRCH </b><sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. BIRCH (Balanced Iterative Reducing and Clustering using Hierarchies) is the method that is used for the formation of clusters. BIRCH is used when there is a big dataset. - Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>--> </p>           
                   
                       <form method="post" action="{{ url_for('sampling_select') }}">
                         <select id="sample_form" name="operator">
                             <option value="SR">Simple Random Sampling</option>
                             <option value="SyC">Systematic Sampling</option>
-                            <option value="StCK">Stratified Sampling - KMeans</option>
-                            <option value="StCB">Stratified Sampling - BIRCH</option>
+                           <!-- <option value="StCK">Stratified Sampling - KMeans</option>
+                            <option value="StCB">Stratified Sampling - BIRCH</option> -->
                             <option value = "St">Stratified Sampling</option>
                         </select>
                         <br> 
@@ -774,12 +821,21 @@ document.getElementById("defaultOpen").click();
 
       </div>
       </form>
-      {{array_col_input_2}}
+    <!--  {{array_col_input_2}} -->
   </div>
 </div>
 {% endif %}
 
 <hr>
+
+{% if open_section_2 == 'Result_stratified' %}
+
+<div class="text-center">
+  <h1><b>Stratification Successful</b></h1>
+</div>
+
+{% endif %}
+
 
 
 <!--
@@ -954,7 +1010,7 @@ Hover Over Me!
         <input type="submit" value="Submit"/>
     </form>
   -->
-    <p><b>{{array_result}}</b></p>
+ <!--    <p><b>{{array_result}}</b></p> -->
 
       </div>
       </div>

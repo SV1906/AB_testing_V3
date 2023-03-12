@@ -186,6 +186,14 @@ def operation_result():
     deno = math.pow(p2 - p1, 2) 
     n = (math.pow((part_1+part_2),2))/(deno)
     result = round(n)
+    result_array = [result]
+    THIS_FOLDER = Path(__file__).parent.resolve()
+    file = (str(THIS_FOLDER)+"\\Variables.csv")
+    with open(file, 'w') as f_object:
+        writer_object = writer(f_object)
+        writer_object.writerow(result_array)
+        f_object.close()
+
     return render_template(
        'New_Testing.html',
             sampling_result= result,
@@ -305,12 +313,74 @@ def Col_Input():
     array_col_input.append(op3_checked)
     array_col_input.append(op4_checked)
 
+    THIS_FOLDER = Path(__file__).parent.resolve()
+    final_data = str(THIS_FOLDER)+"\\Blood Transfusion2.csv"
+    sample_size_data = str(THIS_FOLDER) + "\\Variables.csv"
+    sample_size_data = pd.read_csv(sample_size_data)
+    sample_size = int(sample_size_data.columns[0])
+    data = pd.read_csv(final_data)
+
+    def Stratified_sample_KMeans(data,sample_size):
+        new_data_stratified = data
+        sse = []
+        #To check the elbow of Kmeans 
+        for i in range(2,11):
+            kmeans = KMeans(n_clusters=i)
+            kmeans.fit(new_data_stratified)
+            sse.append(kmeans.inertia_)
+        kl = KneeLocator(range(2, 11), sse, curve="convex", direction="decreasing")
+        #To create the final clusters 
+        kmeans = KMeans(n_clusters=kl.elbow)
+        kmeans.fit(new_data_stratified)
+        new_data_stratified["label"] = list(kmeans.labels_)
+        l_num = {}
+        for i in range(0,kl.elbow): 
+            l_num[i] = (round(((len(new_data_stratified[new_data_stratified.label==i])/new_data_stratified.shape[0])*sample_size)))
+              # print(kl.elbow)
+        l_data = {}
+        for i in  range(0,kl.elbow): 
+            l_data[i] = new_data_stratified[new_data_stratified.label==i].groupby('label', group_keys=False).apply(lambda x: x.sample(l_num[i]))
+        final_data = []
+        final_data = pd.concat([l_data[0],l_data[1],l_data[2],l_data[3]])
+             #Random_sample(data,sample_size).to_csv('C:/Users/Sandhya/Downloads/result.csv')
+             #path = "C:\\Users\\Sandhya\\OneDrive\\Desktop\\AB Testing_Folder\\ABTesting_v2\\ABTesting_V2.0\\AB_testing_V3"
+        file = final_data.to_csv(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")
+        if (os.path.exists(str(THIS_FOLDER)+"\\result_SystematicSample.csv")): 
+          os.remove(str(THIS_FOLDER)+"\\result_SystematicSample.csv")
+        if (os.path.exists(str(THIS_FOLDER)+"\\result_RandomSample.csv")): 
+          os.remove(str(THIS_FOLDER)+"\\result_RandomSample.csv")       
+        if (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")): 
+          os.remove(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")                             
+        return file 
+             #return final_data
+    Stratified_sample_KMeans(data,sample_size)
+
+
+
+    
+   # def Stratified_Sampling(sample_size_input, sample_size_suggested, col): 
+   # if(sample_size_input < sample_size_suggested):
+        #Case 1
+    #    return ()
+     #   print("Error : The sample size entered doesn't meet the minimum sample size requirement")
+   # else : 
+    #    try:
+     #       #Case 2 
+      #      train, test = train_test_split(df, test_size=sample_size_input, stratify=df[col].copy()) 
+       #     print("Stratification is successful")
+        #    print(len(test))
+         #   print(len(train))
+     #   except : 
+            #Case 3 
+      #      print("Error : Stratification is not possible on these features")  
+
 
     return render_template(
            'New_Testing.html',
            array_col_result = array_col_input,
            array_col_input_2 = array_col_input_2,
-           open_section = "Stratified"
+           open_section = "Stratified",
+           open_section_2 = "Result_stratified"
         )
     #if (input1 > 49):
      #   input1 = 100-input1
@@ -537,15 +607,75 @@ def sampling_select():
     result = None
     first_input = request.form['operator']  
 
+    THIS_FOLDER = Path(__file__).parent.resolve()
+    final_data = str(THIS_FOLDER)+"\\Blood Transfusion2.csv"
+    sample_size_data = str(THIS_FOLDER) + "\\Variables.csv"
+    sample_size_data = pd.read_csv(sample_size_data)
+    sample_size = int(sample_size_data.columns[0])
+    data = pd.read_csv(final_data)
+
     if (first_input == "St" or first_input == "StCK" or first_input == "StCB"):
         return render_template(
             'New_Testing.html',
              open_section = "Stratified"
         )
-    else : 
-         return render_template(
-           'New_Testing.html'
+    
+    elif (first_input == "SR"):
+        #data = pd.read_csv(r"C:\Users\Sandhya\OneDrive\Desktop\AB Testing_Folder\ABTesting_v2\ABTesting_V2.0\AB_testing_V3\Blood Transfusion Service Centre Dataset.csv")
+        #sample_size = 100
+        def Random_sample(data,sample_size): 
+           new_data_random = pd.DataFrame()
+           #sample_size = sample_size 
+           file = ""
+           for i in range(sample_size): 
+                 number = random.randint(1,data.shape[0])
+                 new_data_random = pd.concat([new_data_random,data.iloc[number:number+1]])
+           #path = "C:\\Users\\Sandhya\\OneDrive\\Desktop\\AB Testing_Folder\\ABTesting_v2\\ABTesting_V2.0\\AB_testing_V3"
+           file = new_data_random.to_csv(str(THIS_FOLDER)+"\\result_RandomSample.csv") 
+           if (os.path.exists(str(THIS_FOLDER)+"\\result_SystematicSample.csv")): 
+                os.remove(str(THIS_FOLDER)+"\\result_SystematicSample.csv")
+           if (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")): 
+               os.remove(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")      
+           if (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")): 
+               os.remove(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")      
+           return file 
+        Random_sample(data,sample_size)
+        return render_template(
+           'New_Testing.html',
+           # result="Sample Size : " + sampling_result,
+            sample_success=True
         )
+        
+
+    else:
+        #data = pd.read_csv(r"C:\Users\Sandhya\OneDrive\Desktop\AB Testing_Folder\ABTesting_v2\ABTesting_V2.0\AB_testing_V3\Blood Transfusion Service Centre Dataset.csv")
+        #sample_size = 100 
+        def Systematic_sample(data,sample_size): 
+             #sample_size = sample_size
+             k = int (data.shape[0]/sample_size)
+             new_data_systematic = pd.DataFrame()
+             for i in range(1, data.shape[0],k):
+                new_data_systematic = pd.concat([new_data_systematic,data.iloc[i:i+1]])
+                if(new_data_systematic.shape[0]==sample_size): 
+                 break 
+             #path = "C:\\Users\\Sandhya\\OneDrive\\Desktop\\AB Testing_Folder\\ABTesting_v2\\ABTesting_V2.0\\AB_testing_V3"
+             file = new_data_systematic.to_csv(str(THIS_FOLDER)+"\\result_SystematicSample.csv") 
+             if (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")): 
+                 os.remove(str(THIS_FOLDER)+"\\result_StratifiedSample_BIRCH.csv")
+             if (os.path.exists(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")): 
+                 os.remove(str(THIS_FOLDER)+"\\result_StratifiedSample_KMeans.csv")                 
+             if (os.path.exists(str(THIS_FOLDER)+"\\result_RandomSample.csv")): 
+                 os.remove(str(THIS_FOLDER)+"\\result_RandomSample.csv")                
+             return file 
+             #return new_data_systematic
+        Systematic_sample(data,sample_size)
+        return render_template(
+           'New_Testing.html',
+           # result="Sample Size : " + sampling_result,
+            sample_success=True
+        )
+    
+
 
 @Flask_App.route('/uploadfile', methods = ['POST'])  
 def uploadfile():  
@@ -584,5 +714,5 @@ def uploadfile():
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(host='0.0.0.0', port=5719)
+    Flask_App.run(host='0.0.0.0', port=5022)
 
