@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Dashboard - Bajaj</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{{url_for('static', filename='image/apple-touch-icon1.png')}}" rel="icon">
+  <link href="{{url_for('static', filename='image/apple-touch-icon1.png')}}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/quill/quill.snow.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/quill/quill.bubble.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/remixicon/remixicon.css')}}" rel="stylesheet">
+ <link href= "{{url_for('static', filename='vendor/simple-datatables/style.css')}}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="nav-link nav-profile d-flex align-items-center pe-0">
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+      <a href="templates/index.html" class="logo d-flex align-items-center">  
+        <img src="{{url_for('static', filename='image/apple-touch-icon1.png')}}" alt="">
+        <span class="d-none d-lg-block">Bajaj Finserv</span>
+       <!--  &nbsp;&nbsp;&nbsp;
+        <span class="d-none d-lg-block">AB Testing</span> -->
+      </a>
+    <!-- End Logo -->
+             <!-- <hr class="dropdown-divider"> -->
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+     
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-menu-button-wide"></i><span>New Testing</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>   
+              <a href="{{url_for('New_Testing')}}">
+                <i class="bi bi-circle"></i><span>New Hypothesis</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url_for('New_Testing')}}">
+                <i class="bi bi-circle"></i><span>Selections</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url_for('New_Testing')}}">
+                <i class="bi bi-circle"></i><span>Minimum Sample Size</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url_for('New_Testing')}}">
+                <i class="bi bi-circle"></i><span>Sampling</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url_for('New_Testing')}}">
+                <i class="bi bi-circle"></i><span>User Input</span>
+              </a>
+            </li>
+          </ul>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url_for('index')}}">
+              <i class="bi bi-graph-up"></i>
+              <span>Reports</span>
+            </a>
+        </li>
+      </ul>
+      
+       
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+  <!-- 
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="New_Testing.html">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div>
+  -->
+
+    
+    <div id = "section_new"> 
+      <div class="pagetitle">
+        <h1>Hypothesis</h1>
+      </div><!-- End Page Title -->
+      <div class="col-xxl-12 col-md-12">
+        <div class="card info-card revenue-card">
+          <div class="card-body">
+            <!-- <h5 class="card-title"><sup><b title="Sample of Hypothesis : Given that a significant number of users drop off during the onboarding process, sending personalized welcome messages to new users will result in a higher retention rate."><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"><img></b></sup></h5>
+        -->    <div class=" align-items-center">
+              <div class="ps-12">
+                
+                <h5 class="card-title"> </span></h5>  
+                <form class = "row g-12" method="post" action="{{ url_for('Hypothesis') }}" id="Hypothesis_form">
+                    <div class="col-md-4"> 
+                    <label for="Insight_input" class="form-label">Define Hypothesis</label>
+                    </div>
+                    <div class="col-md-8"> 
+                    <input type="text" class="form-control" name="Insight_input">
+                  </div> 
+
+                  <!-- 
+
+                  <div class="col-md-12">
+                    <label for="Campaign_input" class="form-label">Campaign</label>
+                    <input type="text" class="form-control" name="Campaign_input">
+                  </div>
+
+                  <div class="col-md-12">
+                    <label for="Result_input" class="form-label">Metrics to drive</label>
+                    <input type="text" class="form-control" name="Result_input">
+                  </div>
+
+                  -->
+
+                <!--   <input type="submit" value="Submit"/> -->
+                <br> 
+                <br> 
+
+                  <div class="text-center">
+                    <button type="submit" class="button-18">Submit</button>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
+                  </div>
+
+              </form>
+
+              {{hypothesis_result}}
+
+
+
+              
+
+
+              <!--  <h6>Given that <u class="dotted">a significant number of users drop off during the onboarding process</u>, <u class = "dotted">sending personalized welcome messages to new users </u>will result <u class ="dotted">in a higher retention rate.</u></h6>
+                <span class="text-success small pt-1 fw-bold">Type : </span> <span class="text-muted small pt-2 ps-1">Splitting</span>
+                <br>
+    <br>
+    <a href="#section_upload" class="button-18">Choose</a> -->
+              </div>
+            </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <hr>
+     
+    <div id = "User_input_all" class="pagetitle">
+      <h1>Select Conditions/Filters</h1>
+      <h9>Please select the conditions and filters.</h9>
+    </div>
+    <div class="col-xxl-12 col-md-12">
+      <div class="card info-card revenue-card">
+        <div class="card-body">
+
+          <h5 class="card-title"> </span></h5>  
+          <form method="post" class="col-12" action="{{ url_for('Cond_Input') }}" id="Cond_input_id">
+          <div class="col-sm-12 row " >
+            <div class="col-sm-3" style="margin: 0px;">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="App Live">
+                <label class="form-check-label" for="App Live">
+                  30 Days Active
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="Signed up in last 7 days">
+                <label class="form-check-label" for="Signed up in last 7 days">
+                  60 Days Active
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="30 Days Active">
+                <label class="form-check-label" for="30 Days Active">
+                  90 Days Active
+                </label>
+              </div>
+        
+            </div>
+
+            <div class="col-sm-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="App Live">
+                <label class="form-check-label" for="App Live">
+                  Active on App
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="Signed up in last 7 days">
+                <label class="form-check-label" for="Signed up in last 7 days">
+                  Signed up in last 7 days
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="30 Days Active">
+                <label class="form-check-label" for="30 Days Active">
+                  Signed up in last 15 days
+                </label>
+              </div>
+
+            
+
+            </div>
+
+            <div class="col-sm-3">
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="Birthday Month">
+                <label class="form-check-label" for="Birthday Month">
+                  Birthday Month
+                </label>
+              </div>
+
+              
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="Non DEC">
+                <label class="form-check-label" for="Non DEC">
+                  Non DEC
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="DEC">
+                <label class="form-check-label" for="DEC">
+                  DEC
+                </label>
+              </div>
+        
+            </div>
+
+            <div class="col-sm-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="App Live">
+                <label class="form-check-label" for="App Live">
+                  30 Days InActive
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="Signed up in last 7 days">
+                <label class="form-check-label" for="Signed up in last 7 days">
+                  60 Days InActive
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="30 Days Active">
+                <label class="form-check-label" for="30 Days Active">
+                  90 Days InActive
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-sm-12">
+        <Br> 
+          <div class="text-center">
+            <button type="submit" class="button-18">Submit</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+          </div>
+
+          </div>
+          </form> 
+
+          <br> 
+          {{array_cond_input_2}}
+
+
+        </div>
+      </div>
+    </div> 
+      <!-- 
+
+        
+
+             <h5 class="card-title">Select Conditions :</span></h5>  
+             <input type="checkbox" id="App live" name="App live" value="App live">
+             <label for="Condition1">App Live</label> &nbsp;
+             
+             <input type="checkbox" id="Signed up in last 7 days" name="Signed up in last 7 days" value="Signed up in last 7 days">
+             <label for="Condition2">Signed up in last 7 days</label> &nbsp;
+             
+             <input type="checkbox" id="30 Days active" name="30 Days active" value="30 Days active">
+             <label for="Condition2">30 Days Active</label> &nbsp;
+             <input type="checkbox" id="Birthday Month" name="Birthday Month" value="Birthday Month">
+             <label for="Condition3">Birthday Month</label> &nbsp;
+             <input type="checkbox" id="Non-DEC" name="Non-DEC" value="Non-DEC">
+             <label for="Condition4">Non DEC</label> &nbsp;
+             <input type="checkbox" id="DEC" name="DEC" value="DEC">
+             <label for="Condition5">DEC</label> &nbsp; <br> <br> 
+             <input type="submit" value="Submit">
+             </form>
+
+             {{array_col_result}}
+             {{array_col_input_2}}
+
+        </div>
+      </div>
+    </div>
+ 
+  --> 
+
+
+
+ 
+    </div>
+
+
+   <!-- Extra info - Keep Safe - comment End -->
+    <hr> 
+
+    <!--Start of "Sample size" selection-->
+    <div id="section_samplesize">
+      <div id = "div_SampleSize"></div>
+    <div id = "section_samplesize_a" class="pagetitle">
+      <h1>Minimum Sample Size Calculator</h1>
+      <h9>Please fill in the information for minimum sample size calculation</h9>
+    </div>
+    <div class="col-xxl-4 col-md-12">
+      <div class="card info-card revenue-card">
+
+        <div class="card-body">
+
+          <div class="d-flex align-items-center">
+            <div class="ps-3">
+           
+             <!--
+              <h5>For the available data, <B>Evan Miller</B>'s Calculator is suggested</B></h5>
+--> 
+
+<div id="section_samplesize_b" class="text.a">
+<!--<h1>Evan Miller's calculator</h1> -->
+<!-- <h5 class="card-title">Sample Size</span></h5> --> 
+
+<style>
+  .tab {
+    float: left;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    width: 30%;
+    height: 500px;
+  }
+
+/* Style the buttons inside the tab */
+  .tab button {
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 22px 16px;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 17px;
+   }
+
+/* Change background color of buttons on hover */
+    .tab button:hover {
+     background-color: #ddd;
+    }
+
+/* Create an active/current "tab button" class */
+    .tab button.active {
+     background-color: #aab7cf;
+    }
+
+/* Style the tab content */
+    .tabcontent {
+     float: left;
+     padding: 0px 12px;
+     border: 1px solid #ccc;
+     width: 70%;
+     border-left: none;
+     height: 500px;
+    }
+</style>
+
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'Sample Size')" id = "defaultOpen">Basic Sample Size</button>
+  <button class="tablinks" onclick="openCity(event, 'Evan Millers')" >Evan Miller's Calculator</button> 
+</div>
+
+<div id="Evan Millers" class="tabcontent">
+  <br> 
+  <h9>Required values for the calculation are - <b>Baseline Conversion Rate </b><sup><b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>, <b>Minimum Detectable Effect </b><sup><b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>, <b>Statistical Power </b><sup><b title="Statistical Power is the likelihood that you will detect a difference between variant A and variant B. &#013; A Higher power is always prefered.&#013; Minimum of 80% is usually recommended"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup> and <b>Statistical level </b><sup><b title="Statistic level is the level of error you're willing to accept in your test. &#013; Usually 1% to 5%. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>. The default values for Statistical Power and Statistical Level are already mentioned below.</h9>
+  <br>    
+  <br> 
+  <form method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
+
+    <div class="col-md-12"> 
+      <label for="Input1" class="form-label">Baseline Conversion Rate</label>
+      <input type="text" class="form-control" name="Input1">
+   </div> 
+
+   <div class="col-md-12"> 
+    <label for="Input2" class="form-label">Minimum Detectable Effect</label>
+    <input type="text" class="form-control" name="Input2">
+ </div> 
+
+ <div class="col-md-12"> 
+  <label for="Input3" class="form-label">Statistical Power</label>
+  <input type="text" class="form-control" name="Input3">
+</div> 
+
+<div class="col-md-12"> 
+  <label for="Input4" class="form-label">Statistic level</label>
+  <input type="text" class="form-control" name="Input4">
+</div> 
+<br> 
+
+          <div class="text-center">
+            <button type="submit" class="button-18">Submit</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+          </div>
+      </form>
+
+    <!--   <div class="row mb-5">
+        <label class="col-sm-2 col-form-label">Ranges</label>
+        <div class="col-sm-10">
+          <div>
+            <label for="customRange1" class="form-label">Example range</label>
+            <input type="range" class="form-range" id="customRange1">
+          </div>
+          <div>
+            <label for="disabledRange" class="form-label">Disabled range</label>
+            <input type="range" class="form-range" id="disabledRange" disabled>
+          </div>
+          <div>
+            <label for="customRange2" class="form-label">Min and max with steps</label>
+            <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange2">
+          </div>
+        </div> --> 
+      </div>
+
+</div>
+
+<div id="Sample Size" class="tabcontent">
+  <br> 
+  <h9>Required values for the calculation are - <b>Confidence Interval  </b><sup><b title="A confidence interval shows the probability that a parameter will fall between a pair of values around the mean.&#013; Recommended Margin of Error : 90% - 99%"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>and <b>Margin of Error </b><sup><b title="The margin of error means the degree of uncertainty that your survey results might have.&#013; Recommended Margin of Error : 3% - 10%"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>The default values for Confidence Interval and Margin of Error are already mentioned below.</h9>
+  <br>    
+  <br> 
+ 
+
+  <form method="post" action="{{ url_for('operation_result_basic') }}" id="calculator_form">
+
+    <div class="col-md-6"> 
+      <label for="Input1" class="form-label">Confidence Interval (In percentage)</label>
+      <input type="text" class="form-control" name="Input1">
+   </div> 
+   <br> 
+   <div class="col-md-6"> 
+    <label for="Input2" class="form-label">Margin of Error (In percentage)</label>
+    <input type="text" class="form-control" name="Input2">
+ </div> 
+ <br> 
+          <div class="text-center">
+            <button type="submit" class="button-18">Submit</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+          </div>
+      </form>
+
+      {{basic_sampling_result}}
+</div>
+
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+
+    
+   <!-- <div id = "something">
+      {% if scroll %}
+      <script>
+        //document.getElementById('{{ scroll }}').scrollIntoView();
+        document.location.hash = '#' + '{{ scroll }}'; 
+      </script>
+      {% endif %}
+      <p><b>{{sampling_result}}</b></p>
+    </div>
+  --> 
+  <br> 
+  <br> 
+  <br> 
+
+  <br> 
+  <br> 
+  <br> 
+      <a class="button-18" href="#section_sampling" >Continue</a>
+      </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!--End of "Sample size" selection-->
+
+<!--Start of a trail-->
+<!-- 
+<div id="myDIV" class="text.a">
+  <h1>Evan Miller's calculator</h1>
+      <form method="post" action="{{ url_for('suggesting_method') }}" id="Sugessting_method">
+          <input type="submit" value="Suggest a Sampling method"/>
+      </form>
+          <br/>
+          <p>Sample Size : {{result}}</p>
+      <br>
+      <a class="button-18" href="#Clustering" >Continue</a>
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div> --> 
+
+<!-- End of trial-->
+
+
+<!--
+  <button onclick="getOption()">Select</button>
+          <p><span class="output"></span></p>
+          <script type="text/javascript">
+          function getOption() {
+              selectElement = document.querySelector('#select');
+              output = selectElement.options[selectElement.selectedIndex].value;
+              if (output == 'SS')
+              {
+                output ='Simple Random Sampling'
+                document.querySelector('.output').textContent = output;
+
+              }
+              else if (output == 'StS'){
+                output = 'Stratified Sampling'
+                document.querySelector('.output').textContent = output; 
+
+              }
+              else 
+              {
+                output = 'Systematic Sampling'
+                document.querySelector('.output').textContent = output;  
+
+              }
+          }
+          </script> -->
+
+
+          <div class="col-xxl-4 col-md-12">
+            <div class="card info-card revenue-card">
+              <div class="card-body">
+                <h5 class="card-title">Sampling Technique</h5>
+                <div class="d-flex align-items-center">
+                  <div class="ps-3">
+                  <!--   <h9>Click the button for suggesting the most appropriate Sampling Technique for the uploaded data</h9> -->
+                    <form method="post" action="{{ url_for('suggesting_method') }}" id="Sugessting_method">
+                      <br>  
+                      <button type="submit" value = "Suggest Sampling Technique" class="button-18">Suggest Sampling Technique</button>
+                    </form>
+                      <br/>
+                      <p>{{Sample_Suggested}}</p>     
+                      <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b><sup><b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"><img></b></sup>, 
+                        <b>Systematic Sampling </b><sup> <b title = "In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b> </sup>, 
+                      <b>Stratified Sampling - KMeans </b><sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. Kmeans is the method that is used for the formation of clusters. KMeans is used when there is a small datasets. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>
+                      and <b>Stratified Sampling - BIRCH </b><sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. BIRCH (Balanced Iterative Reducing and Clustering using Hierarchies) is the method that is used for the formation of clusters. BIRCH is used when there is a big dataset. - Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup></p>           
+                  
+                      <form method="post" action="{{ url_for('sampling_select') }}">
+                        <select id="sample_form" name="operator">
+                            <option value="SR">Simple Random Sampling</option>
+                            <option value="SyC">Systematic Sampling</option>
+                            <option value="StCK">Stratified Sampling - KMeans</option>
+                            <option value="StCB">Stratified Sampling - BIRCH</option>
+                            <option value = "St">Stratified Sampling</option>
+                        </select>
+                        <br> 
+                        <br> 
+                        <!-- <p>Suggested Sample Size : {{sample_result}}</p> --> 
+                       <!--  <label for="Input1"><p>Sample Size</p>
+                        </label>
+                        <input type="text" name="Sample_Size_input" id="Input1" value = "">
+                        <br> -->
+                        <div class="text-center">
+                          <button type="submit" class="button-18">Submit</button>
+                          <button type="reset" class="btn btn-secondary">Reset</button>
+                        </div>
+                      </form> 
+                  
+                    </div>
+                </div>
+               </div>
+             </div>
+           </div>
+  <!-- 
+  {% if calculation_success == True %}
+  <br/>
+  <p>Sample Size : {{result}}</p>
+{% endif %}
+{% if calculation_success == False %}
+  <br/>
+  <p>{{error}}</p>
+  <p>Sample Size : {{result}}"</p>
+{% endif %} -->
+
+{% if open_section == 'Stratified' %}
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title"></h5>
+    <h5 class="card-title">Stratify on:</span></h5>  
+    <form method="post" action="{{ url_for('Col_Input') }}" id="Col_input_id">
+      <div class="col-sm-12 row " >
+        <div class="col-sm-3" style="margin: 0px;">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="ETB">
+            <label class="form-check-label" for="ETB">
+              ETB
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="NTB">
+            <label class="form-check-label" for="NTB">
+              NTB
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="PTB">
+            <label class="form-check-label" for="PTB">
+              PTB
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="EMI Carded">
+            <label class="form-check-label" for="EMI Carded">
+              EMI Carded
+            </label>
+          </div>
+    
+        </div>
+
+        <div class="col-sm-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="Permanent Blocked">
+            <label class="form-check-label" for="Permanent Blocked">
+              Permanent Blocked
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="Temporary Blocked">
+            <label class="form-check-label" for="Temporary Blocked">
+              Temporary Blocked
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="DEC">
+            <label class="form-check-label" for="DEC">
+              DEC
+            </label>
+          </div>
+
+        
+
+        </div>
+
+        <div class="col-sm-3">
+          
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="30 Days Active">
+            <label class="form-check-label" for="30 Days Active">
+              30 Days Active
+            </label>
+          </div>
+
+          
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="60 Days Active">
+            <label class="form-check-label" for="60 Days Active">
+              60 Days Active
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="90 Days Active">
+            <label class="form-check-label" for="90 Days Active">
+              90 Days Active
+            </label>
+          </div>
+    
+        </div>
+
+        <div class="col-sm-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="30 Days InActive">
+            <label class="form-check-label" for="30 Days InActive">
+              30 Days InActive
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="60 Days InActive">
+            <label class="form-check-label" for="60 Days InActive">
+              60 Days InActive
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="90 Days InActive">
+            <label class="form-check-label" for="90 Days InActive">
+              90 Days InActive
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-sm-12">
+    <Br> 
+      <div class="text-center">
+        <button type="submit" class="button-18">Submit</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+      </div>
+
+      </div>
+      </form>
+      {{array_col_input_2}}
+  </div>
+</div>
+{% endif %}
+
+<hr>
+
+
+<!--
+<div class="tooltip">Hover over me
+  <span class="tooltiptext">Tooltip text</span>
+</div>--> 
+
+{% block body %}
+    {% if section == "section_upload" %}
+    <script>
+    //const id = ; 
+// const yOffSet = 640; 
+// const element = 
+// const y = ;
+window.scrollTo({top : document.getElementById('section_upload').getBoundingClientRect().top + window.pageYOffset + 640, behavior : 'smooth'})
+   // document.getElementById('section_upload').scrollIntoView({behavior: "smooth", block: "end", inline: "end"}); 
+    </script> 
+   <!-- <p>'anchor-name'</p> --> 
+    {% elif section == "section_samplesize" %}
+    <script>
+ //const id_size = ; 
+ //const y_ss = ;
+ window.scrollTo({top : document.getElementById('section_samplesize').getBoundingClientRect().top + window.pageYOffset + 640, behavior : 'smooth'})
+ //  document.getElementById('div_SampleSize').scrollIntoView({behavior: "smooth", block: "end", inline: "end" }); 
+    </script>
+   <!-- <p>Section - SampleSize</p> --> 
+    {% elif section == 'section_sampling' %}
+    <script> 
+//const id_s = 'section_sampling'; 
+// const yOffSet_2 = 640; 
+// const element_2 = document.getElementById(id_2)
+// const y_2 = element.getBoundingClientRect().top + window.pageYOffset + yOffSet_2;
+window.scrollTo({top : document.getElementById('section_sampling').getBoundingClientRect().top + window.pageYOffset + 1000, behavior : 'auto'})
+    //document.getElementById('section_sampling').scrollIntoView({behavior: "smooth", bblock: "end", inline: "end" }); 
+    </script> 
+  <!-- <p>Section - Sampling</p> --> 
+    {% else %}
+    <script> 
+      document.getElementById('main').scrollIntoView({behavior: "smooth", block: "start", inline: "start" }); 
+    </script> 
+  <!--  <p>Section - Main</p> --> 
+    {% endif %}
+{% endblock %}
+
+</div>
+</div>
+</div>
+
+<!-- <div class = "hovera">Hover over this text</div>
+<div class="hide">I am shown when someone hovers over the div above.</div> -->
+
+
+<!-- <a href="#New Hypo" class="button-18">+</a> --> 
+<!--
+ <span class="hovertext" data-hover="Hello, this is the tooltip">
+  Try hover over me
+</span> 
+
+<div class = "ahover"
+onMouseOver="this.style.backgroundColor='red'"
+onMouseOut="this.style.backgroundColor='orange'">
+Hover Over Me!
+</div>
+
+<abbr title="Hypertext Markup Language">HTML</abbr> 
+
+  </main>  End #main -->
+
+  <!-- ======= Footer ======= -->
+
+  <div class="col-xxl-4 col-md-12">
+    <div class="card info-card revenue-card">
+      <div class="card-body">
+<h5 class="card-title">Campaign Details</span></h5>  
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title"></h5>
+    <!-- Multi Columns Form -->
+    <form class="row g-3" method="post" action="{{ url_for('User_Input') }}" id="User_input_id" >
+      <div class="col-md-12">
+        <label for="campaign_name_input" class="form-label">Campaign Name</label>
+        <input type="text" class="form-control" name="campaign_name_input">
+      </div>
+      <div class="col-md-4">
+        <label for="Date_of_requirement" class="form-label">Date of Requirement</label>
+        <input type="date" class="form-control" name="Date_of_requirement">
+      </div>
+      <div class="col-md-4">
+        <label for="campaign_start_date" class="form-label">Campaign Start Date</label>
+        <input type="date" class="form-control" name="campaign_start_date">
+      </div>
+      <div class="col-md-4">
+        <label for="campaign_end_date" class="form-label">Campaign End Date</label>
+        <input type="date" class="form-control" name="campaign_end_date">
+      </div>
+      <div class="col-md-4">
+        <label for="Campaign_type_input" class="form-label">Campaign Type</label>
+        <select name="Campaign_type_input" class="form-select">
+          <option selected value = "CT1">Push</option>
+          <option value="CT2">InApp-Pop</option>
+          <option value = "CT3">Inbox</option>
+          <option value="CT4">Banner</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="Conversion_metric_input" class="form-label">Conversion Metric</label>
+        <select name="Conversion_metric_input" class="form-select">
+          <option selected value="CM1">Retention</option>
+          <option value="CM2">Digitization</option>
+          <option value="CM3">Engagement</option>
+          <option value="CM4">FD opened</option>
+          <option value="CM5">B2B Order Placed</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="Conversion_period" class="form-label">Conversion Period (in Days)</label>
+        <input type="text" class="form-control" name="Conversion_period">
+      </div>
+     
+
+      <div class="text-center">
+                <button type="submit" class="button-18"  >Submit</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+                 <a class="button-18" href="{{url_for('download')}}">Download</a>
+                
+      </div>
+      
+    </form><!-- End Multi Columns Form -->
+
+  </div>
+</div>
+
+</div>
+
+<!--
+<form method="post" action="{{ url_for('User_Input') }}" id="User_input_id">
+        <label for="Input1"><br>Date Of Requirement : </label>
+        <input type="date" name="Input1" id="Input1" value = ""> &nbsp;
+        <label for="Input2">Campaign Name : </label>
+        <input type="text" name="Input2" id="Input2" value = "">
+<br> 
+<br> 
+        <label for="Input3">Campaign Type : </label>
+        <select id="Campaign_type_input" name="Campaign_type_input">
+          <option value="CT1">Push</option>
+          <option value="CT2">In-App</option>
+          <option value="CT3">Inbox</option>
+          <option value="CT4">Banner</option>
+      </select> &nbsp;
+      <label for="Input8">Conversion Metric : </label>
+      <select id="Conversion_metric_input" name="Conversion_metric_input">
+        <option value="CM1">Conversion Metric 1</option>
+        <option value="CM2">Conversion Metric 2</option>
+        <option value="CM3">Conversion Metric 3</option>
+        <option value="CM4">Conversion Metric 4</option>
+        <option value="CM5">Conversion Metric 5</option>
+        <option value="CM6">Conversion Metric 6</option>
+    </select>
+      <br> 
+      <br> 
+        <label for="Input4">Campaign Start Date : </label>
+        <input type="date" name="Input4" id="Input4" value = "">  &nbsp;&nbsp;
+        <label for="Input5">Campaign End Date : </label>
+        <input type="date" name="Input5" id="Input5" value = "">
+        <br> 
+        <br> 
+      <label for="Input9">Conversion Period (in days): </label>
+        <input type="text" name="Input9" id="Input9" value = "">
+        <br> 
+        <br>  
+        <input type="submit" value="Submit"/>
+    </form>
+  -->
+    <p><b>{{array_result}}</b></p>
+
+      </div>
+      </div>
+<!-- 
+      <h5 class="card-title">Downloading Sampling Data</span></h5> 
+
+    <form method="post" action="{{ url_for('sampling_result') }}">
+      <select id="sample_form" name="operator">
+          <option value="SR">Simple Random Sampling</option>
+          <option value="SyC">Systematic Sampling</option>
+          <option value="StCK">Stratified Sampling - KMeans</option>
+          <option value="StCB">Stratified Sampling - BIRCH</option>
+          <option value = "St">Stratified Sampling</option>
+      </select>
+      <br> 
+      <br>  --> 
+      <!-- <p>Suggested Sample Size : {{sample_result}}</p> --> 
+      <!-- 
+      <label for="Input1"><p>Sample Size</p>
+      </label>
+      <input type="text" name="Sample_Size_input" id="Input1" value = "">
+      <br>
+      <div class="text-center">
+        <button type="submit" class="button-18">Submit</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+      </div>
+    </form> 
+  -->
+     <!--
+     {% if sample_success == True %}
+        <br/>
+        <p>Suggested Sample Size : {{sample_result}}</p>
+    {% endif %}
+   
+    {% if sample_success == False %}
+        <br/>
+        <p>{{error}}</p>
+        <p>Sample : {{sample_result}}"</p>
+    {% endif %}  -->
+    
+   
+  <!-- <dialog open>This is an open dialog window</dialog>  --> 
+
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>          
+
+    </div>
+  </div>
+</div>
+<hr> 
+</main>
+
+  <footer id="footer" class="footer">
+
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{{url_for('static', filename='vendor/apexcharts/apexcharts.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/chart.js/chart.umd.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/echarts/echarts.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/quill/quill.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/simple-datatables/simple-datatables.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/tinymce/tinymce.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/php-email-form/validate.js')}}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{{url_for('static', filename='js/main.js')}}"></script>
+
+</body>
+
+</html>

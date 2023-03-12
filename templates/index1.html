@@ -12,9 +12,6 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-
- <!-- {{ url_for('static', filename='image/apple-touch-icon1.png')}} -->
-
   <link href="{{url_for('static', filename='image/apple-touch-icon1.png')}}" rel="icon">
   <link href="{{url_for('static', filename='image/apple-touch-icon1.png')}}" rel="apple-touch-icon">
 
@@ -23,7 +20,6 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-
   <link href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
   <link href="{{url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
   <link href="{{url_for('static', filename='vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
@@ -44,25 +40,17 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="nav-link nav-profile d-flex align-items-center pe-0">
-      <a href="templates/index.html" class="logo d-flex align-items-center">
-        
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+      <a href="templates/index.html" class="logo d-flex align-items-center">  
         <img src="{{url_for('static', filename='image/apple-touch-icon1.png')}}" alt="">
         <span class="d-none d-lg-block">Bajaj Finserv</span>
       </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
+      
     </div>
-    <!--<a href="#New Hypo" class="button-18" style = "width: 50px; height: 50px; position: relative;display: flex;  transform: translateX(+100%);" title = "New Hypothesis">New Hypothesis</a>
-    --> 
-
-    <a href="#section_new" class ="button-18" style="display: flex;  transform: translateX(+450%);">New Hypothesis</a>
+   <!-- <a href="#section_new" class ="button-18" style="display: flex;  transform: translateX(+450%);">New Hypothesis</a> --> 
 
     <!-- End Logo -->
-
- 
-              <hr class="dropdown-divider">
-  
-     
-
+             <!-- <hr class="dropdown-divider"> -->
   </header><!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
@@ -70,46 +58,53 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link " href="#main">
-          <i class="bi bi-graph-up"></i>
-          <span>Reports</span>
-        </a>
-        <a class="nav-link " href="#section_new">
-          <i class = "bi-clipboard-plus"></i>
-          <span>New Hypothesis</span>
-        </a>
-        <a class="nav-link " href="#section_upload">
-          <i class="bi-upload"></i>
-          <span>Upload Dataset</span>
-        </a>
-        <a class="nav-link " href="#section_size">
-          <i class="bi-calendar-month"></i>
-          <span>Sample Size</span>
-        </a>
-        <a class="nav-link " href="#section_sampling">
-          <i class="bi-download"></i>
-          <span>Sampling</span>
-        </a>
-      </li>
-      
-      
-      <!-- End Dashboard Nav -->
-
      
-         
-        </ul>
-      </li><!-- End Components Nav -->
-      
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-menu-button-wide"></i><span>New Testing</span><i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>   
+              <a href="{{url_for('New_Testing')}}">
+                <i class="bi bi-circle"></i><span>New Hypothesis</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url_for('New_Testing')}}">
+                <i class="bi bi-circle"></i><span>Selections</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url_for('New_Testing')}}">
+                <i class="bi bi-circle"></i><span>Minimum Sample Size</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url_for('New_Testing')}}">
+                <i class="bi bi-circle"></i><span>Sampling</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{url_for('New_Testing')}}">
+                <i class="bi bi-circle"></i><span>User Input</span>
+              </a>
+            </li>
+          </ul>
+          <li class="nav-item">
+            <a class="nav-link " href="{{url_for('index')}}">
+              <i class="bi bi-graph-up"></i>
+              <span>Reports</span>
+            </a>
+        </li>
+      </ul>
 
-    </ul>
+       
 
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
 
     <div class="pagetitle">
-
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
@@ -118,8 +113,6 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
-
 
     <section class="section dashboard">
       <div class="row">
@@ -133,7 +126,6 @@
                         <li class="dropdown-header text-start">
                           <h6>Filter</h6>
                         </li>
-    
                         <li><a class="dropdown-item" href="#">Today</a></li>
                         <li><a class="dropdown-item" href="#">This Month</a></li>
                         <li><a class="dropdown-item" href="#">This Year</a></li>
@@ -145,7 +137,7 @@
                       <!-- Line Chart -->
                       <div id="reportsChart"></div>
                       <script>
-                        document.addEventListener("DOMContentLoaded", () => {
+                         document.addEventListener("DOMContentLoaded", () => {
                           new ApexCharts(document.querySelector("#reportsChart"), {
                             series: [{
                               name: 'Control',
@@ -168,7 +160,7 @@
                             markers: {
                               size: 8
                             },
-                            colors: ['#4154f1', '#2eca6a', '#012970'],
+                            colors: ['#2E8BC0', '#145DA0', '#0C2D48'],
                             fill: {
                               type: "gradient",
                               gradient: {
@@ -180,12 +172,14 @@
                             },
                             dataLabels: {
                               enabled: true
+                            
                             },
                             stroke: {
                               curve: 'straight',
                               width: 4
                             },
                             xaxis: {
+                              show : true, 
                               type: 'datetime',
                               categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z", "2018-09-19T07:30:00.000Z", "2018-09-19T08:30:00.000Z", "2018-09-19T09:30:00.000Z", "2018-09-19T10:30:00.000Z", "2018-09-19T11:30:00.000Z", "2018-09-19T12:30:00.000Z","2018-09-19T13:30:00.000Z", "2018-09-19T14:30:00.000Z", "2018-09-19T15:30:00.000Z", "2018-09-19T16:30:00.000Z"]
                             },
@@ -239,33 +233,6 @@
                     </div>
                   </div>
                 </div><!-- End Reports -->
-
-
-                <!-- Start Another Report -->
-
-                <div class="col-12">
-                  <div class="card">
-    
-                <!--     <div class="filter">
-                      <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                        <li class="dropdown-header text-start">
-                          <h6>Filter</h6>
-                        </li>
-    
-                        <li><a class="dropdown-item" href="#">Today</a></li>
-                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                      </ul>
-                    </div> --> 
-
-                    </div>
-                    </div>
-
-
-                <!--End Another Resport-->
-
-
             <!-- Sales Card -->
             <div class="col-xxl-4 col-md-4">
               <div class="card info-card sales-card">
@@ -371,7 +338,99 @@
 
               </div>
             </div><!-- End Revenue Card -->
-  
+
+            <!-- 
+
+            
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Bubble Chart</h5>
+      
+         
+                    <canvas id="bubbleChart" style="max-height: 400px;"></canvas>
+                    <script>
+                      document.addEventListener("DOMContentLoaded", () => {
+                        new Chart(document.querySelector('#bubbleChart'), {
+                          type: 'bubble',
+                          data: {
+                            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                            datasets: [{
+                                label: 'Dataset 1',
+                                data: [{
+                                    x: 20,
+                                    y: 30,
+                                    r: 15
+                                  },
+                                  {
+                                    x: 40,
+                                    y: 10,
+                                    r: 10
+                                  },
+                                  {
+                                    x: 15,
+                                    y: 37,
+                                    r: 12
+                                  },
+                                  {
+                                    x: 32,
+                                    y: 42,
+                                    r: 33
+                                  }
+                                ],
+                                borderColor: 'rgb(255, 99, 132)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.5)'
+                              },
+                              {
+                                label: 'Dataset 2',
+                                data: [{
+                                    x: 40,
+                                    y: 25,
+                                    r: 22
+                                  },
+                                  {
+                                    x: 24,
+                                    y: 47,
+                                    r: 11
+                                  },
+                                  {
+                                    x: 65,
+                                    y: 11,
+                                    r: 14
+                                  },
+                                  {
+                                    x: 11,
+                                    y: 55,
+                                    r: 8
+                                  }
+                                ],
+                                borderColor: 'rgb(75, 192, 192)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.5)'
+                              }
+                            ]
+                          },
+                          options: {
+                            responsive: true,
+                            plugins: {
+                              legend: {
+                                position: 'top',
+                              },
+                              title: {
+                                display: true,
+                                text: 'Chart.js Bubble Chart'
+                              }
+                            }
+                          }
+                        });
+                      });
+                    </script>
+                  
+                  </div>
+                </div>
+              </div>
+      
+           
+            -->
 
              <!-- Recent Sales -->
              <div class="col-12">
@@ -439,371 +498,13 @@
                       </tr>
                     </tbody>
                   </table>
-
                 </div>
-
               </div>
             </div><!-- End Recent Sales -->
-
       </div>
     </section>
+</main>
 
-    <hr id = "section_new"> 
-    <div class="pagetitle">
-      <h1>New Hypothesis</h1>
-    </div><!-- End Page Title -->
-    <div class="col-xxl-4 col-md-12">
-      <div class="card info-card revenue-card">
-        <div class="card-body">
-          <h5 class="card-title">Hypothesis 1</span></h5>
-          <div class="d-flex align-items-center">
-            <div class="ps-3">
-              <h6>Given that <u class="dotted">a significant number of users drop off during the onboarding process</u>, <u class = "dotted">sending personalized welcome messages to new users </u>will result <u class ="dotted">in a higher retention rate.</u></h6>
-              <span class="text-success small pt-1 fw-bold">Type : </span> <span class="text-muted small pt-2 ps-1">Splitting</span>
-              <br>
-<br>
-<a href="#section_upload" class="button-18">Choose</a> 
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xxl-4 col-md-12">
-      <div class="card info-card revenue-card">
-
-        <div class="card-body">
-          <h5 class="card-title">Hypothesis 2</span></h5>
-
-          <div class="d-flex align-items-center">
-            <div class="ps-3">
-              <h6>Given that <u class = "dotted">users are more likely to engage with the app during certain times of the day</u>, <u class = "dotted">sending push notifications at those times </u>will result <u class = "dotted">in a higher engagement rate.</u></h6>
-
-              <span class="text-success small pt-1 fw-bold">Type : </span> <span class="text-muted small pt-2 ps-1">Multivariant</span>
-              <br>
-              <br>
-
-              <a href="#section_upload" class="button-18">Choose</a> 
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xxl-4 col-md-12">
-      <div class="card info-card revenue-card">
-
-        <div class="card-body">
-          <h5 class="card-title">Hypothesis 3</span></h5>
-
-          <div class="d-flex align-items-center">
-            <div class="ps-3">
-              <h6>Given that <u class = "dotted">users who complete in-app surveys are more likely to become loyal customers</u>, <u class = "dotted">prompting users to complete a survey after a successful transaction</u> will result in <u class = "dotted">a higher user retention rate.</u></h6>
-              <span class="text-success small pt-1 fw-bold">Type : </span> <span class="text-muted small pt-2 ps-1">Splitting</span>
-              <br>
-              <br>
-              <a href="#section_upload" class="button-18">Choose</a>  
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr> 
-
-    <div id = "section_upload" class="pagetitle">
-      <h1>Uploading the dataset</h1>
-      <h9>Please upload .csv, .xlsx, .xls form only</h9>
-    </div>
-    <div class="col-xxl-4 col-md-12">
-      <div class="card info-card revenue-card">
-        <div class="card-body">
-          <h5 class="card-title">Upload the dataset</span></h5>
-          <form action = "{{ url_for('uploadfile') }}" method = "POST" 
-          enctype = "multipart/form-data">
-          <input type = "file" name = "file" />
-          <input type = "submit"/>
-            </form>
-           {% for file in files %}
-             <img src="{{ url_for('uploadfile', name=file) }}" style="width: 64px"> 
-           {% endfor %}  
-          <!-- {% with messages = get_flashed_messages() %}  
-           {% if messages %}  
-                 {% for message in messages %}  
-                      <p>{{ message }}</p>  
-                 {% endfor %}  
-           {% endif %}  
-        {% endwith %}  -->
-        {% if error %}  
-        <!--<font color = "red"><p><strong>Error:</strong>{{error}}</p></font>-->
-        <p><strong>{{error}}</strong></p>
-    {% endif %}  
-    <br> 
-    <a class="button-18" href="#section_size" id = "myButton">Continue</a> 
-        </div>
-      </div>
-    </div>
-    <hr> 
-
-    <!--New Sample size selection-->
-
-    
-    <div id="#section_size">
-    <div id = "#section_size" class="pagetitle">
-      <h1>Sample Size selection</h1>
-      <h9>Please fill in the information for accurate sample size calculation</h9>
-      
-    </div><!-- End Page Title -->
-    <div class="col-xxl-4 col-md-12">
-      <div class="card info-card revenue-card">
-
-        <div class="card-body">
-
-          <div class="d-flex align-items-center">
-            <div class="ps-3">
-           
-             <!--
-              <h5>For the available data, <B>Evan Miller</B>'s Calculator is suggested</B></h5>
--->
-            
-<div id="section_sampling" class="text.a">
-<!--<h1>Evan Miller's calculator</h1> -->
-<h5 class="card-title">Sample Size</span></h5>
-<h9>Required values for the calculation are - <b>Baseline Conversion Rate </b><sup><b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>, <b>Minimum Detectable Effect </b><sup><b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>, <b>Statistical Power </b><sup><b title="Stastical Power is the likelihood that you will detect a difference between variant A and variant B. &#013; A Higher power is always prefered.&#013; Minimum of 80% is usually recommended"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup> and <b>Statistical level </b><sup><b title="Statistic level is the level of error you're willing to accept in your test. &#013; Usually 1% to 5%. "><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>. The default values for Statistical Power and Statistical Level are already mentioned below.</h9>
-<br>    
-<br> 
-<form method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
-        <label for="Input1">Baseline Conversion Rate</label>
-        <input type="text" name="Input1" id="Input1" value = "">
-        <br>
-        <label for="Input2">Minimum Detectable Effect</label>
-        <input type="text" name="Input2" id="Input2" value = "">
-        <br>
-        <label for="Input3">Statistical Power</label>
-        <input type="text" name="Input3" id="Input3" value = "80">
-        <br>
-        <label for="Input4">Statistic level</label>
-        <input type="text" name="Input4" id="Input4" value = "1">
-        <br> 
-        <input type="submit" value="Submit"/>
-    </form>
-    <p><b>{{sampling_result}}</b></p>
-    <!-- <br> 
-     {% if calculation_success == True %}
-        <br/>
-        <p>Sample Size : {{result}}</p>
-    {% endif %}
-    {% if calculation_success == False %}
-        <br/>
-        <p>{{error}}</p>
-        <p>Sample Size : {{result}}"</p>
-    {% endif %}
-    <br> --> 
-    <a class="button-18" href="#section_sampling" >Continue</a>
-  </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!--Start of a trail-->
-<!-- 
-<div id="myDIV" class="text.a">
-  <h1>Evan Miller's calculator</h1>
-      <form method="post" action="{{ url_for('suggesting_method') }}" id="Sugessting_method">
-          <input type="submit" value="Suggest a Sampling method"/>
-      </form>
-          <br/>
-          <p>Sample Size : {{result}}</p>
-      <br>
-      <a class="button-18" href="#Clustering" >Continue</a>
-    </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div> --> 
-
-<!-- End of trial-->
-<hr id = "section_sampling"> 
-<div class="pagetitle">
-  <h1>Sampling</h1>
-  <h9>Download a sample of the data uploaded</h9>
-</div>
-<div class="col-xxl-4 col-md-12">
-  <div class="card info-card revenue-card">
-    <div class="card-body">
-      <h5 class="card-title"></span></h5>
-    <!-- <label for="cars">Choose:</label> 
- <select name="select" id="select">
-  <option value="SS">Simple Random Sampling</option>
-  <option value="SyS">Systematic Sampling</option>
-  <option value="StS">Stratified Sampling</option>
-            </div>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-<br> 
- <br> 
-            </select> --> 
-
-<!--
-  <button onclick="getOption()">Select</button>
-          <p><span class="output"></span></p>
-          <script type="text/javascript">
-          function getOption() {
-              selectElement = document.querySelector('#select');
-              output = selectElement.options[selectElement.selectedIndex].value;
-              if (output == 'SS')
-              {
-                output ='Simple Random Sampling'
-                document.querySelector('.output').textContent = output;
-
-              }
-              else if (output == 'StS'){
-                output = 'Stratified Sampling'
-                document.querySelector('.output').textContent = output; 
-
-              }
-              else 
-              {
-                output = 'Systematic Sampling'
-                document.querySelector('.output').textContent = output;  
-
-              }
-          }
-          </script> -->
-
-<div id="myDIV" class="text.a">
-<form method="post" action="{{ url_for('suggesting_method') }}" id="Sugessting_method">
-  <h5 class="card-title">Sampling Suggestion</span></h5>
-  <h9>Click the button for suggesting the most appropriate Sampling Technique for the uploaded data</h9>
-  <input type="submit" value="Suggest Sampling Technique"/>
-</form>
-  <br/>
-  <p>{{Sample_Suggested}}</p>
-
-  <!-- 
-  {% if calculation_success == True %}
-  <br/>
-  <p>Sample Size : {{result}}</p>
-{% endif %}
-{% if calculation_success == False %}
-  <br/>
-  <p>{{error}}</p>
-  <p>Sample Size : {{result}}"</p>
-{% endif %} -->
-
-<hr>
-<h5 class="card-title">Downloading Sampling Data</span></h5> 
-<p>The types of Sampling Techniques are : <b>Simple Random Sampling </b><sup><b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"><img></b></sup>, 
-  <b>Systematic Sampling </b><sup> <b title = "In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b> </sup>, 
-<b>Stratified Sampling - KMeans </b><sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. Kmeans is the method that is used for the formation of clusters. KMeans is used when there is a small datasets. -Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup>
-and <b>Stratified Sampling - BIRCH </b><sup> <b title = "In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. BIRCH (Balanced Iterative Reducing and Clustering using Hierarchies) is the method that is used for the formation of clusters. BIRCH is used when there is a big dataset. - Wiki"><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></sup></p>
-
-
-<!--   {% if calculation_success == True %}
-  <p>Sample Size : {{result}}</p>
-{% endif %}
-{% if calculation_success == False %}
-  <p>{{error}}</p>
-  <p>Sample Size : {{result}}"</p>
-{% endif %} --> 
-  <!-- <sup> <b title="In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations. BIRCH (Balanced Iterative Reducing and Clustering using Hierarchies) is the method that is used for the formation of clusters. BIRCH is used when there is a big dataset. - Wiki"><i>info</i></b></sup>
---> 
-<!-- <p title="Hello world">Hover this one</p>
-<br> 
-<p title="Hello world">Systematic Sampling</p> --> 
-
-<!--
-    <form method="post" action="{{ url_for('sampling_result') }}" id="sample_form">
-        <label for="Input1">Sampling: </label>
-        <input type="text" name="Input1" id="Input1">
-        <br/>
-        <input type="submit" value="Submit"/>
-    </form> -->
-
-   <!-- <form method="post" action="{{ url_for('operation_result') }}" id="calculator_form">
-      <label for="Input1"><p>Baseline Conversion Rate <sup><b title="Baseline Conversion Rate is the division of number of sucessful actions on the test page over the number of visitors that view the page."><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"> <img></b></p>
-      </label>
-      <input type="text" name="Input1" id="Input1" value = "">
-      <br> --> 
-
-    <form method="post" action="{{ url_for('sampling_result') }}">
-      <select id="sample_form" name="operator">
-          <option value="SR">Simple Random Sampling</option>
-          <option value="SyC">Systematic Sampling</option>
-          <option value="StCK">Stratified Sampling - KMeans</option>
-          <option value="StCB">Stratified Sampling - BIRCH</option>
-      </select>
-      <br> 
-      <br> 
-      <!-- <p>Suggested Sample Size : {{sample_result}}</p> --> 
-      <label for="Input1"><p>Sample Size</p>
-      </label>
-      <input type="text" name="Sample_Size_input" id="Input1" value = "">
-      <br>
-      <input type="submit" value="Submit">
-    </form> 
-     <!--
-     {% if sample_success == True %}
-        <br/>
-        <p>Suggested Sample Size : {{sample_result}}</p>
-    {% endif %}
-   
-    {% if sample_success == False %}
-        <br/>
-        <p>{{error}}</p>
-        <p>Sample : {{sample_result}}"</p>
-    {% endif %}  -->
-    <br>
-    <a class="button-18" href="{{url_for('download')}}">Download</a>
-  </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>          
-
-    </div>
-  </div>
-</div>
-<hr> 
-
-<!--
-<div class="tooltip">Hover over me
-  <span class="tooltiptext">Tooltip text</span>
-</div>--> 
-</div>
-</div>
-</div>
-
-<!-- <div class = "hovera">Hover over this text</div>
-<div class="hide">I am shown when someone hovers over the div above.</div> -->
-
-
-<!-- <a href="#New Hypo" class="button-18">+</a> --> 
-<!--
- <span class="hovertext" data-hover="Hello, this is the tooltip">
-  Try hover over me
-</span> 
-
-<div class = "ahover"
-onMouseOver="this.style.backgroundColor='red'"
-onMouseOut="this.style.backgroundColor='orange'">
-Hover Over Me!
-</div>
-
-<abbr title="Hypertext Markup Language">HTML</abbr> 
-
-  </main> <!-- End #main -->
-
-  <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
 
   </footer><!-- End Footer -->

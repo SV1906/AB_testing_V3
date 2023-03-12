@@ -1,0 +1,20 @@
+ID ,Date_of_requirement ,Campaign_name ,Campaign_type ,Campaign_start_date,Campaign_end_date,Stratified On ,Test_control_base,Conversion_metric ,Conversion_period ,Processed Flag 
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+5,2023-03-02,Sandhya,CT4,2023-03-02,2023-03-04,"PET, UTY, ITU",Birthday,CT4,2
+6,2023-03-24,buy,CT3,2023-03-08,2023-03-10,43,76,CT1,5
+7,2023-03-08,XYZ,CT5,2023-03-15,2023-03-22,XYZ,XYZ,CT5,4
+8,2023-03-09,XYZ,CT3,2023-03-09,2023-03-15,CM5
+9,2023-03-15,XYZ,CT1,2023-03-10,2023-03-07,CM2
+10,,,CT1,,,CM1
+11,,,CT1,,,CM1
+12,,,CT1,,,CM1
+13,,,CT1,,,CM1
+14,,,CT1,,,CM1
+15,,,CT1,,,CM1
+16,,,CT1,,,CM1
+17,,,CT1,,,CM1
+18,,,CT1,,,CM1
+19,2023-03-28,XYZ,CT3,2023-03-10,2023-03-17,CM4

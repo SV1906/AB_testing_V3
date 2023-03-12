@@ -10,15 +10,23 @@ from kneed import KneeLocator
 import os 
 from pathlib import Path
 import numpy as np
+from csv import writer
+
+
 
 file_name = None 
 Flask_App = Flask(__name__) # Creating our Flask Instance
+Flask_App.secret_key = 'random string'
 Flask_App.config['UPLOAD_EXTENSIONS'] = ['.csv', '.xlsx', '.xls']
 
 #To display the intial page 
 @Flask_App.route('/', methods=['GET'])
 def index():
-    return render_template('index1.html', _anchor ='main')
+    return render_template('Index1.html')
+
+@Flask_App.route('/Index')
+def New_Testing():
+    return render_template('New_Testing.html')
 
 #
 @Flask_App.route('/Suggesting_method', methods = ['POST'])
@@ -117,9 +125,33 @@ def suggesting_method():
                 #print("Systematic Sampling")
                 Sample = "Systematic Sampling"
         return render_template(
-           'index1.html',
-            section = 'section_upload',
+           'New_Testing.html',
+            section = 'section_sampling',
             Sample_Suggested = "Sampling technique : " + Sample
+        )
+
+
+#To display the calculations of Evan Miller's Sample Size 
+@Flask_App.route('/operation_result_basic/', methods=['POST'])
+def operation_result_basic():
+
+    error = None
+    result = None
+    #To take the input of Confidence Interval 
+    first_input = request.form['Input1']  
+    #To take the input of Margin of Error
+    second_input = request.form['Input2']
+
+    CI = float(first_input)/100
+    MOE = float(second_input)/100
+    z_score_CI = round(stats.norm.ppf(1-(1-CI)/2),2) 
+    result = round(0.25/math.pow((MOE/z_score_CI),2))
+    return render_template(
+       'New_Testing.html',
+            basic_sampling_result= result,
+            section = 'section_samplesize',
+            calculation_success=True, 
+            scroll = 'something'
         )
 
 #To display the calculations of Evan Miller's Sample Size 
@@ -155,9 +187,190 @@ def operation_result():
     n = (math.pow((part_1+part_2),2))/(deno)
     result = round(n)
     return render_template(
-           'index1.html',
+       'New_Testing.html',
             sampling_result= result,
+            section = 'section_samplesize',
+            calculation_success=True, 
+            scroll = 'something'
+        )
+@Flask_App.route('/Hypothesis/', methods=['POST'])
+def Hypothesis():
+    error = None
+    result = None
+    #To take the input of Baseline Conversion rate 
+    first_input = request.form['Insight_input']  
+    #To take the input of Minimum detectable rate
+    second_input = request.form['Campaign_input']
+    #To take the input of statistical power 
+    third_input = request.form['Result_input']
+    #To take the input of statistical level 
+
+
+    input1 = first_input
+    input2 = second_input
+    input3 = third_input
+
+    output = "Given that "+ input1 +", changing " + input2 + " will result in "+ input3
+    return render_template(
+       'New_Testing.html',
+            hypothesis_result= output,
+           ## section = 'section_samplesize',
+           ## calculation_success=True, 
+           ## scroll = 'something'
+        )
+
+
+
+@Flask_App.route('/User_Input/', methods=['POST'])
+def User_Input():
+    
+    error = None
+    result = None
+
+
+    #To take the input of Baseline Conversion rate 
+   # first_input = request.form['Input1']  
+    #To take the input of Minimum detectable rate
+   # second_input = request.form['Input2']
+    #To take the input of statistical power 
+   # third_input = request.form['Campaign_type_input']
+    #To take the input of statistical level 
+  #  fourth_input = request.form['Input4']
+  #  fifth_input = request.form['Input5']
+  #  sixth_input = request.form['Input6']
+   # seventh_input = request.form['Input7']
+   # eighth_input = request.form['Conversion_metric_input']
+  #  nineth_input = request.form['Input9']
+
+    Campaign_name = request.form['campaign_name_input']
+
+    Campaign_start = request.form['campaign_start_date']
+    Campaign_end = request.form['campaign_end_date']
+    Conversion_metric = request.form['Conversion_metric_input']
+    Campaign_type = request.form['Campaign_type_input']  
+    Date_of_requirement = request.form['Date_of_requirement']
+
+
+    THIS_FOLDER = Path(__file__).parent.resolve()
+
+    file = (str(THIS_FOLDER)+"\\Final_Excel_1.csv")
+    df = pd.read_csv(file)
+    index_len = df.shape[0]+1
+    
+    array_output = []
+
+    array_output.append(index_len)
+    array_output.append(Date_of_requirement)
+    array_output.append(Campaign_name)
+    array_output.append(Campaign_type)
+    array_output.append(Campaign_start)
+    array_output.append(Campaign_end)
+    array_output.append(Conversion_metric)
+
+    with open(file, 'a' , newline ='') as f_object:
+          writer_object = writer(f_object)
+          writer_object.writerow(array_output)
+          f_object.close()
+
+    return render_template(
+           'New_Testing.html',
+            array_result = array_output,
             calculation_success=True
+        )
+
+
+@Flask_App.route('/Col_Input/', methods=['POST'])
+def Col_Input():
+
+    array_col_input_2 = []
+
+
+    op1_checked, op2_checked, op3_checked, op4_checked = False, False, False, False
+    if request.form.get("ETB") :
+        op1_checked = True
+        array_col_input_2.append("ETB")
+    if request.form.get("NTB"):
+        op2_checked = True
+        array_col_input_2.append("NTB")
+    if request.form.get("PTB"):
+        op3_checked = True
+        array_col_input_2.append("PTB")
+    if request.form.get("EMI CARDED"):
+        op4_checked = True
+        array_col_input_2.append("EMI CARDED")
+
+    array_col_input =[]
+    array_col_input.append(op1_checked)
+    array_col_input.append(op2_checked)
+    array_col_input.append(op3_checked)
+    array_col_input.append(op4_checked)
+
+
+    return render_template(
+           'New_Testing.html',
+           array_col_result = array_col_input,
+           array_col_input_2 = array_col_input_2,
+           open_section = "Stratified"
+        )
+    #if (input1 > 49):
+     #   input1 = 100-input1
+    #p1 = input1/100
+    #p2 = (input2+input1)/100
+    #alpha = (input4/100)/2 
+    #beta = 1- (input3/100)
+    #z_score_alpha = stats.norm.ppf(1-alpha)
+   # z_score_beta = stats.norm.ppf(1-beta)
+    #part_1 = z_score_alpha*math.sqrt((2*p1*(1-p1)))
+    #part_2 = z_score_beta*math.sqrt(p1*(1-p1) + p2*(1-p2))
+    #deno = math.pow(p2 - p1, 2) 
+    #n = (math.pow((part_1+part_2),2))/(deno)
+    #result = round(n)
+    #return render_template(
+     #      'index1.html',
+      #      sampling_result= result,
+       #     calculation_success=True
+     #   )
+
+
+@Flask_App.route('/Cond_Input/', methods=['POST'])
+def Cond_Input():
+    array_cond_input_2 = []
+    condition1_checked, condition2_checked, condition3_checked, condition4_checked, condition5_checked, condition6_checked = False, False, False, False, False, False
+
+    if request.form.get("App Live"): 
+        condition1_checked = True 
+        array_cond_input_2.append("App Live")
+    if request.form.get("Signed up in last 7 days"): 
+        condition2_checked = True 
+        array_cond_input_2.append("Signed up in last 7 days")
+    if request.form.get("30 Days Active"): 
+        condition3_checked = True 
+        array_cond_input_2.append("30 Days Active")
+    if request.form.get("Birthday Month"): 
+        condition4_checked = True 
+        array_cond_input_2.append("Birthday Month")
+    if request.form.get("Non DEC"): 
+        condition5_checked = True 
+        array_cond_input_2.append("Non DEC")
+    if request.form.get("DEC"): 
+        condition6_checked = True 
+        array_cond_input_2.append("DEC")
+
+    array_cond_input = []
+    array_cond_input.append(condition1_checked)
+    array_cond_input.append(condition2_checked)
+    array_cond_input.append(condition3_checked)
+    array_cond_input.append(condition4_checked)
+    array_cond_input.append(condition5_checked)
+    array_cond_input.append(condition6_checked)
+
+ 
+    return render_template(
+           'New_Testing.html',
+           array_cond_result = array_cond_input, 
+           array_cond_input_2 = array_cond_input_2
+            #array_result = array_output,
+            #calculation_success=True
         )
 
 @Flask_App.route('/download')
@@ -174,7 +387,6 @@ def download():
     final_path = str(THIS_FOLDER) + str(second)
     return send_file(final_path, as_attachment=True)
 
-#To take the input in a dropdown for sampling - Simple Random sampling, Stratified sampling - KMeans, Stratified Sampling - BIRCH, Systematic Sampling
 @Flask_App.route('/sampling_result/', methods=['POST','GET'])
 def sampling_result():
     error = None
@@ -313,15 +525,31 @@ def sampling_result():
         result = sample_size
         
     return render_template(
-           'index1.html',
+           'New_Testing.html',
            # result="Sample Size : " + sampling_result,
             sample_success=True
+        )
+
+#To take the input in a dropdown for sampling - Simple Random sampling, Stratified sampling - KMeans, Stratified Sampling - BIRCH, Systematic Sampling
+@Flask_App.route('/sampling_select/', methods=['POST','GET'])
+def sampling_select():
+    error = None
+    result = None
+    first_input = request.form['operator']  
+
+    if (first_input == "St" or first_input == "StCK" or first_input == "StCB"):
+        return render_template(
+            'New_Testing.html',
+             open_section = "Stratified"
+        )
+    else : 
+         return render_template(
+           'New_Testing.html'
         )
 
 @Flask_App.route('/uploadfile', methods = ['POST'])  
 def uploadfile():  
     if request.method == 'POST':  
-        #sample_size = 100
         f = request.files['file']
         filename = secure_filename(f.filename)
         if filename != '':
@@ -331,12 +559,20 @@ def uploadfile():
             #return render_template("index1.html", error = error)
             #flash("Uploaded the wrong extension. Please upload either .csv or .xlsx") 
         else : 
+            
             error = "Successfully uploaded. Please continue. "
             f.filename = "Blood Transfusion2.csv"
             f.save(f.filename)
+            flash('You were successfully logged in')
+    return render_template("New_Testing.html", section = 'section_upload', name = f.filename, error = error)
+            
             #flash("The file has been successfully saved!")
-        return render_template("index1.html", section = 'about', name = f.filename, error = error)
-
+        #return redirect(url_for('operation_result'))
+    # Important Commetn 
+        
+       # return render_template("index1.html", section = 'about', name = f.filename, error = error)
+        #return redirect(url_for('suggesting_method'))
+       # return render_template(url_for('success'), name = f.filename, error = error)
         #f.save(f.filename) 
         #data = pd.read_csv(f)
         #print(sample_size)
@@ -347,6 +583,6 @@ def uploadfile():
  #   value = request.form.get('operator') 
 
 if __name__ == '__main__':
-    
-    Flask_App.run(host='0.0.0.0', port=5469)
+    Flask_App.debug = True
+    Flask_App.run(host='0.0.0.0', port=5719)
 

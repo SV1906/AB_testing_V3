@@ -16,6 +16,7 @@ body {
   font-family: "Open Sans", sans-serif;
   background: #f6f9ff;
   color: #444444;
+  font-size: 0.86rem;
 }
 
 
@@ -318,7 +319,7 @@ h6 {
   cursor: pointer;
   display: inline-flex;
   font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-size: .86rem;
   font-weight: 600;
   justify-content: center;
   line-height: 20px;
@@ -1005,7 +1006,7 @@ strong{
 }
 
 .dashboard .recent-sales .table thead {
-  background: #f6f6fe;
+  background: #ADD8E6;
 }
 
 .dashboard .recent-sales .table thead th {
@@ -1026,7 +1027,7 @@ strong{
 }
 
 .dashboard .top-selling .table thead {
-  background: #f6f6fe;
+  background: #ADD8E6;
 }
 
 .dashboard .top-selling .table thead th {
@@ -1342,11 +1343,11 @@ table {
 }
 
 td, th {
-  border: 1px solid #dddddd;
+  border: 1px solid #D4F1F4;
   text-align: left;
   padding: 8px;
 }
 
 tr:nth-child(even) {
-  background-color: #dddddd;
+  background-color: #D4F1F4;
 }

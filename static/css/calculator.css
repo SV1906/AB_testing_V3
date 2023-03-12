@@ -63,6 +63,7 @@
     font-weight: 600;
     color: #012970;
   }
+
   
   /*--------------------------------------------------------------
   # Back to top button
@@ -74,6 +75,7 @@
     right: 15px;
     bottom: 15px;
     z-index: 99999;
+    
     background: #4154f1;
     width: 40px;
     height: 40px;
@@ -1112,6 +1114,11 @@
   .profile .profile-edit img {
     max-width: 120px;
   }
+  
+
+  * {box-sizing: border-box}
+  body {font-family: "Lato", sans-serif;}
+/* Style the tab */
   
   /*--------------------------------------------------------------
   # F.A.Q Page
