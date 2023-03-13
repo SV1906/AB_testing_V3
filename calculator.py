@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, send_file, redirect, url_for, abort, flash, session
-from flask_session import Session
+#from flask_session import Session
 import math
 import scipy.stats as stats 
 from werkzeug.utils import secure_filename
@@ -20,7 +20,7 @@ Flask_App = Flask(__name__) # Creating our Flask Instance
 Flask_App.secret_key = 'random string'
 Flask_App.config['SESSION_PERMANENT'] = False
 Flask_App.config["SESSION_TYPE"] = "filesystem"
-Session(Flask_App)
+#Session(Flask_App)
 
 
 #To display the intial page 
@@ -627,6 +627,7 @@ def sampling_select():
     data = pd.read_csv(final_data)
 
     if (first_input == "St" or first_input == "StCK" or first_input == "StCB"):
+       # read session
         return render_template(
             'New_Testing.html',
              open_section = "Stratified"
@@ -724,4 +725,4 @@ def uploadfile():
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(host='0.0.0.0', port=5107)
+    Flask_App.run(host='0.0.0.0', port=5112)
