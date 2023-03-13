@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, send_file, redirect, url_for, abort, flash
+from flask import Flask, render_template, request, send_file, redirect, url_for, abort, flash, session
+from flask_session import Session
 import math
 import scipy.stats as stats 
 from werkzeug.utils import secure_filename
@@ -17,7 +18,10 @@ from csv import writer
 file_name = None 
 Flask_App = Flask(__name__) # Creating our Flask Instance
 Flask_App.secret_key = 'random string'
-Flask_App.config['UPLOAD_EXTENSIONS'] = ['.csv', '.xlsx', '.xls']
+Flask_App.config['SESSION_PERMANENT'] = False
+Flask_App.config["SESSION_TYPE"] = "filesystem"
+Session(Flask_App)
+
 
 #To display the intial page 
 @Flask_App.route('/', methods=['GET'])
@@ -33,7 +37,7 @@ def New_Testing():
 def suggesting_method():
         #Preprocessing Technique
         THIS_FOLDER = Path(__file__).parent.resolve()
-        final_data = str(THIS_FOLDER)+"\\Blood Transfusion2.csv"
+        final_data = str(THIS_FOLDER)+"\\Blood Transfusion Service Centre Dataset.csv"
         original_data = pd.read_csv(final_data)
         data_dummy = original_data.copy()
         data_dummy = data_dummy.drop_duplicates()
@@ -146,12 +150,20 @@ def operation_result_basic():
     MOE = float(second_input)/100
     z_score_CI = round(stats.norm.ppf(1-(1-CI)/2),2) 
     result = round(0.25/math.pow((MOE/z_score_CI),2))
+
+    result_array = [result]
+    THIS_FOLDER = Path(__file__).parent.resolve()
+    file = (str(THIS_FOLDER)+"\\Variables.csv")
+    with open(file, 'w') as f_object:
+        writer_object = writer(f_object)
+        writer_object.writerow(result_array)
+        f_object.close()
+        
     return render_template(
        'New_Testing.html',
             basic_sampling_result= result,
-            section = 'section_samplesize',
-            calculation_success=True, 
-            scroll = 'something'
+            section = 'section_samplesize'
+            
         )
 
 #To display the calculations of Evan Miller's Sample Size 
@@ -199,8 +211,9 @@ def operation_result():
             sampling_result= result,
             section = 'section_samplesize',
             calculation_success=True, 
-            scroll = 'something'
+           
         )
+
 @Flask_App.route('/Hypothesis/', methods=['POST'])
 def Hypothesis():
     error = None
@@ -226,8 +239,6 @@ def Hypothesis():
            ## calculation_success=True, 
            ## scroll = 'something'
         )
-
-
 
 @Flask_App.route('/User_Input/', methods=['POST'])
 def User_Input():
@@ -283,7 +294,8 @@ def User_Input():
     return render_template(
            'New_Testing.html',
             array_result = array_output,
-            calculation_success=True
+            calculation_success=True,
+            open_section = "Download_section"
         )
 
 
@@ -314,7 +326,7 @@ def Col_Input():
     array_col_input.append(op4_checked)
 
     THIS_FOLDER = Path(__file__).parent.resolve()
-    final_data = str(THIS_FOLDER)+"\\Blood Transfusion2.csv"
+    final_data = str(THIS_FOLDER)+"\\Blood Transfusion Service Centre Dataset.csv"
     sample_size_data = str(THIS_FOLDER) + "\\Variables.csv"
     sample_size_data = pd.read_csv(sample_size_data)
     sample_size = int(sample_size_data.columns[0])
@@ -466,7 +478,7 @@ def sampling_result():
     input1 = first_input
     sample_size = int(second_input)
     THIS_FOLDER = Path(__file__).parent.resolve()
-    final_data = str(THIS_FOLDER)+"\\Blood Transfusion2.csv"
+    final_data = str(THIS_FOLDER)+"\\Blood Transfusion Service Centre Dataset.csv"
     data = pd.read_csv(final_data)
 
     if (input1 == "SR"):
@@ -608,7 +620,7 @@ def sampling_select():
     first_input = request.form['operator']  
 
     THIS_FOLDER = Path(__file__).parent.resolve()
-    final_data = str(THIS_FOLDER)+"\\Blood Transfusion2.csv"
+    final_data = str(THIS_FOLDER)+"\\Blood Transfusion Service Centre Dataset.csv"
     sample_size_data = str(THIS_FOLDER) + "\\Variables.csv"
     sample_size_data = pd.read_csv(sample_size_data)
     sample_size = int(sample_size_data.columns[0])
@@ -675,8 +687,6 @@ def sampling_select():
             sample_success=True
         )
     
-
-
 @Flask_App.route('/uploadfile', methods = ['POST'])  
 def uploadfile():  
     if request.method == 'POST':  
@@ -714,5 +724,4 @@ def uploadfile():
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(host='0.0.0.0', port=5022)
-
+    Flask_App.run(host='0.0.0.0', port=5107)

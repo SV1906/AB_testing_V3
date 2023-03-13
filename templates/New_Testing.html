@@ -127,11 +127,12 @@
                 
                 <h5 class="card-title"> </span></h5>  
                 <form class = "row g-12" method="post" action="{{ url_for('Hypothesis') }}" id="Hypothesis_form">
-                    <div class="col-md-4"> 
-                    <label for="Insight_input" class="form-label">Define Hypothesis</label>
+                    <div class="col-md-3"> 
+                    <label for="Insight_input" class="form-label">Define Hypothesis <sup><b title="Sample of Hypothesis : Given that a significant number of users drop off during the onboarding process, sending personalized welcome messages to new users will result in a higher retention rate."><img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style ="width:10px; height:10px"><img></b></sup></label>
                     </div>
                     <div class="col-md-8"> 
-                    <input type="text" class="form-control" name="Insight_input">
+                      <textarea name="Hypothesis" id="Hypothesis" placeholder='' minlength='1000' rows="5" cols="75"></textarea>
+                   <!-- <input type="textarea" class="form-control" name="Insight_input" minlength="100"> --> 
                   </div> 
 
                   <!-- 
@@ -153,12 +154,12 @@
                 <br> 
                 <br> 
                 <br> 
-
+<!-- 
                   <div class="text-center">
                     <button type="submit" class="button-18">Submit</button>
                     <button type="reset" class="btn btn-secondary">Reset</button>
                   </div>
-
+-->
               </form>
 <!-- 
               {{hypothesis_result}}
@@ -292,10 +293,13 @@
           
           <div class="col-sm-12">
         <Br> 
+          <!-- 
           <div class="text-center">
             <button type="submit" class="button-18">Submit</button>
             <button type="reset" class="btn btn-secondary">Reset</button>
           </div>
+
+          -->
 
           </div>
           </form> 
@@ -360,8 +364,9 @@
       <div class="card info-card revenue-card">
 
         <div class="card-body">
-
+          <h5 class="card-title"></h5>
           <div class="d-flex align-items-center">
+             
             <div class="ps-3">
            
              <!--
@@ -569,18 +574,16 @@ document.getElementById("defaultOpen").click();
       <p><b>{{sampling_result}}</b></p>
     </div>
   --> 
-  <br> 
-  <br> 
-  <br> 
+  
 
+   
+   <h5></h5>
+  <h5 class="card-title"><b>Minimum Sample Size : {{basic_sampling_result}} {{sampling_result}} </b></h5>
   <br> 
   <br> 
-  <br> 
-  {{basic_sampling_result}}
-  {{sampling_result}}
-  <br> 
-  <br> 
+  <!--
       <a class="button-18" href="#section_sampling" >Continue</a>
+      -->
       </div>
   </div>
 </div>
@@ -944,10 +947,10 @@ Hover Over Me!
       <div class="col-md-4">
         <label for="Conversion_metric_input" class="form-label">Conversion Metric</label>
         <select name="Conversion_metric_input" class="form-select">
-          <option selected value="CM1">Retention</option>
+          <option selected value="CM1">Retention rate</option>
           <option value="CM2">Digitization</option>
-          <option value="CM3">Engagement</option>
-          <option value="CM4">FD opened</option>
+          <option value="CM3">App Launch</option>
+          <option value="CM4">FD Booked</option>
           <option value="CM5">B2B Order Placed</option>
         </select>
       </div>
@@ -960,7 +963,7 @@ Hover Over Me!
       <div class="text-center">
                 <button type="submit" class="button-18"  >Submit</button>
                 <button type="reset" class="btn btn-secondary">Reset</button>
-                 <a class="button-18" href="{{url_for('download')}}">Download</a>
+               <!--   <a class="button-18" href="{{url_for('download')}}">Download</a> -->
                 
       </div>
       
@@ -970,6 +973,18 @@ Hover Over Me!
 </div>
 
 </div>
+{% if open_section == 'Download_section' %}
+<div class="col-xxl-4 col-md-12">
+  <div class="card info-card revenue-card">
+    <div class="card-body">
+     <h5 class="card-title">Download</span></h5>  
+<div class="text-center">
+<a class="button-18" href="{{url_for('download')}}">Download</a>
+</div>
+</div>
+</div>
+</div>
+{% endif %}
 
 <!--
 <form method="post" action="{{ url_for('User_Input') }}" id="User_input_id">
