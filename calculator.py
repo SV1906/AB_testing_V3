@@ -23,44 +23,51 @@ Flask_App.config['SESSION_PERMANENT'] = False
 Flask_App.config["SESSION_TYPE"] = "filesystem"
 #Session(Flask_App)
 
-Features = [ '30 Days Active' , ' 60 Days Active' , '90 Days inActive' , ' Active on App' , 'Signed up in last 7 days' , 'Signed up in last 15 days' , 'Birthday Month' ]
+Features = [ '30 Days Active' , ' 60 Days Active' , '90 Days inActive' , ' Active on App' , 'Signed up in last 7 days' , 'Signed up in last 15 days' , 'Birthday Month' , 'ETB', 'NTB', 'PTB', 'ABC']
 Stratification_columns = ['Customer Type', 'EMI Carded', 'Permanent Blocked', 'Temporary Blocked', 'DEC']
 today = date.today()
 today = today.strftime("%d-%m-%Y")
+
+def get_form_parameters():
+    return   request.form['Hypothesis']
 
 #To display the intial page 
 @Flask_App.route('/', methods=['GET'])
 def index():
     return render_template('Index1.html')
 
-@Flask_App.route('/Index')
+@Flask_App.route('/Index',methods=['GET' , "POST"])
 def New_Testing():
+    if request.method == 'POST':
+       Form =  get_form_parameters()
+       return render_template('New_Testing.html' , form = Form , features = Features, stratification_columns=Stratification_columns, date = today) 
     return render_template('New_Testing.html' , features = Features, stratification_columns=Stratification_columns, date = today)
 
-@Flask_App.route('/Hypothesis/', methods=['POST'])
-def Hypothesis():
-    error = None
-    result = None
-    #To take the input of Baseline Conversion rate 
-    first_input = request.form['Insight_input']  
-    #To take the input of Minimum detectable rate
-    second_input = request.form['Campaign_input']
-    #To take the input of statistical power 
-    third_input = request.form['Result_input']
-    #To take the input of statistical level 
+
+# @Flask_App.route('/Hypothesis/', methods=['POST'])
+# def Hypothesis():
+#     error = None
+#     result = None
+#     #To take the input of Baseline Conversion rate 
+#     first_input = request.form['Insight_input']  
+#     #To take the input of Minimum detectable rate
+#     second_input = request.form['Campaign_input']
+#     #To take the input of statistical power 
+#     third_input = request.form['Result_input']
+#     #To take the input of statistical level 
 
 
-    input1 = first_input
-    input2 = second_input
-    input3 = third_input
+#     input1 = first_input
+#     input2 = second_input
+#     input3 = third_input
 
-    output = "Given that "+ input1 +", changing " + input2 + " will result in "+ input3
-    return render_template(
-       'New_Testing.html',
-            hypothesis_result= output,
-           features = Features, stratification_columns=Stratification_columns, 
-           date = today
-        )
+#     output = "Given that "+ input1 +", changing " + input2 + " will result in "+ input3
+#     return render_template(
+#        'New_Testing.html',
+#             hypothesis_result= output,
+#            features = Features, stratification_columns=Stratification_columns, 
+#            date = today
+#         )
 
 
 #
@@ -685,5 +692,5 @@ def sampling_select():
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(port= 5031)   
+    Flask_App.run(port= 5032)   
     
