@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, send_file, redirect, url_for, abort, flash, session
+from datetime import date
 #from flask_session import Session
 import math
 import scipy.stats as stats 
@@ -10,6 +11,8 @@ import os
 from pathlib import Path
 import numpy as np
 from csv import writer
+from sklearn.cluster import KMeans
+from sklearn.cluster import Birch 
 
 
 
@@ -21,6 +24,9 @@ Flask_App.config["SESSION_TYPE"] = "filesystem"
 #Session(Flask_App)
 
 Features = [ '30 Days Active' , ' 60 Days Active' , '90 Days inActive' , ' Active on App' , 'Signed up in last 7 days' , 'Signed up in last 15 days' , 'Birthday Month' ]
+Stratification_columns = ['Customer Type', 'EMI Carded', 'Permanent Blocked', 'Temporary Blocked', 'DEC']
+today = date.today()
+today = today.strftime("%d-%m-%Y")
 
 #To display the intial page 
 @Flask_App.route('/', methods=['GET'])
@@ -29,7 +35,33 @@ def index():
 
 @Flask_App.route('/Index')
 def New_Testing():
-    return render_template('New_Testing.html' , features = Features)
+    return render_template('New_Testing.html' , features = Features, stratification_columns=Stratification_columns, date = today)
+
+@Flask_App.route('/Hypothesis/', methods=['POST'])
+def Hypothesis():
+    error = None
+    result = None
+    #To take the input of Baseline Conversion rate 
+    first_input = request.form['Insight_input']  
+    #To take the input of Minimum detectable rate
+    second_input = request.form['Campaign_input']
+    #To take the input of statistical power 
+    third_input = request.form['Result_input']
+    #To take the input of statistical level 
+
+
+    input1 = first_input
+    input2 = second_input
+    input3 = third_input
+
+    output = "Given that "+ input1 +", changing " + input2 + " will result in "+ input3
+    return render_template(
+       'New_Testing.html',
+            hypothesis_result= output,
+           features = Features, stratification_columns=Stratification_columns, 
+           date = today
+        )
+
 
 #
 @Flask_App.route('/Suggesting_method', methods = ['POST'])
@@ -130,7 +162,9 @@ def suggesting_method():
         return render_template(
            'New_Testing.html',
             section = 'section_sampling',
-            Sample_Suggested = "Sampling technique : " + Sample
+            Sample_Suggested = "Sampling technique : " + Sample,
+            features = Features, stratification_columns=Stratification_columns, 
+            date = today
         )
 
 
@@ -140,14 +174,13 @@ def operation_result_basic():
 
     error = None
     result = None
-    #To take the input of Confidence Interval 
     first_input = request.form['Input1']  
-    #To take the input of Margin of Error
     second_input = request.form['Input2']
 
     CI = float(first_input)/100
     MOE = float(second_input)/100
     z_score_CI = round(stats.norm.ppf(1-(1-CI)/2),2) 
+
     result = round(0.25/math.pow((MOE/z_score_CI),2))
 
     result_array = [result]
@@ -161,8 +194,9 @@ def operation_result_basic():
     return render_template(
        'New_Testing.html',
             basic_sampling_result= result,
-            section = 'section_samplesize'
-            
+            section = 'sample_size', 
+            features = Features, stratification_columns=Stratification_columns,
+            date = today            
         )
 
 #To display the calculations of Evan Miller's Sample Size 
@@ -208,57 +242,19 @@ def operation_result():
     return render_template(
        'New_Testing.html',
             sampling_result= result,
-            section = 'section_samplesize',
-            calculation_success=True, 
-           
+            section = 'sample_size',
+            calculation_success=True,   
+            features = Features, 
+            stratification_columns=Stratification_columns, 
+            date = today        
         )
 
-@Flask_App.route('/Hypothesis/', methods=['POST'])
-def Hypothesis():
-    error = None
-    result = None
-    #To take the input of Baseline Conversion rate 
-    first_input = request.form['Insight_input']  
-    #To take the input of Minimum detectable rate
-    second_input = request.form['Campaign_input']
-    #To take the input of statistical power 
-    third_input = request.form['Result_input']
-    #To take the input of statistical level 
-
-
-    input1 = first_input
-    input2 = second_input
-    input3 = third_input
-
-    output = "Given that "+ input1 +", changing " + input2 + " will result in "+ input3
-    return render_template(
-       'New_Testing.html',
-            hypothesis_result= output,
-           ## section = 'section_samplesize',
-           ## calculation_success=True, 
-           ## scroll = 'something'
-        )
 
 @Flask_App.route('/User_Input/', methods=['POST'])
 def User_Input():
     
     error = None
     result = None
-
-
-    #To take the input of Baseline Conversion rate 
-   # first_input = request.form['Input1']  
-    #To take the input of Minimum detectable rate
-   # second_input = request.form['Input2']
-    #To take the input of statistical power 
-   # third_input = request.form['Campaign_type_input']
-    #To take the input of statistical level 
-  #  fourth_input = request.form['Input4']
-  #  fifth_input = request.form['Input5']
-  #  sixth_input = request.form['Input6']
-   # seventh_input = request.form['Input7']
-   # eighth_input = request.form['Conversion_metric_input']
-  #  nineth_input = request.form['Input9']
 
     Campaign_name = request.form['campaign_name_input']
 
@@ -294,7 +290,10 @@ def User_Input():
            'New_Testing.html',
             array_result = array_output,
             calculation_success=True,
-            open_section = "Download_section"
+            features = Features, 
+            stratification_columns= Stratification_columns, 
+            open_section = "Download_section", 
+            date = today
         )
 
 
@@ -391,26 +390,11 @@ def Col_Input():
            array_col_result = array_col_input,
            array_col_input_2 = array_col_input_2,
            open_section = "Stratified",
-           open_section_2 = "Result_stratified"
+           open_section_2 = "Result_stratified", 
+           features = Features, 
+           stratification_columns=Stratification_columns, 
+           date = today
         )
-    #if (input1 > 49):
-     #   input1 = 100-input1
-    #p1 = input1/100
-    #p2 = (input2+input1)/100
-    #alpha = (input4/100)/2 
-    #beta = 1- (input3/100)
-    #z_score_alpha = stats.norm.ppf(1-alpha)
-   # z_score_beta = stats.norm.ppf(1-beta)
-    #part_1 = z_score_alpha*math.sqrt((2*p1*(1-p1)))
-    #part_2 = z_score_beta*math.sqrt(p1*(1-p1) + p2*(1-p2))
-    #deno = math.pow(p2 - p1, 2) 
-    #n = (math.pow((part_1+part_2),2))/(deno)
-    #result = round(n)
-    #return render_template(
-     #      'index1.html',
-      #      sampling_result= result,
-       #     calculation_success=True
-     #   )
 
 
 @Flask_App.route('/Cond_Input/', methods=['POST'])
@@ -449,9 +433,10 @@ def Cond_Input():
     return render_template(
            'New_Testing.html',
            array_cond_result = array_cond_input, 
-           array_cond_input_2 = array_cond_input_2
-            #array_result = array_output,
-            #calculation_success=True
+           array_cond_input_2 = array_cond_input_2, 
+           features = Features, 
+           stratification_columns=Stratification_columns,
+           date = today
         )
 
 @Flask_App.route('/download')
@@ -608,7 +593,10 @@ def sampling_result():
     return render_template(
            'New_Testing.html',
            # result="Sample Size : " + sampling_result,
-            sample_success=True
+            sample_success=True, 
+            features = Features, 
+            stratification_columns=Stratification_columns, 
+            date = today
         )
 
 #To take the input in a dropdown for sampling - Simple Random sampling, Stratified sampling - KMeans, Stratified Sampling - BIRCH, Systematic Sampling
@@ -629,7 +617,10 @@ def sampling_select():
        # read session
         return render_template(
             'New_Testing.html',
-             open_section = "Stratified"
+             open_section = "Stratified", 
+             features = Features, 
+             stratification_columns=Stratification_columns, 
+             date = today
         )
     
     elif (first_input == "SR"):
@@ -655,13 +646,14 @@ def sampling_select():
         return render_template(
            'New_Testing.html',
            # result="Sample Size : " + sampling_result,
-            sample_success=True
+            sample_success=True,
+            features = Features,
+            stratification_columns=Stratification_columns, 
+            date = today
         )
         
 
     else:
-        #data = pd.read_csv(r"C:\Users\Sandhya\OneDrive\Desktop\AB Testing_Folder\ABTesting_v2\ABTesting_V2.0\AB_testing_V3\Blood Transfusion Service Centre Dataset.csv")
-        #sample_size = 100 
         def Systematic_sample(data,sample_size): 
              #sample_size = sample_size
              k = int (data.shape[0]/sample_size)
@@ -683,45 +675,15 @@ def sampling_select():
         Systematic_sample(data,sample_size)
         return render_template(
            'New_Testing.html',
-           # result="Sample Size : " + sampling_result,
-            sample_success=True
+            sample_success=True, 
+            features = Features, 
+            stratification_columns=Stratification_columns, 
+            date = today
         )
     
-@Flask_App.route('/uploadfile', methods = ['POST'])  
-def uploadfile():  
-    if request.method == 'POST':  
-        f = request.files['file']
-        filename = secure_filename(f.filename)
-        if filename != '':
-            file_ext = os.path.splitext(filename)[1]
-        if file_ext not in Flask_App.config['UPLOAD_EXTENSIONS']:
-            error = 'Please upload a file with the extenstion .csv or .xlsx only. Please try again.'
-            #return render_template("index1.html", error = error)
-            #flash("Uploaded the wrong extension. Please upload either .csv or .xlsx") 
-        else : 
             
-            error = "Successfully uploaded. Please continue. "
-            f.filename = "Blood Transfusion2.csv"
-            f.save(f.filename)
-            flash('You were successfully logged in')
-    return render_template("New_Testing.html", section = 'section_upload', name = f.filename, error = error)
-            
-            #flash("The file has been successfully saved!")
-        #return redirect(url_for('operation_result'))
-    # Important Commetn 
-        
-       # return render_template("index1.html", section = 'about', name = f.filename, error = error)
-        #return redirect(url_for('suggesting_method'))
-       # return render_template(url_for('success'), name = f.filename, error = error)
-        #f.save(f.filename) 
-        #data = pd.read_csv(f)
-        #print(sample_size)
-        #return render_template("index1.html", name = f.filename, error = error)  
-
-#@Flask_App.route('/select', methods=['POST', 'GET'])
-#def select():
- #   value = request.form.get('operator') 
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(host='0.0.0.0', port=5118)
+    Flask_App.run(port= 5031)   
+    

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Dashboard - Bajaj</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <!-- Favicons -->
+    <link href="{{url_for('static', filename='image/apple-touch-icon1.png')}}" rel="icon">
+    <link href="{{url_for('static', filename='image/apple-touch-icon1.png')}}" rel="apple-touch-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/quill/quill.snow.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/quill/quill.bubble.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/remixicon/remixicon.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/simple-datatables/style.css')}}" rel="stylesheet">
+    <!--
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+-->
+    <!-- Template Main CSS File -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+  </head>
+  <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+      <div class="nav-link nav-profile d-flex align-items-center pe-0">
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+        <a href="templates/index.html" class="logo d-flex align-items-center">
+          <img src="{{url_for('static', filename='image/apple-touch-icon1.png')}}" alt="">
+          <span class="d-none d-lg-block">Bajaj Finserv</span>
+        </a>
+    </header>
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item active">
+          <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="{{url_for('New_Testing')}}">
+            <i class="bi bi-menu-button-wide"></i>
+            <span>New Testing</span>
+            <i class="bi bi-chevron-down ms-auto"></i>
+          </a>
+          <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+              <a onclick="test('hypothesis')" id="hypothesis_button">
+                <i class="bi bi-circle"></i>
+                <span>Hypothesis</span>
+              </a>
+							<script>
+								function test(x)
+								{
+									window.scrollTo({ top: document.getElementById(x).getBoundingClientRect().top, behavior: 'smooth'})
+								}
+							</script>
+            </li>
+            <li>
+              <a onclick="test('select_filters')">
+                <i class="bi bi-circle"></i>
+                <span>Select Conditions/Filters</span>
+              </a>
+            </li>
+            <li>
+              <a onclick="test('sample_size')">
+                <i class="bi bi-circle"></i>
+                <span>Minimum Sample Size</span>
+              </a>
+            </li>
+            <li>
+              <a onclick="test('sampling_technique')">
+                <i class="bi bi-circle"></i>
+                <span>Sampling Technique</span>
+              </a>
+            </li>
+            <li>
+              <a onclick="test('campaign_details')">
+                <i class="bi bi-circle"></i>
+                <span>Campaign Details</span>
+              </a>
+            </li>
+          </ul>
+        <li class="nav-item">
+          <a class="nav-link " href="{{url_for('index')}}">
+            <i class="bi bi-graph-up"></i>
+            <span>Reports</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <!-- End Sidebar-->
+    <!-- Main Body-->
+    <main id="main" class="main">
+      <form method="post">
+        <!-- Start hypothesis -->
+        <div id="hypothesis" class="pagetitle">
+          <h1>Hypothesis</h1>
+        </div>
+        <div class="card  ">
+          <div class="card-body  row">
+            <div class="col-3 align-items-center" style="display: inline-flex;">
+              <h5 class=" card-title">
+                <label for="Insight_input" class="form-label">Define Hypothesis <sup>
+                    <b title="Sample of Hypothesis : Given that a significant number of users drop off during the onboarding process, sending personalized welcome messages to new users will result in a higher retention rate.">
+                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                      <img>
+                    </b>
+                  </sup>
+                </label>
+              </h5>
+            </div>
+            <div class="col-9">
+              <textarea name="Hypothesis" id="Hypothesis" class="form-control" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <!--End Hypothesis -->
+
+        <!--  Start Select filters -->
+        <div id="select_filters" class="pagetitle">
+          <h1>Select Conditions/Filters</h1>
+          <h9>Please select the conditions and filters.</h9>
+        </div>
+        <div class="card">
+          <div class="card-body  row "> {% for i in features %} <div class="col-3   ">
+              <input class="form-check-input" type="checkbox" id="conditions" value="{{i}}">
+              <label class="form-check-label" for="inlineCheckbox1">{{i}}</label>
+            </div> {% endfor %} </div>
+        </div>
+        <hr>
+        <!--End Select filters -->
+
+				<!--  Start Calculator -->
+				<div id="sample_size" class="pagetitle">
+					<h1>Minimum Sample Size Calculator</h1>
+          <h9>Please fill in the information for minimum sample size calculation.</h9>
+        </div>
+				<div class="card" style="height: 430px;">
+					<div class="card-body">
+						<ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Basic Sample Size</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Evan Millers</button>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                <!--Basic Sample Size-->
+                <div class="card-body col-12">
+                  <h9>Required values for the calculation are - <b>Confidence Interval </b>
+                    <sup>
+                      <b title="A confidence interval shows the probability that a parameter will fall between a pair of values around the mean.&#013; Recommended Margin of Error : 90% - 99%">
+                        <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                        <img>
+                      </b>
+                    </sup>and <b>Margin of Error </b>
+                    <sup>
+                      <b title="The margin of error means the degree of uncertainty that your survey results might have.&#013; Recommended Margin of Error : 3% - 10%">
+                        <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                        <img>
+                      </b>
+                    </sup>The default values for Confidence Interval and Margin of Error are already mentioned below.
+                  </h9>
+                
+								  <div class="card-body col-12">
+							
+										<form class="row g-12" method="post" action="{{ url_for('operation_result_basic') }}" id="calculator_form">
+											<div class="col">
+												<div class="row">
+													<label for="Input1" class="form-label">Confidence Interval (%)</label>
+													<input type="text" class="form-control" placeholder="90" name="Input1" >
+												</div>
+												<div class="row">
+													<label for="Input2" class="form-label">Margin Error(%)</label>
+													<input type="text" class="form-control" placeholder="3" name="Input2" >
+												</div>
+											</div>
+											<div class = "card-body">
+												<div class="text-center">
+													<button type="submit" class="button-18">Submit</button>
+													<button type="reset" class="btn btn-secondary">Reset</button>
+												</div>
+											</div>
+										</form>
+									</div>
+                  
+                </div>
+              </div>
+              <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                <!--Evan Miller's-->
+								<div class="card-body col-12">
+                <h9>Required values for the calculation are - <b>Baseline Conversion Rate </b>
+                  <sup>
+                    <b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. ">
+                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                      <img>
+                    </b>
+                  </sup>, <b>Minimum Detectable Effect </b>
+                  <sup>
+                    <b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. ">
+                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                      <img>
+                    </b>
+                  </sup>, <b>Statistical Power </b>
+                  <sup>
+                    <b title="Statistical Power is the likelihood that you will detect a difference between variant A and variant B. &#013; A Higher power is always prefered.&#013; Minimum of 80% is usually recommended">
+                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                      <img>
+                    </b>
+                  </sup> and <b>Statistical level </b>
+                  <sup>
+                    <b title="Statistic level is the level of error you're willing to accept in your test. &#013; Usually 1% to 5%. ">
+                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                      <img>
+                    </b>
+                  </sup>. The default values for Statistical Power and Statistical Level are already mentioned below.
+                </h9>
+                <div>
+									<div class = "card-body col-12">
+										<form class="row g-12" method="post" action="{{ url_for('operation_result') }}" id="calculator_form">								
+											<div class="row g-3">
+												<div class="col-sm">
+													<label for="Input1" class="form-label">Baseline Conversion Rate (%)</label>
+													<input type="text" class="form-control" placeholder="" name="Input1" required>
+												</div>
+												<div class="col-sm">
+													<label for="Input2" class="form-label">Minimum Detectable Effect (%)</label>
+													<input type="text" class="form-control" placeholder="" name="Input2" required>
+												</div>
+											</div>
+											<div class = "row g-3">
+												<div class="col-sm">
+													<label for="Input3" class="form-label">Significance Power  (%)</label>
+													<input type="text" class="form-control" placeholder="" name="Input3" required>
+												</div>
+												<div class="col-sm">
+													<label for="Input14" class="form-label">Significance level (%)</label>
+													<input type="text" class="form-control" placeholder="" name="Input4" required>
+												</div>
+											</div>
+											<div class = "card-body">											
+												<div class="text-center">
+													<button type="submit" class="button-18">Submit</button>
+													<button type="reset" class="btn btn-secondary">Reset</button>
+												</div>
+											</div>												
+										</form>										
+									</div> 
+                </div>
+              </div>
+						</div>
+            </div>
+					</div>
+				</div>				
+							<h5 class="card-title">
+								<b>Minimum Sample Size : {{basic_sampling_result}} {{sampling_result}} </b>
+							</h5>														
+		     <hr>
+         <!--  End Calculator -->
+
+				<!-- Start Sampling Technique -->
+        <div id="sampling_technique" class="pagetitle">
+          <h1>Sampling Technique</h1>
+        </div>
+        <div class="card  ">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="ps-3">
+                <form method="post" action="{{ url_for('suggesting_method') }}" id="Sugessting_method">
+                  <br>
+                  <button type="submit" value="Suggest Sampling Technique" class="button-18">Suggest Sampling Technique</button>
+                </form>
+                <br />
+                <p>{{Sample_Suggested}}</p>
+                <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b>
+                  <sup>
+                    <b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki">
+                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                      <img>
+                    </b>
+                  </sup>, <b>Systematic Sampling </b>
+                  <sup>
+                    <b title="In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki">
+                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                      <img>
+                    </b>
+                  </sup> and <b>Stratified Sampling</b>
+                  <sup>
+                    <b title="In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations.-Wiki">
+                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                      <img>
+                    </b>
+                  </sup>
+                </p>
+                </p>
+                <form method="post" action="{{ url_for('sampling_select') }}">
+
+									<select class="form-select form-select-sm" id = "operator" name = "operator">
+										<option selected>Select a Technique</option>
+										<option value="SR">Simple Random Sampling</option>
+										<option value="SyC">Systematic Sampling</option>
+										<option value="St">Stratified Sampling</option>
+									</select>
+                  <div class = "card-body">
+										<div class="text-center">
+											<button type="submit" class="button-18">Submit</button>
+											<button type="reset" class="btn btn-secondary">Reset</button>
+										</div>
+									</div>
+                  
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <!-- End of Sampling Technique-->
+
+        <!-- Start Stratify On --> 
+				{% if open_section == 'Stratified' %} 
+				<div id="stratify_on" class="pagetitle">
+          <h1>Stratify On:</h1>
+          <h9>Please select the columns to stratify on.</h9>
+        </div>
+        <div class="card">
+          <div class="card-body  row "> 
+						{% for j in stratification_columns %} 
+						<div class="col-3   ">
+              <input class="form-check-input" type="checkbox" id="{{j}}" value="{{j}}">
+              <label class="form-check-label" for="inlineCheckbox1">{{j}}</label>
+            </div> 
+						{% endfor %} 
+					</div>
+        </div>
+        <hr> 
+				{% endif %}
+        <!-- End  Stratify On -->
+
+        <!-- Start of Result Stratification--> 
+				{% if open_section_2 == 'Result_stratified' %} 
+				<h5 class="card-title">
+          <b>Stratification done successfully</b>
+        </h5>
+        <hr> 
+				{% endif %}
+        <!-- End of Result Stratification-->
+
+        <!-- Start Campaign Details-->
+        <div id="campaign_details" class="pagetitle">
+          <h1>Campaign Details</h1>
+        </div>
+        <div class="card  ">
+          <div class="card-body">
+            <form class="row g-3" method="post" action="{{ url_for('User_Input') }}" id="User_input_id">
+              <div class="col-md-12">
+								<label for="campaign_name_input" class="form-label">Campaign Name</label>
+								<input type="text" class="form-control" name="campaign_name_input" required>
+							</div>
+							<div class="col-md-4">                
+                  <label for="Date_of_requirement" class="form-label">Date of Requirement</label>                
+              <div class = "card-body">
+                <text>{{date}}</text> 
+              </div>   
+
+                        
+              <!--   <label for="Date_of_requirement" class="form-label">Date of Requirement</label> -->
+								<!-- <input type="date" class="form-control" name="Date_of_requirement" value="13-4-15">--> 
+							</div>
+							<div class="col-md-4">
+								<label for="campaign_start_date" class="form-label">Campaign Start Date</label>
+								<input type="date" class="form-control" name="campaign_start_date" required>
+							</div>
+							<div class="col-md-4"><label for="campaign_end_date" class="form-label">Campaign End Date</label>
+								<input type="date" class="form-control" name="campaign_end_date" required>
+							</div>
+							<div class="col-md-4"><label for="Campaign_type_input" class="form-label">Campaign Type</label>
+								<select name="Campaign_type_input" class="form-select" required>
+									<option selected value="CT1">Push</option>
+									<option value="CT2">InApp-Pop</option>
+									<option value="CT3">Inbox</option>
+									<option value="CT4">Banner</option>
+								</select>
+							</div>
+							<div class="col-md-4">
+								<label for="Conversion_metric_input" class="form-label">Conversion Metric</label>
+								<select name="Conversion_metric_input" class="form-select" required>
+									<option selected value="CM1">Retention rate</option>
+									<option value="CM2">Digitization</option>
+									<option value="CM3">App Launch</option>
+									<option value="CM4">FD Booked</option>
+									<option value="CM5">B2B Order Placed</option>
+								</select></div><div class="col-md-4">
+									<label for="Conversion_period" class="form-label">Conversion Period (in Days)</label>
+										<input type="text" class="form-control" name="Conversion_period" required>
+									</div>
+									<div class="text-center">
+										<button type="submit" class="button-18">Submit</button>
+										<button type="reset" class="btn btn-secondary">Reset
+
+										</button>
+									</div>
+            </form>
+          </div>
+        </div>
+        <hr>
+        <!-- End Campaign Details -->
+
+        <!--Start Download Section --> 
+				{% if open_section == 'Download_section' %}
+				 <div class="card ">
+						<div class="card-body">
+							<h5 class="card-title">Download</span></h5>
+							<div class="text-center">
+								<a class="button-18" href="{{url_for('download')}}">Download</a>
+							</div>
+						</div>
+					</div>
+        <hr> 
+				{% endif %} 
+        <!-- End Download Section-->
+
+			</form>
+
+			
+			{% if section == "sample_size" %}
+			<script>
+				window.scrollTo({ top: document.getElementById('sample_size').getBoundingClientRect().top, behavior: 'smooth'})
+			</script>
+
+			{% endif %}
+
+			
+         <!--
+	{% block body %}
+	{% if section == "hypothesis" %}
+	<script>
+		window.scrollTo({ top: document.getElementById('hypothesis').getBoundingClientRect().top + window.pageYOffset + 640, behavior: 'smooth' })
+		</script>
+	{% elif section == "section_samplesize" %}
+	<script>
+		window.scrollTo({ top: document.getElementById('section_samplesize').getBoundingClientRect().top + window.pageYOffset + 640, behavior: 'smooth' })
+	</script>
+	{% elif section == 'section_sampling' %}
+	<script>
+		window.scrollTo({ top: document.getElementById('section_sampling').getBoundingClientRect().top + window.pageYOffset + 1000, behavior: 'auto' })
+			</script>
+	{% else %}
+	<script>
+		document.getElementById('main').scrollIntoView({ behavior: "smooth", block: "start", inline: "start" }); 
+	</script>
+	{% endif %}
+	{% endblock %}
+	-->
+	
+
+   
+    </main>
+    <!--End #main -->
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer"></footer>
+    <!-- End Footer -->
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+      <i class="bi bi-arrow-up-short"></i>
+    </a>
+    <!-- Vendor JS Files -->
+    <script src="{{url_for('static', filename='vendor/apexcharts/apexcharts.min.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/chart.js/chart.umd.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/echarts/echarts.min.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/quill/quill.min.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/simple-datatables/simple-datatables.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/tinymce/tinymce.min.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/php-email-form/validate.js')}}"></script>
+    <!-- Template Main JS File -->
+    <script src="{{url_for('static', filename='js/main.js')}}"></script>
+  </body>
+</html>
