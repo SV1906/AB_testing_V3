@@ -15,6 +15,10 @@ from sklearn.cluster import KMeans
 from sklearn.cluster import Birch 
 
 
+
+
+
+
 file_name = None 
 Flask_App = Flask(__name__) # Creating our Flask Instance
 Flask_App.secret_key = 'random string'
@@ -22,69 +26,109 @@ Flask_App.config['SESSION_PERMANENT'] = False
 Flask_App.config["SESSION_TYPE"] = "filesystem"
 #Session(Flask_App)
 
-Features = [ '30 Days Active' , ' 60 Days Active' , '90 Days inActive' , ' Active on App' , 'Signed up in last 7 days' , 'Signed up in last 15 days' , 'Birthday Month' , 'ETB', 'NTB', 'PTB', 'ABC']
-Stratification_columns = ['Customer Type', 'EMI Carded', 'Permanent Blocked', 'Temporary Blocked', 'DEC']
+Features = [ {'key':'30 Days Active' , 'value' : 'False'} , {'key':'60 Days Active' , 'value' : 'False'}]
+Stratification_columns = [{'key' : 'Customer Type', 'value': 'False'}, {'key' : 'EMI Carded', 'value': 'False'}, {'key' : 'Permanent Blocked', 'value': 'False'}]
 today = date.today()
 today = today.strftime("%d-%m-%Y")
+ 
 
-def get_form_parameters(x):
-    return request.form[x]
+def get_form_parameters():
+    Form  = {}
+    Form["Hypothesis"] = request.form['Hypothesis'] 
+    Form["ConversionInterval"] = request.form['confidence_Interval_Input']
+    Form["MarginError"] = request.form['margin_Error_Input']
+    return Form
 
-def basic_Sample_Size(): 
-    error = None
+
+def basic_Sample_Size(x,y):
     result = None
+    CI = float(x)/100
+    MOE = float(y)/100
+    z_score_CI = round(stats.norm.ppf(1-(1-CI)/2),2) 
 
-    input1 = float(request.form['Input1'])
-    input2 = float(request.form['Input1'])
-    input3 = float(request.form['Input1'])
-    input4 = float(request.form['Input1']) 
+    result = round(0.25/math.pow((MOE/z_score_CI),2))
 
-    if (input1 > 49):
-        input1 = 100-input1
-    p1 = input1/100
-    p2 = (input2+input1)/100
-    alpha = (input4/100)/2 
-    beta = 1- (input3/100)
-    z_score_alpha = stats.norm.ppf(1-alpha)
-    z_score_beta = stats.norm.ppf(1-beta)
-    part_1 = z_score_alpha*math.sqrt((2*p1*(1-p1)))
-    part_2 = z_score_beta*math.sqrt(p1*(1-p1) + p2*(1-p2))
-    deno = math.pow(p2 - p1, 2) 
-    n = (math.pow((part_1+part_2),2))/(deno)
-    result = round(n)
     result_array = [result]
-    return result_array 
+    return result
+
+
+# def basic_Sample_Size(): 
+#     error = None
+#     result = None
+
+#     input1 = float(request.form['Input1'])
+#     input2 = float(request.form['Input1'])
+#     input3 = float(request.form['Input1'])
+#     input4 = float(request.form['Input1']) 
+
+#     if (input1 > 49):
+#         input1 = 100-input1
+#     p1 = input1/100
+#     p2 = (input2+input1)/100
+#     alpha = (input4/100)/2 
+#     beta = 1- (input3/100)
+#     z_score_alpha = stats.norm.ppf(1-alpha)
+#     z_score_beta = stats.norm.ppf(1-beta)
+#     part_1 = z_score_alpha*math.sqrt((2*p1*(1-p1)))
+#     part_2 = z_score_beta*math.sqrt(p1*(1-p1) + p2*(1-p2))
+#     deno = math.pow(p2 - p1, 2) 
+#     n = (math.pow((part_1+part_2),2))/(deno)
+#     result = round(n)
+#     result_array = [result]
+#     return result_array 
 
 #To display the intial page 
 @Flask_App.route('/', methods=['GET'])
 def index():
     return render_template('Index1.html')
 
+
 @Flask_App.route('/Index',methods=['GET' , "POST"])
 def New_Testing():
     if request.method == 'POST':
-       Form = {}
-       features_columns = {}
-       Form["Hypothesis"] =  get_form_parameters("Hypothesis")
-       for i in Features:
-           if request.form.get(i):
-               features_columns[i] = True 
-           else : 
-               features_columns[i] = False
-       Form["Features"] = features_columns
-       if (request.form.get("baseline_Rate_Input")) and (request.form.get("detectable_Effect_Input")) and (request.form.get("significance_Power_Input")) and (request.form.get("significance_Level_Input")) : 
-           sample_result = basic_Sample_Size()
-           Form["basline_Rate"] = request.form.get("baseline_Rate_Input")
-           Form["detectable_Effect"] = request.form.get("detectable_Effect_Input")
-           Form["significance_Power_Input"] = request.form.get("significance_Power_Input")
-           Form["significance_Level_Input"] = request.form.get("significance_Level_Input")
+       forms = get_form_parameters()
+       for i in Features: 
+            if request.form.get(i['key']) :
+                i['value'] = True
+            else : 
+                i ['value'] = False 
+
+       for i in Stratification_columns: 
+            if request.form.get(i['key']) :
+                i['value'] = True
+            else : 
+                i ['value'] = False 
+        
+       if (forms["ConversionInterval"] != '' and forms["MarginError"] != ''):
+            forms ["basic_result"] = basic_Sample_Size(forms["ConversionInterval"], forms["MarginError"])
+    #    main_form["Hypothesis"] =  get_form_parameters("Hypothesis")
+
+
+    #    for i in Features:
+    #             if  'value' in i:  
+    #                 i['value'] = 'True' 
+
+       
+
+    #        else : 
+    #            Features_input[i] = False
+    #    main_form["Features"] = Features_input
+       return render_template('New_Testing.html',    Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today) 
+
+    return render_template('New_Testing.html' ,    features = Features, stratification_columns=Stratification_columns, date = today)
+
+       
+    #    if (request.form.get("baseline_Rate_Input")) and (request.form.get("detectable_Effect_Input")) and (request.form.get("significance_Power_Input")) and (request.form.get("significance_Level_Input")) : 
+    #        sample_result = basic_Sample_Size()
+    #        Form["basline_Rate"] = request.form.get("baseline_Rate_Input")
+    #        Form["detectable_Effect"] = request.form.get("detectable_Effect_Input")
+    #        Form["significance_Power_Input"] = request.form.get("significance_Power_Input")
+    #        Form["significance_Level_Input"] = request.form.get("significance_Level_Input")
            
     #   if request.form.get("30 Days Active") :
      #       Form["30 Days Active"] = True
 
 
-       return render_template('New_Testing.html' , form = Form, features = Features, stratification_columns=Stratification_columns, date = today, sample_result = sample_result) 
-    return render_template('New_Testing.html' , features = Features, stratification_columns=Stratification_columns, date = today)
 
 
 # @Flask_App.route('/Hypothesis/', methods=['POST'])
@@ -735,5 +779,5 @@ def sampling_select():
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(port= 5059)   
+    Flask_App.run(port= 5087)   
     

@@ -95,7 +95,7 @@
     <!-- End Sidebar-->
     <!-- Main Body-->
     <main id="main" class="main">
-      <form method="post">
+      <form method="post"  >
         <!-- Start hypothesis -->
         <div id="hypothesis" class="pagetitle">
           <h1>Hypothesis</h1>
@@ -114,8 +114,8 @@
               </h5>
             </div>
             <div class="col-9">
-              <textarea name="Hypothesis" id="Hypothesis" name="Hypothesis" class="form-control" rows="3">{{form}}</textarea>
-            </div>
+              <textarea name="Hypothesis" id="Hypothesis" name="Hypothesis" class="form-control" rows="3">{% if Success == True %}{{form.Hypothesis}}{% endif %}</textarea>
+             </div>
           </div>
         </div>
         <hr>
@@ -127,11 +127,19 @@
           <h9>Please select the conditions and filters.</h9>
         </div>
         <div class="card">
-          <div class="card-body  row "> {% for i in features %} <div class="col-3   ">
-              <input class="form-check-input" type="checkbox" id="{{i}}" value=True name = "{{i}}" checked>
-              <label class="form-check-label" for="{{i}}" value = "{{i}}"  id = "{{i}}" >{{i}}</label>
-            </div> {% endfor %} </div>
+          <div class="card-body  row "> {% for i in features %} <div class="col-3">
+            {% if i.value == True %}
+              <input class="form-check-input" type="checkbox" id="{{i.key}}"    name = "{{i.key}}" checked>
+              <label class="form-check-label"  >{{i.key}}</label>   
+            {% else %} 
+            <input class="form-check-input" type="checkbox" id="{{i.key}}"  name = "{{i.key}}">
+            <label class="form-check-label"  >{{i.key}}</label>   
+            {% endif %}
+          </div> 
+            {% endfor %} 
+            {{features}}
         </div>
+      </div>
         <hr>
         <!--End Select filters -->
 
@@ -170,15 +178,15 @@
                   </h9>
                 
 								  <div class="card-body col-12">	
-                    <div class = "row g-12" method = "post" id = 	"calculator_form">
+                    <form class = "row g-12" method = "post" id = "calculator_form" action = "{{url_for('operation_result_basic')}}">
                       <div class="col">
 												<div class="row">
 													<label for="Input1" class="form-label">Confidence Interval (%)</label>
-													<input type="text" class="form-control" placeholder="90" name="Input1" >
+													<input type="number" class="form-control"  value="{% if Success == True %}{{form.ConversionInterval}}{% endif %}" name="confidence_Interval_Input" >
 												</div>
 												<div class="row">
 													<label for="Input2" class="form-label">Margin Error(%)</label>
-													<input type="text" class="form-control" placeholder="3" name="Input2" >
+													<input type="number" class="form-control"  value = "{% if Success == True %}{{form.MarginError}}{% endif %}" name="margin_Error_Input" >
 												</div>
 											</div>
 											<div class = "card-body">
@@ -187,7 +195,7 @@
 													<button type="reset" class="btn btn-secondary">Reset</button>
 												</div>
 											</div>
-                    </div>					
+                    </form>				
 									</div>    
                 </div>
               </div>
