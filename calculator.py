@@ -15,7 +15,6 @@ from sklearn.cluster import KMeans
 from sklearn.cluster import Birch 
 
 
-
 file_name = None 
 Flask_App = Flask(__name__) # Creating our Flask Instance
 Flask_App.secret_key = 'random string'
@@ -28,8 +27,33 @@ Stratification_columns = ['Customer Type', 'EMI Carded', 'Permanent Blocked', 'T
 today = date.today()
 today = today.strftime("%d-%m-%Y")
 
-def get_form_parameters():
-    return   request.form['Hypothesis']
+def get_form_parameters(x):
+    return request.form[x]
+
+def basic_Sample_Size(): 
+    error = None
+    result = None
+
+    input1 = float(request.form['Input1'])
+    input2 = float(request.form['Input1'])
+    input3 = float(request.form['Input1'])
+    input4 = float(request.form['Input1']) 
+
+    if (input1 > 49):
+        input1 = 100-input1
+    p1 = input1/100
+    p2 = (input2+input1)/100
+    alpha = (input4/100)/2 
+    beta = 1- (input3/100)
+    z_score_alpha = stats.norm.ppf(1-alpha)
+    z_score_beta = stats.norm.ppf(1-beta)
+    part_1 = z_score_alpha*math.sqrt((2*p1*(1-p1)))
+    part_2 = z_score_beta*math.sqrt(p1*(1-p1) + p2*(1-p2))
+    deno = math.pow(p2 - p1, 2) 
+    n = (math.pow((part_1+part_2),2))/(deno)
+    result = round(n)
+    result_array = [result]
+    return result_array 
 
 #To display the intial page 
 @Flask_App.route('/', methods=['GET'])
@@ -39,8 +63,27 @@ def index():
 @Flask_App.route('/Index',methods=['GET' , "POST"])
 def New_Testing():
     if request.method == 'POST':
-       Form =  get_form_parameters()
-       return render_template('New_Testing.html' , form = Form , features = Features, stratification_columns=Stratification_columns, date = today) 
+       Form = {}
+       features_columns = {}
+       Form["Hypothesis"] =  get_form_parameters("Hypothesis")
+       for i in Features:
+           if request.form.get(i):
+               features_columns[i] = True 
+           else : 
+               features_columns[i] = False
+       Form["Features"] = features_columns
+       if (request.form.get("baseline_Rate_Input")) and (request.form.get("detectable_Effect_Input")) and (request.form.get("significance_Power_Input")) and (request.form.get("significance_Level_Input")) : 
+           sample_result = basic_Sample_Size()
+           Form["basline_Rate"] = request.form.get("baseline_Rate_Input")
+           Form["detectable_Effect"] = request.form.get("detectable_Effect_Input")
+           Form["significance_Power_Input"] = request.form.get("significance_Power_Input")
+           Form["significance_Level_Input"] = request.form.get("significance_Level_Input")
+           
+    #   if request.form.get("30 Days Active") :
+     #       Form["30 Days Active"] = True
+
+
+       return render_template('New_Testing.html' , form = Form, features = Features, stratification_columns=Stratification_columns, date = today, sample_result = sample_result) 
     return render_template('New_Testing.html' , features = Features, stratification_columns=Stratification_columns, date = today)
 
 
@@ -692,5 +735,5 @@ def sampling_select():
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(port= 5032)   
+    Flask_App.run(port= 5059)   
     

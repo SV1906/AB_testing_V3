@@ -128,8 +128,8 @@
         </div>
         <div class="card">
           <div class="card-body  row "> {% for i in features %} <div class="col-3   ">
-              <input class="form-check-input" type="checkbox" id="conditions" value="{{i}}">
-              <label class="form-check-label" for="inlineCheckbox1">{{i}}</label>
+              <input class="form-check-input" type="checkbox" id="{{i}}" value=True name = "{{i}}" checked>
+              <label class="form-check-label" for="{{i}}" value = "{{i}}"  id = "{{i}}" >{{i}}</label>
             </div> {% endfor %} </div>
         </div>
         <hr>
@@ -169,9 +169,9 @@
                     </sup>The default values for Confidence Interval and Margin of Error are already mentioned below.
                   </h9>
                 
-								  <div class="card-body col-12">							
-										<form class="row g-12" method="post" action="{{ url_for('operation_result_basic') }}" id="calculator_form">
-											<div class="col">
+								  <div class="card-body col-12">	
+                    <div class = "row g-12" method = "post" id = 	"calculator_form">
+                      <div class="col">
 												<div class="row">
 													<label for="Input1" class="form-label">Confidence Interval (%)</label>
 													<input type="text" class="form-control" placeholder="90" name="Input1" >
@@ -187,7 +187,7 @@
 													<button type="reset" class="btn btn-secondary">Reset</button>
 												</div>
 											</div>
-										</form>
+                    </div>					
 									</div>    
                 </div>
               </div>
@@ -226,21 +226,21 @@
 											<div class="row g-3">
 												<div class="col-sm">
 													<label for="Input1" class="form-label">Baseline Conversion Rate (%)</label>
-													<input type="text" class="form-control" placeholder="" name="Input1" required>
+													<input type="text" class="form-control" placeholder="" name="baseline_Rate_Input" required>
 												</div>
 												<div class="col-sm">
 													<label for="Input2" class="form-label">Minimum Detectable Effect (%)</label>
-													<input type="text" class="form-control" placeholder="" name="Input2" required>
+													<input type="text" class="form-control" placeholder="" name="detectable_Effect_Input" required>
 												</div>
 											</div>
 											<div class = "row g-3">
 												<div class="col-sm">
 													<label for="Input3" class="form-label">Significance Power  (%)</label>
-													<input type="text" class="form-control" placeholder="" name="Input3" required>
+													<input type="text" class="form-control" placeholder="" name="significance_Power_Input" required>
 												</div>
 												<div class="col-sm">
 													<label for="Input14" class="form-label">Significance level (%)</label>
-													<input type="text" class="form-control" placeholder="" name="Input4" required>
+													<input type="text" class="form-control" placeholder="" name="significance_Level_Input" required>
 												</div>
 											</div>
 											<div class = "card-body">											
