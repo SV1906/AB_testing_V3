@@ -95,7 +95,7 @@
     <!-- End Sidebar-->
     <!-- Main Body-->
     <main id="main" class="main">
-      <form method="post"  >
+      <form method="post"  action = "{{url_for('New_Testing')}}" >
         <!-- Start hypothesis -->
         <div id="hypothesis" class="pagetitle">
           <h1>Hypothesis</h1>
@@ -178,8 +178,9 @@
                   </h9>
                 
 								  <div class="card-body col-12">	
-                    <form class = "row g-12" method = "post" id = "calculator_form" action = "{{url_for('operation_result_basic')}}">
-                      <div class="col">
+
+                   <!-- <form class = "row g-12" method = "post" id = "calculator_form" action = "{{url_for('New_Testing')}}"> -->
+                      <div class="col">{{form}}
 												<div class="row">
 													<label for="Input1" class="form-label">Confidence Interval (%)</label>
 													<input type="number" class="form-control"  value="{% if Success == True %}{{form.ConversionInterval}}{% endif %}" name="confidence_Interval_Input" >
@@ -195,7 +196,7 @@
 													<button type="reset" class="btn btn-secondary">Reset</button>
 												</div>
 											</div>
-                    </form>				
+                   <!-- </form>				-->
 									</div>    
                 </div>
               </div>
@@ -230,25 +231,25 @@
                 </h9>
                 <div>
 									<div class = "card-body col-12">
-										<form class="row g-12" method="post" action="{{ url_for('operation_result') }}" id="calculator_form">								
+										<!-- <form class="row g-12" method="post" action="{{ url_for('operation_result') }}" id="calculator_form">								 -->
 											<div class="row g-3">
 												<div class="col-sm">
 													<label for="Input1" class="form-label">Baseline Conversion Rate (%)</label>
-													<input type="text" class="form-control" placeholder="" name="baseline_Rate_Input" required>
+													<input type="text" class="form-control" value = "{% if Success == True %}{{form.BaselineRate}}{% endif %}" name="baseline_Rate_Input">
 												</div>
 												<div class="col-sm">
 													<label for="Input2" class="form-label">Minimum Detectable Effect (%)</label>
-													<input type="text" class="form-control" placeholder="" name="detectable_Effect_Input" required>
+													<input type="text" class="form-control" value = "{% if Success == True %}{{form.DetectableEffect}}{% endif %}" name="detectable_Effect_Input" >
 												</div>
 											</div>
 											<div class = "row g-3">
 												<div class="col-sm">
 													<label for="Input3" class="form-label">Significance Power  (%)</label>
-													<input type="text" class="form-control" placeholder="" name="significance_Power_Input" required>
+													<input type="text" class="form-control" value = "{% if Success == True %}{{form.SignificantPower}}{% endif %}" name="significance_Power_Input" >
 												</div>
 												<div class="col-sm">
 													<label for="Input14" class="form-label">Significance level (%)</label>
-													<input type="text" class="form-control" placeholder="" name="significance_Level_Input" required>
+													<input type="text" class="form-control" value = "{% if Success == True %}{{form.SignificantLevel}}{% endif %}" name="significance_Level_Input" >
 												</div>
 											</div>
 											<div class = "card-body">											
@@ -257,7 +258,7 @@
 													<button type="reset" class="btn btn-secondary">Reset</button>
 												</div>
 											</div>												
-										</form>										
+										<!-- </form>										 -->
 									</div> 
                 </div>
               </div>
@@ -266,7 +267,9 @@
 					</div>
 				</div>				
 							<h5 class="card-title">
-								<b>Minimum Sample Size : {{basic_sampling_result}} {{sampling_result}} </b>
+								<b>{% if Success == True %}Minimum Sample Size (Basic): {{form.basic_result}}{% endif %} <br> 
+                  {% if Success == True %}Minimum Sample Size (Evan Millers): {{form.evan_millers}}{% endif %} 
+                </b>
 							</h5>														
 		     <hr>
          <!--  End Calculator -->
@@ -279,12 +282,12 @@
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="ps-3">
-                <form method="post" action="{{ url_for('suggesting_method') }}" id="Sugessting_method">
+            <!--    <form method="post"  id="Sugessting_method"> -->
                   <br>
-                  <button type="submit" value="Suggest Sampling Technique" class="button-18">Suggest Sampling Technique</button>
-                </form>
+                  <button type="submit" value="Suggest Sampling Technique" class="button-18" id = torrent_id>Suggest Sampling Technique</button>
+           <!--     </form> -->
                 <br />
-                <p>{{Sample_Suggested}}</p>
+                <p></p>
                 <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b>
                   <sup>
                     <b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki">
@@ -306,22 +309,22 @@
                   </sup>
                 </p>
                 </p>
-                <form method="post" action="{{ url_for('sampling_select') }}">
-
-									<select class="form-select form-select-sm" id = "operator" name = "operator">
-										<option selected>Select a Technique</option>
-										<option value="SR">Simple Random Sampling</option>
-										<option value="SyC">Systematic Sampling</option>
-										<option value="St">Stratified Sampling</option>
-									</select>
-                  <div class = "card-body">
-										<div class="text-center">
-											<button type="submit" class="button-18">Submit</button>
-											<button type="reset" class="btn btn-secondary">Reset</button>
-										</div>
-									</div>
-                  
-                </form>
+               <!-- <form method="post" action="{{ url_for('sampling_select') }}"> -->
+                  <div> 
+                    <select class="form-select form-select-sm" id = "operator" name = "operator">
+                      <!-- <option value = "dummy">Select a Technique</option> --> 
+                      <option value="SR">Simple Random Sampling</option>
+                      <option value="SyC">Systematic Sampling</option>
+                      <option value="St">Stratified Sampling</option>
+                    </select>
+                    <div class = "card-body">
+                      <div class="text-center">
+                        <button type="submit" class="button-18">Submit</button>
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                      </div>
+                    </div>
+                  </div>
+              <!-- </form> -->
               </div>
             </div>
           </div>
@@ -330,7 +333,7 @@
         <!-- End of Sampling Technique-->
 
         <!-- Start Stratify On --> 
-				{% if open_section == 'Stratified' %} 
+				<!-- {% if open_section == 'Stratified' %}  -->
 				<div id="stratify_on" class="pagetitle">
           <h1>Stratify On:</h1>
           <h9>Please select the columns to stratify on.</h9>
@@ -346,7 +349,7 @@
 					</div>
         </div>
         <hr> 
-				{% endif %}
+				<!-- {% endif %} -->
         <!-- End  Stratify On -->
 
         <!-- Start of Result Stratification--> 
@@ -364,55 +367,52 @@
         </div>
         <div class="card  ">
           <div class="card-body">
-            <form class="row g-3" method="post" action="{{ url_for('User_Input') }}" id="User_input_id">
-              <div class="col-md-12">
-								<label for="campaign_name_input" class="form-label">Campaign Name</label>
-								<input type="text" class="form-control" name="campaign_name_input" required>
-							</div>
-							<div class="col-md-4">                
-                  <label for="Date_of_requirement" class="form-label">Date of Requirement</label>                
-              <div class = "card-body">
-                <text>{{date}}</text> 
-              </div>   
-
-                        
-              <!--   <label for="Date_of_requirement" class="form-label">Date of Requirement</label> -->
-								<!-- <input type="date" class="form-control" name="Date_of_requirement" value="13-4-15">--> 
-							</div>
-							<div class="col-md-4">
-								<label for="campaign_start_date" class="form-label">Campaign Start Date</label>
-								<input type="date" class="form-control" name="campaign_start_date" required>
-							</div>
-							<div class="col-md-4"><label for="campaign_end_date" class="form-label">Campaign End Date</label>
-								<input type="date" class="form-control" name="campaign_end_date" required>
-							</div>
-							<div class="col-md-4"><label for="Campaign_type_input" class="form-label">Campaign Type</label>
-								<select name="Campaign_type_input" class="form-select" required>
-									<option selected value="CT1">Push</option>
-									<option value="CT2">InApp-Pop</option>
-									<option value="CT3">Inbox</option>
-									<option value="CT4">Banner</option>
-								</select>
-							</div>
-							<div class="col-md-4">
-								<label for="Conversion_metric_input" class="form-label">Conversion Metric</label>
-								<select name="Conversion_metric_input" class="form-select" required>
-									<option selected value="CM1">Retention rate</option>
-									<option value="CM2">Digitization</option>
-									<option value="CM3">App Launch</option>
-									<option value="CM4">FD Booked</option>
-									<option value="CM5">B2B Order Placed</option>
-								</select></div><div class="col-md-4">
-									<label for="Conversion_period" class="form-label">Conversion Period (in Days)</label>
-										<input type="text" class="form-control" name="Conversion_period" required>
-									</div>
-									<div class="text-center">
-										<button type="submit" class="button-18">Submit</button>
-										<button type="reset" class="btn btn-secondary">Reset
-
-										</button>
-									</div>
-            </form>
+            <!--
+            <form class="row g-3" method="post" action="{{ url_for('User_Input') }}" id="User_input_id"> -->
+              <div class = "row g-3">
+                <div class="col-md-12">
+                  <label  class="form-label">Campaign Name</label>
+                  <input type="text" class="form-control" id = "campaign_name_input" name="campaign_name_input" value = "{% if Success == True%}{{form.CampaignName}}{% endif %}">
+                </div>
+                <div class="col-md-4">                
+                    <label for="Date_of_requirement" class="form-label">Date of Requirement</label>                
+                <div class = "card-body">
+                  <text>{{date}}</text> 
+                </div>   
+                </div>
+                <div class="col-md-4">
+                  <label for="campaign_start_date" class="form-label">Campaign Start Date</label>
+                  <input type="date" class="form-control" id = "campaign_start_date" name="campaign_start_date" value = "{% if Success == True%}{{form.CampaignStartdate}}{% endif %}">
+                </div>
+                <div class="col-md-4"><label for="campaign_end_date" class="form-label">Campaign End Date</label>
+                  <input type="date" class="form-control" name="campaign_end_date" id="campaign_end_date" value = "{% if Success == True%}{{form.CampaignEnddate}}{% endif %}" >
+                </div>
+                <div class="col-md-4"><label for="Campaign_type_input" class="form-label">Campaign Type</label>
+                  <select name = "Campaign_type_input" id="Campaign_type_input" class="form-select" >
+                    <option selected value="CT1">Push</option>
+                    <option value="CT2">InApp-Pop</option>
+                    <option value="CT3">Inbox</option>
+                    <option value="CT4">Banner</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="Conversion_metric_input" class="form-label">Conversion Metric</label>
+                  <select name = "Conversion_metric_input" id ="Conversion_metric_input" class="form-select" >
+                    <option selected value="CM1">Retention rate</option>
+                    <option value="CM2">Digitization</option>
+                    <option value="CM3">App Launch</option>
+                    <option value="CM4">FD Booked</option>
+                    <option value="CM5">B2B Order Placed</option>
+                  </select></div><div class="col-md-4">
+                    <label for="Conversion_period" class="form-label">Conversion Period (in Days)</label>
+                      <input type="text" class="form-control" name = "Conversion_period" id="Conversion_period" value = "{% if Success == True%}{{form.ConversionPeriod}}{% endif %}">
+                    </div>
+                    <div class="text-center">
+                      <button type="submit" class="button-18">Submit</button>
+                      <button type="reset" class="btn btn-secondary">Reset</button>
+                    </div>
+              </div>
+            <!--  </form> -->
           </div>
         </div>
         <hr>
