@@ -32,11 +32,14 @@ today = date.today()
 today = today.strftime("%d-%m-%Y")
  
 
+
 def get_form_parameters():
     Form  = {}
     Form["Hypothesis"] = request.form['Hypothesis'] 
     Form["ConversionInterval"] = request.form['confidence_Interval_Input']
     Form["MarginError"] = request.form['margin_Error_Input']
+    if request.form.get('Button_id') == True: 
+        Form['Button'] = request.form['Button_id']
     Form['BaselineRate'] = request.form['baseline_Rate_Input']
     Form['DetectableEffect'] = request.form['detectable_Effect_Input']
     Form['SignificantPower'] = request.form['significance_Power_Input']
@@ -48,6 +51,9 @@ def get_form_parameters():
     Form['CampaignType'] = request.form['Campaign_type_input']
     Form['ConversionMetric'] = request.form['Conversion_metric_input']
     Form['ConversionPeriod'] = request.form['Conversion_period']
+
+
+    
     # if request.form.get('campaign_name_input') :
     #     Form['CampaignName'] = request.form['campaign_name_input']
         
@@ -58,7 +64,7 @@ def get_form_parameters():
 
     #Form['SamplingTechnique']= request.form['operator']  
     
-
+    
 
 def basic_Sample_Size(x,y):
     result = None
@@ -251,6 +257,14 @@ def New_Testing():
        if (forms["BaselineRate"] != '' and forms["DetectableEffect"] != '' and forms["SignificantPower"] != '' and forms["SignificantLevel"] != ''): 
            forms ["evan_millers"] =  evan_Millers(forms["BaselineRate"], forms["DetectableEffect"], forms["SignificantPower"], forms["SignificantLevel"])
         
+       if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != ''):
+           forms ["Download"] = True
+
+        
+       
+    #    if (forms["Operator"] == 'St'): 
+    #        forms["StratifiedCol"] = True 
+           
     #    if(forms['operator'] != ''):
     #        sampling_technique(forms['operator'])
   
@@ -927,5 +941,5 @@ def sampling_select():
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(port= 5090)   
+    Flask_App.run(port= 5091)   
     
