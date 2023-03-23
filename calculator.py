@@ -30,6 +30,8 @@ Features = [ {'key':'30 Days Active' , 'value' : 'False'} , {'key':'60 Days Acti
 Stratification_columns = [{'key' : 'Customer Type', 'value': 'False'}, {'key' : 'EMI Carded', 'value': 'False'}, {'key' : 'Permanent Blocked', 'value': 'False'}]
 today = date.today()
 today = today.strftime("%d-%m-%Y")
+button_variable = "False" 
+
  
 
 
@@ -38,8 +40,10 @@ def get_form_parameters():
     Form["Hypothesis"] = request.form['Hypothesis'] 
     Form["ConversionInterval"] = request.form['confidence_Interval_Input']
     Form["MarginError"] = request.form['margin_Error_Input']
-    if request.form.get('Button_id') == True: 
-        Form['Button'] = request.form['Button_id']
+    # Form['Button'] = request.form['Button_id']
+    Form['Button'] = request.form.get('Button_id')
+    # if request.form.get('Button_id') == 'Suggest Sampling Technique': 
+    #     Form['Button'] = request.form['Button_id']
     Form['BaselineRate'] = request.form['baseline_Rate_Input']
     Form['DetectableEffect'] = request.form['detectable_Effect_Input']
     Form['SignificantPower'] = request.form['significance_Power_Input']
@@ -51,20 +55,14 @@ def get_form_parameters():
     Form['CampaignType'] = request.form['Campaign_type_input']
     Form['ConversionMetric'] = request.form['Conversion_metric_input']
     Form['ConversionPeriod'] = request.form['Conversion_period']
-
-
-    
+    return Form  
     # if request.form.get('campaign_name_input') :
-    #     Form['CampaignName'] = request.form['campaign_name_input']
-        
-        
+    #     Form['CampaignName'] = request.form['campaign_name_input']     
     # Form['CampaignStartdate'] = request.form['campaign_start_date']
-
-    return Form
-
-    #Form['SamplingTechnique']= request.form['operator']  
+    #Form['SamplingTechnique']= request.form['operator'] 
     
-    
+def sample_suggest(): 
+    return "Systematic Sampling"    
 
 def basic_Sample_Size(x,y):
     result = None
@@ -259,9 +257,13 @@ def New_Testing():
         
        if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != ''):
            forms ["Download"] = True
-
         
-       
+       global button_variable 
+       if (forms["Button"] != None or button_variable == "True"):
+           #global button_variable
+           button_variable = "True"           
+           forms["Sample_suggestion"] = sample_suggest()
+        
     #    if (forms["Operator"] == 'St'): 
     #        forms["StratifiedCol"] = True 
            

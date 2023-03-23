@@ -179,8 +179,6 @@
                   </h9>
                 
 								  <div class="card-body col-12">	
-
-                   <!-- <form class = "row g-12" method = "post" id = "calculator_form" action = "{{url_for('New_Testing')}}"> -->
                       <div class="col">{{form}}
 												<div class="row">
 													<label for="Input1" class="form-label">Confidence Interval (%)</label>
@@ -194,7 +192,7 @@
 											<div class = "card-body">
 												<div class="text-center">
 													<button type="submit" class="button-18">Submit</button>
-													<button type="reset" class="btn btn-secondary">Reset</button>
+													<!-- <button type="reset" class="btn btn-secondary">Reset</button> -->
 												</div>
 											</div>
                    <!-- </form>				-->
@@ -232,7 +230,6 @@
                 </h9>
                 <div>
 									<div class = "card-body col-12">
-										<!-- <form class="row g-12" method="post" action="{{ url_for('operation_result') }}" id="calculator_form">								 -->
 											<div class="row g-3">
 												<div class="col-sm">
 													<label for="Input1" class="form-label">Baseline Conversion Rate (%)</label>
@@ -256,10 +253,9 @@
 											<div class = "card-body">											
 												<div class="text-center">
 													<button type="submit" class="button-18">Submit</button>
-													<button type="reset" class="btn btn-secondary">Reset</button>
+													<!-- <button type="reset" class="btn btn-secondary">Reset</button> -->
 												</div>
-											</div>												
-										<!-- </form>										 -->
+											</div>																				 
 									</div> 
                 </div>
               </div>
@@ -283,10 +279,9 @@
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="ps-3">
-            <!--    <form method="post"  id="Sugessting_method"> -->
                   <br>
                   <button type="submit" value="Suggest Sampling Technique" class="button-18" name = "Button_id" id = "Button_id">Suggest Sampling Technique</button>
-           <!--     </form> -->
+                  {% if Success == True %}{{form.Sample_suggestion}}{% endif %}
                 <br />
                 <p></p>
                 <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b>
@@ -310,7 +305,6 @@
                   </sup>
                 </p>
                 </p>
-               <!-- <form method="post" action="{{ url_for('sampling_select') }}"> -->
                   <div> 
                     <select property="status" value="St" styleClass="form-control" id = "operator" name = "operator">
                       <option value="SR">Simple Random Sampling</option>
@@ -323,7 +317,7 @@
                     <div class = "card-body">
                       <div class="text-center">
                         <button type="submit" class="button-18">Submit</button>
-                        <button type="reset" class="btn btn-secondary">Reset</button>
+                        <!-- <button type="reset" class="btn btn-secondary">Reset</button> -->
                       </div>
                     </div>
                   </div>
@@ -378,8 +372,6 @@
         </div>
         <div class="card  ">
           <div class="card-body">
-            <!--
-            <form class="row g-3" method="post" action="{{ url_for('User_Input') }}" id="User_input_id"> -->
               <div class = "row g-3">
                 <div class="col-md-12">
                   <label  class="form-label">Campaign Name</label>
@@ -420,7 +412,7 @@
                     </div>
                     <div class="text-center">
                       <button type="submit" class="button-18">Submit</button>
-                      <button type="reset" class="btn btn-secondary">Reset</button>
+                      <!-- <button type="reset" class="btn btn-secondary">Reset</button> -->
                     </div>
               </div>
             <!--  </form> -->
