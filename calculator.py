@@ -26,8 +26,8 @@ Flask_App.config['SESSION_PERMANENT'] = False
 Flask_App.config["SESSION_TYPE"] = "filesystem"
 #Session(Flask_App)
 
-Features = [ {'key':'30 Days Active' , 'value' : 'False'} , {'key':'60 Days Active' , 'value' : 'False'} , {'key':'90 Days Active' , 'value' : 'False'}, {'key':'Active on App' , 'value' : 'False'}, {'key':'Signed Up in last 7 days' , 'value' : 'False'}, {'key':'Signed up in last 15 days' , 'value' : 'False'}, {'key':'Birthday Month' , 'value' : 'False'}, {'key':'DEC' , 'value' : 'False'},{'key':'30 Days Inactive' , 'value' : 'False'}, {'key':'60 Days Inactive' , 'value' : 'False'}, {'key':'90 Days Inactive' , 'value' : 'False'}]
-Stratification_columns = [{'key' : 'Customer Type', 'value': 'False'}, {'key' : 'EMI Carded', 'value': 'False'}, {'key' : 'Permanent Blocked', 'value': 'False'}]
+Features = [ {'key':'Active on App' , 'value' : 'False'}, {'key':'Signed Up in last 7 days' , 'value' : 'False'}, {'key':'Signed up in last 15 days' , 'value' : 'False'}, {'key':'Birthday Month' , 'value' : 'False'}, {'key':'DEC' , 'value' : 'False'},{'key':'30 Days Inactive' , 'value' : 'False'}, {'key':'60 Days Inactive' , 'value' : 'False'}, {'key':'90 Days Inactive' , 'value' : 'False'}]
+Stratification_columns = [ {'key':'ETB' , 'value' : 'False'} , {'key':'Permanent Blocked' , 'value' : 'False'} , {'key':'30 Days Active' , 'value' : 'False'},  {'key':'NTB' , 'value' : 'False'}, {'key':'Temporary Blocked' , 'value' : 'False'}, {'key':'60 Days Active' , 'value' : 'False'},{'key':'PTB' , 'value' : 'False'}, {'key':'DEC' , 'value' : 'False'}, {'key':'90 Days Active' , 'value' : 'False'} ]
 today = date.today()
 today = today.strftime("%d-%m-%Y")
 button_variable = "False" 
