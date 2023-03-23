@@ -138,7 +138,6 @@
             {% endif %}
           </div> 
             {% endfor %} 
-            {{features}}
         </div>
       </div>
         <hr>
@@ -149,7 +148,7 @@
 					<h1>Minimum Sample Size Calculator</h1>
           <h9>Please fill in the information for minimum sample size calculation.</h9>
         </div>
-				<div class="card" style="height: 430px;">
+				<div class="card" style="height: 350px;">
 					<div class="card-body">
 						<ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item" role="presentation">
@@ -179,7 +178,7 @@
                   </h9>
                 
 								  <div class="card-body col-12">	
-                      <div class="col">{{form}}
+                      <div class="col">
 												<div class="row">
 													<label for="Input1" class="form-label">Confidence Interval (%)</label>
 													<input type="number" class="form-control"  value="{% if Success == True %}{{form.ConversionInterval}}{% endif %}" name="confidence_Interval_Input" >
@@ -392,21 +391,29 @@
                 </div>
                 <div class="col-md-4"><label for="Campaign_type_input" class="form-label">Campaign Type</label>
                   <select name = "Campaign_type_input" id="Campaign_type_input" class="form-select" >
-                    <option selected value="CT1">Push</option>
-                    <option value="CT2">InApp-Pop</option>
-                    <option value="CT3">Inbox</option>
-                    <option value="CT4">Banner</option>
+                    <option selected value="Push">Push</option>
+                    <option value="InApp-Pop">InApp-Pop</option>
+                    <option value="Inbox">Inbox</option>
+                    <option value="Banner">Banner</option>
                   </select>
+                  <script>
+                    document.querySelector('#Campaign_type_input').value = "{% if Success == True %}{{form.CampaignType}}{% else %}Push{% endif %}";
+                   </script> 
                 </div>
                 <div class="col-md-4">
                   <label for="Conversion_metric_input" class="form-label">Conversion Metric</label>
                   <select name = "Conversion_metric_input" id ="Conversion_metric_input" class="form-select" >
-                    <option selected value="CM1">Retention rate</option>
-                    <option value="CM2">Digitization</option>
-                    <option value="CM3">App Launch</option>
-                    <option value="CM4">FD Booked</option>
-                    <option value="CM5">B2B Order Placed</option>
-                  </select></div><div class="col-md-4">
+                    <option selected value="Retention rate">Retention rate</option>
+                    <option value="Digitization">Digitization</option>
+                    <option value="App Launch">App Launch</option>
+                    <option value="FD Booked">FD Booked</option>
+                    <option value="B2B Order Placed">B2B Order Placed</option>
+                  </select>
+                  <script>
+                    document.querySelector('#Conversion_metric_input').value = "{% if Success == True %}{{form.ConversionMetric}}{% else %}Retention rate{% endif %}";
+                   </script> 
+                </div>
+                <div class="col-md-4">
                     <label for="Conversion_period" class="form-label">Conversion Period (in Days)</label>
                       <input type="text" class="form-control" name = "Conversion_period" id="Conversion_period" value = "{% if Success == True%}{{form.ConversionPeriod}}{% endif %}">
                     </div>

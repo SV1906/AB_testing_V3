@@ -26,24 +26,41 @@ Flask_App.config['SESSION_PERMANENT'] = False
 Flask_App.config["SESSION_TYPE"] = "filesystem"
 #Session(Flask_App)
 
-Features = [ {'key':'30 Days Active' , 'value' : 'False'} , {'key':'60 Days Active' , 'value' : 'False'}]
+Features = [ {'key':'30 Days Active' , 'value' : 'False'} , {'key':'60 Days Active' , 'value' : 'False'} , {'key':'90 Days Active' , 'value' : 'False'}, {'key':'Active on App' , 'value' : 'False'}, {'key':'Signed Up in last 7 days' , 'value' : 'False'}, {'key':'Signed up in last 15 days' , 'value' : 'False'}, {'key':'Birthday Month' , 'value' : 'False'}, {'key':'DEC' , 'value' : 'False'},{'key':'30 Days Inactive' , 'value' : 'False'}, {'key':'60 Days Inactive' , 'value' : 'False'}, {'key':'90 Days Inactive' , 'value' : 'False'}]
 Stratification_columns = [{'key' : 'Customer Type', 'value': 'False'}, {'key' : 'EMI Carded', 'value': 'False'}, {'key' : 'Permanent Blocked', 'value': 'False'}]
 today = date.today()
 today = today.strftime("%d-%m-%Y")
 button_variable = "False" 
 
- 
+def excel_update(Campaign_name, Campaign_Start_Date, Campaign_End_Date, Campaign_Type, Conversion_Metric,Conversion_Period, Hypothesis): 
+    THIS_FOLDER = Path(__file__).parent.resolve()
+    file = (str(THIS_FOLDER)+"\\Final_Excel_1.csv")
+    df = pd.read_csv(file)
+    index_len = df.shape[0]+1
+    
+    array_output = []
+    array_output.append(index_len)
+    array_output.append(Campaign_name)
+    global today 
+    array_output.append(today)
+    array_output.append(Campaign_Start_Date)
+    array_output.append(Campaign_End_Date)
+    array_output.append(Campaign_Type)
+    array_output.append(Conversion_Metric)
+    array_output.append(Conversion_Period)
+    array_output.append(Hypothesis)
 
+    with open(file, 'a' , newline ='') as f_object:
+          writer_object = writer(f_object)
+          writer_object.writerow(array_output)
+          f_object.close()
 
 def get_form_parameters():
     Form  = {}
     Form["Hypothesis"] = request.form['Hypothesis'] 
     Form["ConversionInterval"] = request.form['confidence_Interval_Input']
     Form["MarginError"] = request.form['margin_Error_Input']
-    # Form['Button'] = request.form['Button_id']
     Form['Button'] = request.form.get('Button_id')
-    # if request.form.get('Button_id') == 'Suggest Sampling Technique': 
-    #     Form['Button'] = request.form['Button_id']
     Form['BaselineRate'] = request.form['baseline_Rate_Input']
     Form['DetectableEffect'] = request.form['detectable_Effect_Input']
     Form['SignificantPower'] = request.form['significance_Power_Input']
@@ -56,10 +73,6 @@ def get_form_parameters():
     Form['ConversionMetric'] = request.form['Conversion_metric_input']
     Form['ConversionPeriod'] = request.form['Conversion_period']
     return Form  
-    # if request.form.get('campaign_name_input') :
-    #     Form['CampaignName'] = request.form['campaign_name_input']     
-    # Form['CampaignStartdate'] = request.form['campaign_start_date']
-    #Form['SamplingTechnique']= request.form['operator'] 
     
 def sample_suggest(): 
     return "Systematic Sampling"    
@@ -257,6 +270,7 @@ def New_Testing():
         
        if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != ''):
            forms ["Download"] = True
+           excel_update(forms["CampaignName"], forms["CampaignStartdate"], forms["CampaignEnddate"], forms["CampaignType"], forms["ConversionMetric"], forms["ConversionPeriod"], forms["Hypothesis"])
         
        global button_variable 
        if (forms["Button"] != None or button_variable == "True"):
@@ -264,36 +278,9 @@ def New_Testing():
            button_variable = "True"           
            forms["Sample_suggestion"] = sample_suggest()
         
-    #    if (forms["Operator"] == 'St'): 
-    #        forms["StratifiedCol"] = True 
-           
-    #    if(forms['operator'] != ''):
-    #        sampling_technique(forms['operator'])
-  
-
-    #    main_form["Hypothesis"] =  get_form_parameters("Hypothesis")
-    #    for i in Features:
-    #             if  'value' in i:  
-    #                 i['value'] = 'True' 
-    #        else : 
-    #            Features_input[i] = False
-    #    main_form["Features"] = Features_input
-
        return render_template('New_Testing.html', Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today) 
 
     return render_template('New_Testing.html' , features = Features, stratification_columns=Stratification_columns, date = today)
-
-       
-    #    if (request.form.get("baseline_Rate_Input")) and (request.form.get("detectable_Effect_Input")) and (request.form.get("significance_Power_Input")) and (request.form.get("significance_Level_Input")) : 
-    #        sample_result = basic_Sample_Size()
-    #        Form["basline_Rate"] = request.form.get("baseline_Rate_Input")
-    #        Form["detectable_Effect"] = request.form.get("detectable_Effect_Input")
-    #        Form["significance_Power_Input"] = request.form.get("significance_Power_Input")
-    #        Form["significance_Level_Input"] = request.form.get("significance_Level_Input")
-           
-    #   if request.form.get("30 Days Active") :
-     #       Form["30 Days Active"] = True
-
 
 
 
