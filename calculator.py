@@ -26,7 +26,28 @@ Flask_App.config['SESSION_PERMANENT'] = False
 Flask_App.config["SESSION_TYPE"] = "filesystem"
 #Session(Flask_App)
 
-Features = [ {'key':'Active on App' , 'value' : 'False'}, {'key':'Signed Up in last 7 days' , 'value' : 'False'}, {'key':'Signed up in last 15 days' , 'value' : 'False'}, {'key':'Birthday Month' , 'value' : 'False'}, {'key':'DEC' , 'value' : 'False'},{'key':'30 Days Inactive' , 'value' : 'False'}, {'key':'60 Days Inactive' , 'value' : 'False'}, {'key':'90 Days Inactive' , 'value' : 'False'}]
+# Features = [ {'key':'Active on App' , 'value' : 'False'}, {'key':'Signed Up in last 7 days' , 'value' : 'False'}, {'key':'Signed up in last 15 days' , 'value' : 'False'}, {'key':'Birthday Month' , 'value' : 'False'}, {'key':'DEC' , 'value' : 'False'},{'key':'30 Days Inactive' , 'value' : 'False'}, {'key':'60 Days Inactive' , 'value' : 'False'}, {'key':'90 Days Inactive' , 'value' : 'False'}]
+
+THIS_FOLDER = Path(__file__).parent.resolve()
+final_data = str(THIS_FOLDER)+"\\DUMMY_DB.csv"
+data_Original = pd.read_csv(final_data)
+data_features = data_Original.copy()
+
+def features(data):
+    data = data.drop(['profile_phone', 'Signup_date'],axis=1)
+    new_features = []
+    for feature in data.columns:
+        new_feature={}
+        new_feature = {'key': feature, 'value': False}
+        new_features.append(new_feature)
+    return new_features
+
+Features = features(data_Original)
+
+
+# Features = [ {'Active on App' : 'False'}, {'Signed Up in last 7 days' : 'False'}]
+# , {'key':'Signed up in last 15 days' , 'value' : 'False'}, {'key':'Birthday Month' , 'value' : 'False'}, {'key':'DEC' , 'value' : 'False'},{'key':'30 Days Inactive' , 'value' : 'False'}, {'key':'60 Days Inactive' , 'value' : 'False'}, {'key':'90 Days Inactive' , 'value' : 'False'}]
+
 Stratification_columns = [ {'key':'ETB' , 'value' : 'False'} , {'key':'Permanent Blocked' , 'value' : 'False'} , {'key':'30 Days Active' , 'value' : 'False'},  {'key':'NTB' , 'value' : 'False'}, {'key':'Temporary Blocked' , 'value' : 'False'}, {'key':'60 Days Active' , 'value' : 'False'},{'key':'PTB' , 'value' : 'False'}, {'key':'DEC' , 'value' : 'False'}, {'key':'90 Days Active' , 'value' : 'False'} ]
 today = date.today()
 today = today.strftime("%d-%m-%Y")
@@ -72,10 +93,26 @@ def get_form_parameters():
     Form['CampaignType'] = request.form['Campaign_type_input']
     Form['ConversionMetric'] = request.form['Conversion_metric_input']
     Form['ConversionPeriod'] = request.form['Conversion_period']
+    if (request.form.get('Sample_Size_submit_1') != None) : 
+            Form['location'] = "sample_size"
+    if (request.form.get('Sample_Size_submit_2') != None):
+            Form['location'] = "sample_size"
+    if(request.form.get('Sampling_Technique_submit') != None):
+        Form["location"] = "sampling_technique"
+    if (request.form.get('Final_submit') != None):
+        Form["location"] = "campaign_details"
+    if (request.form.get('Button_id') != None):
+        Form['location'] = "sampling_technique"
+    # or request.form.get('Sample_Size_submit_2') or request.form.get('Sampling_Technique_submit') or request.form.get('Final_submit')
     return Form  
     
 def sample_suggest(): 
-    return "Systematic Sampling"    
+    return "Systematic Sampling"   
+
+def db_count(selected_features, data): 
+    for i in selected_features:
+        data = data[(data[i])==1]        
+    return len(data) 
 
 def basic_Sample_Size(x,y):
     result = None
@@ -261,23 +298,38 @@ def New_Testing():
                 i['value'] = True
             else : 
                 i ['value'] = False 
-        
-       if (forms["ConversionInterval"] != '' and forms["MarginError"] != ''):
-            forms ["basic_result"] = basic_Sample_Size(forms["ConversionInterval"], forms["MarginError"])
 
-       if (forms["BaselineRate"] != '' and forms["DetectableEffect"] != '' and forms["SignificantPower"] != '' and forms["SignificantLevel"] != ''): 
+        
+       if (forms["ConversionInterval"] != '' and forms["MarginError"] != ''):   
+            # forms ["location"] = "sample_size"    
+            forms ["basic_result"] = basic_Sample_Size(forms["ConversionInterval"], forms["MarginError"])           
+
+       if (forms["BaselineRate"] != '' and forms["DetectableEffect"] != '' and forms["SignificantPower"] != '' and forms["SignificantLevel"] != ''):           
+        #    forms ["location"] = "sample_size"
            forms ["evan_millers"] =  evan_Millers(forms["BaselineRate"], forms["DetectableEffect"], forms["SignificantPower"], forms["SignificantLevel"])
         
-       if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != ''):
-           forms ["Download"] = True
+       if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != ''):           
+        #    forms ["location"] = "campaign_details"
+           forms ["Download"] = True           
            excel_update(forms["CampaignName"], forms["CampaignStartdate"], forms["CampaignEnddate"], forms["CampaignType"], forms["ConversionMetric"], forms["ConversionPeriod"], forms["Hypothesis"])
-        
+           
+       selected_features = []
+       for i in Features: 
+             if(i['value'] == True): 
+                 selected_features.append(i['key'])
+    #    forms["Current_Count"] = db_count(selected_features, data_Original)
+       forms["Current_Count"] = db_count(selected_features, data_Original)
+
        global button_variable 
        if (forms["Button"] != None or button_variable == "True"):
            #global button_variable
-           button_variable = "True"           
+        #    forms["location"] = "sampling_technique"
+           button_variable = "True"
            forms["Sample_suggestion"] = sample_suggest()
-        
+
+    #    if(forms["Button_2"] != ""): 
+    #        forms["location"] = forms["Button_2"]
+ 
        return render_template('New_Testing.html', Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today) 
 
     return render_template('New_Testing.html' , features = Features, stratification_columns=Stratification_columns, date = today)

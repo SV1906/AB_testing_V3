@@ -31,15 +31,34 @@
   <body>
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center">
-      <div class="nav-link nav-profile d-flex align-items-center pe-0">
+      <div class = "navbar-nav w-100 justify-content-center">    
+          <div class="nav-link nav-profile d-flex align-items-center">
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+            <a href="templates/index.html" class="logo d-flex align-items-center">
+              <img src="{{url_for('static', filename='image/apple-touch-icon1.png')}}" alt="">
+              <span class="d-none d-lg-block">Bajaj Finserv</span>
+            </a> 
+          </div>
+          <!-- <h4><b>A/B Testing</b></h4> -->
+      </div>
+      
+    </header>
+      <!--
+        <div class="nav-link nav-profile d-flex align-items-center pe-0">
         <i class="bi bi-list toggle-sidebar-btn"></i>
         <a href="templates/index.html" class="logo d-flex align-items-center">
           <img src="{{url_for('static', filename='image/apple-touch-icon1.png')}}" alt="">
           <span class="d-none d-lg-block">Bajaj Finserv</span>
-        </a>
-    </header>
-    <!-- ======= Sidebar ======= -->
-    
+        </a> 
+      </div>
+       
+        <div class = "navbar-nav w-100 justify-content-center">
+        <div class="text-center">
+           <h4><b>A/B Testing</b></h4>
+        </div>  
+      </div> -->
+   
+
     <aside id="sidebar" class="sidebar">
       <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item active">
@@ -50,37 +69,37 @@
           </a>
           <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-              <a onclick="test('hypothesis')" id="hypothesis_button">
+              <a href= "#hypothesis" id="hypothesis_button">
                 <i class="bi bi-circle"></i>
                 <span>Hypothesis</span>
               </a>
-							<script>
+							<!-- <script>
 								function test(x)
 								{
 									window.scrollTo({ top: document.getElementById(x).getBoundingClientRect().top, behavior: 'smooth'})
 								}
-							</script>
+							</script> -->
             </li>
             <li>
-              <a onclick="test('select_filters')">
+              <a href= "#select_filters">
                 <i class="bi bi-circle"></i>
                 <span>Select Conditions/Filters</span>
               </a>
             </li>
             <li>
-              <a onclick="test('sample_size')">
+              <a href="#sample_size">
                 <i class="bi bi-circle"></i>
                 <span>Minimum Sample Size</span>
               </a>
             </li>
             <li>
-              <a onclick="test('sampling_technique')">
+              <a href="#sampling_technique">
                 <i class="bi bi-circle"></i>
                 <span>Sampling Technique</span>
               </a>
             </li>
             <li>
-              <a onclick="test('campaign_details')">
+              <a href="#campaign_details">
                 <i class="bi bi-circle"></i>
                 <span>Campaign Details</span>
               </a>
@@ -127,18 +146,27 @@
         <div id="select_filters" class="pagetitle">
           <h1>Select Conditions/Filters</h1>
           <h9>Please select the conditions and filters.</h9>
+          <B>{% if Success == True%}{{form}}{% endif %}</B>
+        
         </div>
         <div class="card">
-          <div class="card-body  row "> {% for i in features %} <div class="col-3">
-            {% if i.value == True %}
+          <div class="card-body  row "> {% for i in features %} <div class="col-4">
+              {% if i.value == True %}
               <input class="form-check-input" type="checkbox" id="{{i.key}}"    name = "{{i.key}}" checked>
               <label class="form-check-label"  >{{i.key}}</label>   
-            {% else %} 
-            <input class="form-check-input" type="checkbox" id="{{i.key}}"  name = "{{i.key}}">
-            <label class="form-check-label"  >{{i.key}}</label>   
-            {% endif %}
+              {% else %} 
+              <input class="form-check-input" type="checkbox" id="{{i.key}}"  name = "{{i.key}}">
+              <label class="form-check-label"  >{{i.key}}</label>   
+              {% endif %}
           </div> 
             {% endfor %} 
+            <div class ="card-body">
+              <div class="text-center">
+                <!-- <button type="submit" class="button-18" for = "Features_button"   ><a class="button-18"  href= "#sample_size" >Submit</a></button> -->
+                <button type="submit" class="button-18" for = "Features_button"   ><a class="button-18" >Submit</a></button>
+              </div> 
+              {% if Success == True %}{{form}}{% endif %}       	
+            </div>
         </div>
       </div>
         <hr>
@@ -191,11 +219,12 @@
 											</div>
 											<div class = "card-body">
 												<div class="text-center">
-													<button type="submit" class="button-18">Submit</button>
-													<!-- <button type="reset" class="btn btn-secondary">Reset</button> -->
-												</div>
+													<button type="submit" class="button-18" for = "Sample_Size_submit_1"   ><a class="button-18"     href= "#sample_size" >Submit</a></button>	
+                        </div>
+                        <div class="text-center">
+													<b>{% if Success == True %}Minimum Sample Size (Basic): {{form.basic_result}}{% endif %} </b>                         
+												</div>                        		
 											</div>
-                   <!-- </form>				-->
 									</div>    
                 </div>
               </div>
@@ -252,9 +281,11 @@
 											</div>
 											<div class = "card-body">											
 												<div class="text-center">
-													<button type="submit" class="button-18">Submit</button>
-													<!-- <button type="reset" class="btn btn-secondary">Reset</button> -->
+													<button type="submit" class="button-18" name ="Sample_Size_submit_2" id = "Sample_Size_submit_2">Submit</button>                          
 												</div>
+                        <div class="text-center">
+													<b>{% if Success == True %}Minimum Sample Size (Evan Millers): {{form.evan_millers}}{% endif %}</b>                         
+												</div>              
 											</div>																				 
 									</div> 
                 </div>
@@ -263,11 +294,11 @@
             </div>
 					</div>
 				</div>				
-							<h5 class="card-title">
+							<!-- <h5 class="card-title">
 								<b>{% if Success == True %}Minimum Sample Size (Basic): {{form.basic_result}}{% endif %} <br> 
                   {% if Success == True %}Minimum Sample Size (Evan Millers): {{form.evan_millers}}{% endif %} 
                 </b>
-							</h5>														
+							</h5>														 -->
 		     <hr>
          <!--  End Calculator -->
 
@@ -281,9 +312,9 @@
               <div class="ps-3">
                   <br>
                   <button type="submit" value="Suggest Sampling Technique" class="button-18" name = "Button_id" id = "Button_id">Suggest Sampling Technique</button>
-                  {% if Success == True %}{{form.Sample_suggestion}}{% endif %}
-                <br />
-                <p></p>
+                  <div class = "card-body">
+                    <b>{% if Success == True %} Suggested Technique : {{form.Sample_suggestion}}{% endif %}</b>
+                  </div>
                 <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b>
                   <sup>
                     <b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki">
@@ -316,12 +347,10 @@
                      </script>              
                     <div class = "card-body">
                       <div class="text-center">
-                        <button type="submit" class="button-18">Submit</button>
-                        <!-- <button type="reset" class="btn btn-secondary">Reset</button> -->
+                        <button type="submit" class="button-18" id = "Sampling_Technique_submit" name = "Sampling_Technique_submit">Submit</button>
                       </div>
                     </div>
                   </div>
-              <!-- </form> -->
               </div>
             </div>
           </div>
@@ -366,6 +395,32 @@
         <!-- End of Result Stratification-->
 
         <!-- Start Campaign Details-->
+        <!-- <script>
+          $('#Final_submit').button("enable");​​​​​​​​​​​​​
+          $('.fields').bind('keyup', function() { 
+           var nameLength = $("#campaign_name_input").length;
+           if (nameLength > 0)
+           {
+             $('#Final_submit').button("disable");​​​​​​​​​​​​
+           }
+         } );
+        </script> -->
+
+        <!-- <script>
+          document.getElementById("campaign_name_input").addEventListener("keyup", function() {
+            var nameInput = document.getElementById('campaign_name_input').value;
+            if (nameInput != "") {
+               document.getElementById('Final_submit').removeAttribute("disabled");
+          } 
+          else {
+             document.getElementById('Final_submit').setAttribute("disabled", null);
+         }
+         });
+        </script> -->
+
+
+
+
         <div id="campaign_details" class="pagetitle">
           <h1>Campaign Details</h1>
         </div>
@@ -415,14 +470,12 @@
                 </div>
                 <div class="col-md-4">
                     <label for="Conversion_period" class="form-label">Conversion Period (in Days)</label>
-                      <input type="text" class="form-control" name = "Conversion_period" id="Conversion_period" value = "{% if Success == True%}{{form.ConversionPeriod}}{% endif %}">
+                      <input type="number" class="form-control" name = "Conversion_period" id="Conversion_period" value = "{% if Success == True%}{{form.ConversionPeriod}}{% endif %}">
                     </div>
                     <div class="text-center">
-                      <button type="submit" class="button-18">Submit</button>
-                      <!-- <button type="reset" class="btn btn-secondary">Reset</button> -->
+                      <button type="submit" class="button-18" id = "Final_submit" name = "Final_submit" >Submit</button>
                     </div>
               </div>
-            <!--  </form> -->
           </div>
         </div>
         <hr>
@@ -446,13 +499,21 @@
 
 			</form>
 
+      
+
+        {% if  Success== True %}
+			<script>
+				window.scrollTo({ top: document.getElementById("{{form.location}}").getBoundingClientRect().top, behavior: 'smooth'})
+			</script>
+			{% endif %}
+
 			
-			{% if section == "sample_size" %}
+			<!-- {% if section == "sample_size" %}
 			<script>
 				window.scrollTo({ top: document.getElementById('sample_size').getBoundingClientRect().top, behavior: 'smooth'})
 			</script>
 
-			{% endif %}
+			{% endif %} -->
 
 			
          <!--
