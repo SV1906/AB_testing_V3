@@ -148,7 +148,7 @@
                 document.querySelector('#Doe_input').value = "{% if Success == True %}{{form.DOE}}{% else %}1{% endif %}";
                </script> 
             </div>  
-            {% if Success == True %}{{form}}{% endif %}  
+            <!-- {% if Success == True %}{{form}}{% endif %}   -->
           </div>
         </div>
         <hr>
@@ -255,12 +255,10 @@
                               </div>
                             </div>
                           </div> -->
-
-                        
                          
-                          <a href="/Index" type="button" class="button-18" for = "Sample_Size_submit_1" id = "Sample_Size_submit_1" name = "Sample_Size_submit_1">Button</a> 
+                          <!-- <a href="/Index" type="button" class="button-18" for = "Sample_Size_submit_1" id = "Sample_Size_submit_1" name = "Sample_Size_submit_1">Button</a>  -->
 
-                          <!-- <button type="submit" class="button-18" for = "Sample_Size_submit_1" id = "Sample_Size_submit_1" name = "Sample_Size_submit_1">Submit</button>	 -->
+                          <button type="submit" class="button-18" for = "Sample_Size_submit_1" id = "Sample_Size_submit_1" name = "Sample_Size_submit_1">Submit</button>	
                         </div>
                         <div class="text-center">
 													{% if Success == True %}Minimum Sample Size (Basic): {{form.basic_result}}{% endif %} <br> 
