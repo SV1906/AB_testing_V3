@@ -15,10 +15,6 @@ from sklearn.cluster import KMeans
 from sklearn.cluster import Birch 
 
 
-
-
-
-
 file_name = None 
 Flask_App = Flask(__name__) # Creating our Flask Instance
 Flask_App.secret_key = 'random string'
@@ -79,6 +75,7 @@ def excel_update(Campaign_name, Campaign_Start_Date, Campaign_End_Date, Campaign
 def get_form_parameters():
     Form  = {}
     Form["Hypothesis"] = request.form['Hypothesis'] 
+    Form['DOE'] = request.form['Doe_input']
     Form["ConversionInterval"] = request.form['confidence_Interval_Input']
     Form["MarginError"] = request.form['margin_Error_Input']
     Form['Button'] = request.form.get('Button_id')
@@ -92,11 +89,15 @@ def get_form_parameters():
     Form['CampaignEnddate'] = request.form['campaign_end_date']
     Form['CampaignType'] = request.form['Campaign_type_input']
     Form['ConversionMetric'] = request.form['Conversion_metric_input']
-    Form['ConversionPeriod'] = request.form['Conversion_period']
+    Form['evan_millers'] = 0
+    Form['basic_result'] = 0
+
     if (request.form.get('Sample_Size_submit_1') != None) : 
             Form['location'] = "sample_size"
     if (request.form.get('Sample_Size_submit_2') != None):
             Form['location'] = "sample_size"
+    if (request.form.get('Features_button') != None):
+            Form['location'] = "select_filters"
     if(request.form.get('Sampling_Technique_submit') != None):
         Form["location"] = "sampling_technique"
     if (request.form.get('Final_submit') != None):
@@ -109,10 +110,17 @@ def get_form_parameters():
 def sample_suggest(): 
     return "Systematic Sampling"   
 
-def db_count(selected_features, data): 
-    for i in selected_features:
-        data = data[(data[i])==1]        
-    return len(data) 
+# Previous Code 
+# def db_count(selected_features, data): 
+#     for i in selected_features:
+#         data = data[(data[i])==1]        
+#     return len(data) 
+
+def db_count(data,selected): 
+    try:
+        return (data[selected].sum(axis=1)).value_counts()[len(selected)]
+    except:
+        return 0 
 
 def basic_Sample_Size(x,y):
     result = None
@@ -301,12 +309,14 @@ def New_Testing():
 
         
        if (forms["ConversionInterval"] != '' and forms["MarginError"] != ''):   
-            # forms ["location"] = "sample_size"    
+            # forms ["location"] = "sample_size"   
+             
             forms ["basic_result"] = basic_Sample_Size(forms["ConversionInterval"], forms["MarginError"])           
 
        if (forms["BaselineRate"] != '' and forms["DetectableEffect"] != '' and forms["SignificantPower"] != '' and forms["SignificantLevel"] != ''):           
         #    forms ["location"] = "sample_size"
            forms ["evan_millers"] =  evan_Millers(forms["BaselineRate"], forms["DetectableEffect"], forms["SignificantPower"], forms["SignificantLevel"])
+           
         
        if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != ''):           
         #    forms ["location"] = "campaign_details"
@@ -317,8 +327,7 @@ def New_Testing():
        for i in Features: 
              if(i['value'] == True): 
                  selected_features.append(i['key'])
-    #    forms["Current_Count"] = db_count(selected_features, data_Original)
-       forms["Current_Count"] = db_count(selected_features, data_Original)
+       forms["Current_Count"] = db_count(data_Original, selected_features)
 
        global button_variable 
        if (forms["Button"] != None or button_variable == "True"):
@@ -327,9 +336,17 @@ def New_Testing():
            button_variable = "True"
            forms["Sample_suggestion"] = sample_suggest()
 
+       if (forms["basic_result"] >= forms["evan_millers"]):
+           forms["final_result"] =  forms["basic_result"]
+
+       if (forms["basic_result"] < forms["evan_millers"]):
+           forms["final_result"] =  forms["evan_millers"]
+
     #    if(forms["Button_2"] != ""): 
     #        forms["location"] = forms["Button_2"]
- 
+    #    return redirect('Index#sample_size', Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today) 
+
+    #    return redirect(forms["location"], code=302)
        return render_template('New_Testing.html', Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today) 
 
     return render_template('New_Testing.html' , features = Features, stratification_columns=Stratification_columns, date = today)
@@ -982,5 +999,5 @@ def sampling_select():
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(port= 5091)   
+    Flask_App.run(port= 5092)   
     

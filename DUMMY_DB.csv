@@ -1,4 +1,4 @@
-profile_phone,Signup_date,Digitisation_Flag_3In1,Upi_Flag,Ppi_Flag,Bbps_Flag,App_Uninstallation_Flag,Active_Loan,Soa_Used,30_Days_Active,60_Days_Active,90_Days_Active,New_To_3In1,Upgraded_From_Experia,Uninstalled_Exp_Installed_3In1,Android,Ios,Etb,Ptb,Ntb,No Emi Card,Perm Block,Unblocked,Temp Block,Emicard Dec,Emicard Non-Dec,Non-Emicard Non-Dec,Retailer_Activate
+profile_phone,Signup_date,Digitisation_Flag_3In1,Upi_Flag,Ppi_Flag,Bbps_Flag,App_Uninstallation_Flag,Active_Loan,Soa_Used,30_Days_Active,60_Days_Active,90_Days_Active,New_To_3In1,Upgraded_From_Experia,App_unInstalled_flag,Android,Ios,Etb,Ptb,Ntb,No Emi Card,Perm Block,Unblocked,Temp Block,Emicard Dec,Emicard Non-Dec,Non-Emicard Non-Dec,Retailer_Activate
 3503564,28-07-2022,0,0,0,0,0,0,0,1,1,1,1,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0
 2203812,10-08-2022,1,0,0,0,1,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,0,1,0,0,0
 4465952,29-07-2021,1,1,1,0,0,0,0,0,1,1,0,0,1,1,0,1,0,0,0,0,1,0,1,0,0,0
