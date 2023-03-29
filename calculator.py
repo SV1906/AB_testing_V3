@@ -44,10 +44,12 @@ Features = features(data_Original)
 # Features = [ {'Active on App' : 'False'}, {'Signed Up in last 7 days' : 'False'}]
 # , {'key':'Signed up in last 15 days' , 'value' : 'False'}, {'key':'Birthday Month' , 'value' : 'False'}, {'key':'DEC' , 'value' : 'False'},{'key':'30 Days Inactive' , 'value' : 'False'}, {'key':'60 Days Inactive' , 'value' : 'False'}, {'key':'90 Days Inactive' , 'value' : 'False'}]
 
-Stratification_columns = [ {'key':'ETB' , 'value' : 'False'} , {'key':'Permanent Blocked' , 'value' : 'False'} , {'key':'30 Days Active' , 'value' : 'False'},  {'key':'NTB' , 'value' : 'False'}, {'key':'Temporary Blocked' , 'value' : 'False'}, {'key':'60 Days Active' , 'value' : 'False'},{'key':'PTB' , 'value' : 'False'}, {'key':'DEC' , 'value' : 'False'}, {'key':'90 Days Active' , 'value' : 'False'} ]
+Stratification_columns = [ {'key':'Customer Type' , 'value' : 'False'} , {'key':'Permanent Blocked' , 'value' : 'False'} ,  {'key':'Temporary Blocked' , 'value' : 'False'}, {'key':'60 Days Active' , 'value' : 'False'},{'key':'DEC' , 'value' : 'False'}, {'key':'90 Days Active' , 'value' : 'False'} ]
+Test_cases = [{'key': 'TestCase1', 'value' : ''},{'key': 'TestCase2', 'value' : ''},{'key': 'TestCase3', 'value' : ''},{'key': 'TestCase4', 'value' : ''},{'key': 'TestCase5', 'value' : ''}]
 today = date.today()
 today = today.strftime("%d-%m-%Y")
 button_variable = "False" 
+
 
 def excel_update(Campaign_name, Campaign_Start_Date, Campaign_End_Date, Campaign_Type, Conversion_Metric,Conversion_Period, Hypothesis): 
     THIS_FOLDER = Path(__file__).parent.resolve()
@@ -75,7 +77,8 @@ def excel_update(Campaign_name, Campaign_Start_Date, Campaign_End_Date, Campaign
 def get_form_parameters():
     Form  = {}
     Form["Hypothesis"] = request.form['Hypothesis'] 
-    Form['DOE'] = request.form['Doe_input']
+    Form['DOE'] = int(request.form['Doe_input'])
+    Form["Total_cases"] = int(Form['DOE'])+1
     Form["ConversionInterval"] = request.form['confidence_Interval_Input']
     Form["MarginError"] = request.form['margin_Error_Input']
     Form['Button'] = request.form.get('Button_id')
@@ -89,8 +92,20 @@ def get_form_parameters():
     Form['CampaignEnddate'] = request.form['campaign_end_date']
     Form['CampaignType'] = request.form['Campaign_type_input']
     Form['ConversionMetric'] = request.form['Conversion_metric_input']
+    Form['Sum'] = 0
+    for i in range(1,int(Form["DOE"])+1):
+        variable = "Test_case_" + str(i)
+        if (request.form.get(variable) != None and request.form.get(variable) != '') : 
+           Form[variable] = request.form[variable]
+           Form['Sum'] += int(Form[variable])
+    
+           
     Form['evan_millers'] = 0
+    Form['final_result'] = 0
     Form['basic_result'] = 0
+    Form['Records_Available'] = 0 
+
+    # Form['Available_Count'] = (Form["Total_cases"]*Form['final_result'])
 
     if (request.form.get('Sample_Size_submit_1') != None) : 
             Form['location'] = "sample_size"
@@ -102,6 +117,8 @@ def get_form_parameters():
         Form["location"] = "sampling_technique"
     if (request.form.get('Final_submit') != None):
         Form["location"] = "campaign_details"
+    if(request.form.get('Random_button') != None):
+        Form["location"] = "sampling_technique"
     if (request.form.get('Button_id') != None):
         Form['location'] = "sampling_technique"
     # or request.form.get('Sample_Size_submit_2') or request.form.get('Sampling_Technique_submit') or request.form.get('Final_submit')
@@ -116,11 +133,34 @@ def sample_suggest():
 #         data = data[(data[i])==1]        
 #     return len(data) 
 
+def verification_func(doe, sample_size, current_count):
+   if ((int(doe)+1)*int(sample_size) > int(current_count)):
+       return "True"
+   else : 
+       return "False"
+   
+def requiredDB(doe, sample_size):
+    return (int(doe)+1)*int(sample_size)
+
+
 def db_count(data,selected): 
     try:
         return (data[selected].sum(axis=1)).value_counts()[len(selected)]
     except:
         return 0 
+
+def compare_size(evan_miller,basic_result): 
+    if (basic_result == 0 and evan_miller == 0):
+        return 0
+    elif (evan_miller == 0):
+        return basic_result 
+    elif (basic_result == 0):
+        return evan_miller
+    elif (int(evan_miller) >= int(basic_result)):
+        return int(evan_miller)
+    else :
+        return int(basic_result)
+    
 
 def basic_Sample_Size(x,y):
     result = None
@@ -293,8 +333,13 @@ def index():
 
 @Flask_App.route('/Index',methods=['GET' , "POST"])
 def New_Testing():
+    verification = ""
+
     if request.method == 'POST':
        forms = get_form_parameters()
+    #    for i in Test_cases:
+    #        Test_cases[i] = request.form['Test_case(i)']
+           
        for i in Features: 
             if request.form.get(i['key']) :
                 i['value'] = True
@@ -309,17 +354,15 @@ def New_Testing():
 
         
        if (forms["ConversionInterval"] != '' and forms["MarginError"] != ''):   
-            # forms ["location"] = "sample_size"   
-             
-            forms ["basic_result"] = basic_Sample_Size(forms["ConversionInterval"], forms["MarginError"])           
+            forms ["basic_result"] = basic_Sample_Size(forms["ConversionInterval"], forms["MarginError"])
+            forms["final_result"] = compare_size(forms["evan_millers"],forms["basic_result"])
+               
 
        if (forms["BaselineRate"] != '' and forms["DetectableEffect"] != '' and forms["SignificantPower"] != '' and forms["SignificantLevel"] != ''):           
-        #    forms ["location"] = "sample_size"
            forms ["evan_millers"] =  evan_Millers(forms["BaselineRate"], forms["DetectableEffect"], forms["SignificantPower"], forms["SignificantLevel"])
-           
+           forms["final_result"] = compare_size(forms["evan_millers"],forms["basic_result"])
         
        if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != ''):           
-        #    forms ["location"] = "campaign_details"
            forms ["Download"] = True           
            excel_update(forms["CampaignName"], forms["CampaignStartdate"], forms["CampaignEnddate"], forms["CampaignType"], forms["ConversionMetric"], forms["ConversionPeriod"], forms["Hypothesis"])
            
@@ -331,23 +374,34 @@ def New_Testing():
 
        global button_variable 
        if (forms["Button"] != None or button_variable == "True"):
-           #global button_variable
-        #    forms["location"] = "sampling_technique"
            button_variable = "True"
            forms["Sample_suggestion"] = sample_suggest()
 
-       if (forms["basic_result"] >= forms["evan_millers"]):
-           forms["final_result"] =  forms["basic_result"]
 
-       if (forms["basic_result"] < forms["evan_millers"]):
-           forms["final_result"] =  forms["evan_millers"]
-
+       if (forms['DOE'] != '' and forms['final_result'] != 0 and forms['Current_Count'] != ''):
+            verification = verification_func(forms["DOE"], forms["final_result"], forms["Current_Count"])
+            forms["required_db"] = requiredDB(forms["DOE"],forms["final_result"])
+            if (verification == "False"): 
+                if (forms["Sum"] == 0): 
+                    forms['Records_Available'] = forms['Current_Count'] - (forms['final_result']*forms['Total_cases'])
+                else : 
+                    forms["Records_Available"] = forms['Current_Count'] - forms['final_result'] - forms['Sum']
+            if(verification == "True") : 
+                forms['location'] = "modal_message"
+           
+        
+    #    if ( forms['location'] == "sample_size"): 
+    #         verification = verification_func(forms["DOE"], forms["final_result"], forms["Current_Count"])
+    #         forms["required_db"] = requiredDB(forms["DOE"],forms["final_result"])
+    #         if(verification == "True") : 
+    #             forms['location'] = "modal_message"
+            
     #    if(forms["Button_2"] != ""): 
     #        forms["location"] = forms["Button_2"]
     #    return redirect('Index#sample_size', Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today) 
-
     #    return redirect(forms["location"], code=302)
-       return render_template('New_Testing.html', Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today) 
+
+       return render_template('New_Testing.html', sum = sum, Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today, Verification =  verification) 
 
     return render_template('New_Testing.html' , features = Features, stratification_columns=Stratification_columns, date = today)
 
@@ -999,5 +1053,5 @@ def sampling_select():
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(port= 5092)   
+    Flask_App.run(port= 5093)   
     

@@ -129,7 +129,7 @@
             <div class="col-3 align-items-center" style="display: inline-flex;">
               <h5 class=" card-title">
                 <label for="Insight_input" class="form-label">Number of DOE<sup>
-                  <b title="Design Of experiment&#013;i.e. The number of test cases we need.">
+                  <b title="Design Of Experiment&#013;i.e. The number of test cases we need.">
                     <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
                     <img>
                   </b>
@@ -143,6 +143,7 @@
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
+                <option value="5">5</option>
               </select>
               <script>
                 document.querySelector('#Doe_input').value = "{% if Success == True %}{{form.DOE}}{% else %}1{% endif %}";
@@ -174,7 +175,7 @@
             <div class ="card-body">
               <div class="text-center">
                 <!-- <button type="submit" class="button-18" for = "Features_button"   ><a class="button-18"  href= "#sample_size" >Submit</a></button> -->
-                <button type="submit" class="button-18" for = "Features_button" id = "Features_button" name = "Features_button">Submit</button>     
+                <button type="submit" class="button-18" for = "Features_button" id = "Features_button" name = "Features_button">Calculate</button>     
               </div>   	
               <div class = "text-center">
                 <b>{% if Success == True %}Current DB Count: {{form.Current_Count}}{% endif %} </b>  
@@ -263,7 +264,7 @@
                         <div class="text-center">
 													{% if Success == True %}Minimum Sample Size (Basic): {{form.basic_result}}{% endif %} <br> 
                           {% if Success == True %}Minimum Sample Size (Evan Millers): {{form.evan_millers}}{% endif %} <br> 
-                          <b>{% if Success == True %}Final Minimum Sample Size (Basic): {{form.final_result}}{% endif %} </b>                         
+                          <b>{% if Success == True %}Final Minimum Sample Size: {{form.final_result}}{% endif %} </b>                         
 												</div>                        		
 											</div>
 									</div>    
@@ -337,14 +338,100 @@
             </div>
 					</div>
 				</div>				
-							<!-- <h5 class="card-title">
-								<b>{% if Success == True %}Minimum Sample Size (Basic): {{form.basic_result}}{% endif %} <br> 
-                  {% if Success == True %}Minimum Sample Size (Evan Millers): {{form.evan_millers}}{% endif %} 
-                </b>
-							</h5>														 -->
 		     <hr>
          <!--  End Calculator -->
 
+         <!-- Starts Modal  -->
+         {% if Verification == "True" %}
+         <div id= "modal_message" class ="pagetitle">
+          <h1> </h1>
+         </div>
+         <div class = "card">
+          <div class = "card-body">
+              <h2><b>Error</b></h2>
+            
+            
+            <p><i>Please solve this error to proceed forward.</i><br> 
+            <b>Error : The base data selected isn't enough for the number of DOEs with the required minimum sample size.</b><br>
+            Please do one of the following : <br>
+            1. Decrease the number of DOEs<br> 
+            2. Decrease the minimum sample size<br>
+            3. Increase the base data
+            </p>
+            <h2></h2>
+            <!-- <table class="table table-borderless datatable">
+              <tbody>
+                <tr>
+                  <td><b>Total Cases (Control case + Test case/s)</b></td>
+                  <td><b>{% if Success == True %}{{form.Total_cases}}{% endif %}</b></td>
+                </tr>
+                <tr>
+                  <td><b>Sample Size</b></td>
+                  <td><b>{% if Success == True %}{{form.final_result}}{% endif %}</b></td>
+                </tr>
+                <tr>
+                  <td><b>Base data</b></td>
+                  <td><b>{% if Success == True %}{{form.Current_Count}}{% endif %}</b></td>
+                </tr>
+              </tbody>
+            </table> -->
+            <table>
+              <tr>
+                <th>Total Cases (Control case + Test case/s)</th>
+                <td>{% if Success == True %}{{form.Total_cases}}{% endif %}</td>
+              </tr>
+              <tr>
+                <th>Minimum Sample Size per case</th>
+                <td>{% if Success == True %}{{form.final_result}}{% endif %}</td>
+              </tr>
+              <tr>
+                <th>Required Base Data</th>
+                <td>{% if Success == True %}{{form.required_db}}{% endif %}</td>
+              </tr>
+              <tr>
+                <th>Base Data</th>
+                <td>{% if Success == True %}{{form.Current_Count}}{% endif %}</td>
+              </tr>
+            </table>
+          </div>
+         </div>
+         <hr> 
+
+         {% endif %}
+
+         {% if Verification == "False" %}
+
+         <div id= "" class ="pagetitle">
+          <h1> </h1>
+         </div>
+         <div class = "card">
+          <div class = "card-body">
+              <p><b>Available records for allocation : {% if Success == True %}{{form.Records_Available}}{% endif %}</b></p>
+              <!-- {{sum}} -->
+              <div class="card-body  row "> 
+                {% for i in range(1, form.DOE+1) %} 
+                <div class="col-3">
+                   <label for="Test_case{{i}}" class="form-label">Test Case {{i}}</label>
+                  <input type="number" class="form-control" id = "Test_case_{{i}}" name="Test_case_{{i}}" value = "{{form.Test_case_}}" min="{{form.final_result}}">
+                  {{form  }}
+                </div>
+                {% endfor %}  
+              </div>
+              <div class="text-center">
+                <button type="submit" class="button-18" name ="Random_button" id = "Random_button">Submit</button>                          
+              </div> 
+                   
+          </div>
+         </div>
+        </div>
+      </div> 
+         <hr> 
+
+         {% endif %}
+        
+         <!-- Ends Modal  -->
+
+       
 				<!-- Start Sampling Technique -->
         <div id="sampling_technique" class="pagetitle">
           <h1>Sampling Technique</h1>
@@ -354,7 +441,7 @@
             <div class="d-flex align-items-center">
               <div class="ps-3">
                   <br>
-                  <button type="submit" value="Suggest Sampling Technique" class="button-18" name = "Button_id" id = "Button_id">Suggest Sampling Technique</button>
+                  <button type="submit" value="Suggest Sampling Technique" class="button-18" name = "Button_id" id = "Button_id" {% if Verification == "True" %}disabled{% endif %}>Suggest Sampling Technique</button>
                   <div class = "card-body">
                     <b>{% if Success == True %} Suggested Technique : {{form.Sample_suggestion}}{% endif %}</b>
                   </div>
@@ -390,7 +477,7 @@
                      </script>              
                     <div class = "card-body">
                       <div class="text-center">
-                        <button type="submit" class="button-18" id = "Sampling_Technique_submit" name = "Sampling_Technique_submit">Submit</button>
+                        <button type="submit" class="button-18" id = "Sampling_Technique_submit" name = "Sampling_Technique_submit" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
                       </div>
                     </div>
                   </div>
@@ -437,33 +524,7 @@
 				{% endif %}
         <!-- End of Result Stratification-->
 
-        <!-- Start Campaign Details-->
-        <!-- <script>
-          $('#Final_submit').button("enable");​​​​​​​​​​​​​
-          $('.fields').bind('keyup', function() { 
-           var nameLength = $("#campaign_name_input").length;
-           if (nameLength > 0)
-           {
-             $('#Final_submit').button("disable");​​​​​​​​​​​​
-           }
-         } );
-        </script> -->
-
-        <!-- <script>
-          document.getElementById("campaign_name_input").addEventListener("keyup", function() {
-            var nameInput = document.getElementById('campaign_name_input').value;
-            if (nameInput != "") {
-               document.getElementById('Final_submit').removeAttribute("disabled");
-          } 
-          else {
-             document.getElementById('Final_submit').setAttribute("disabled", null);
-         }
-         });
-        </script> -->
-
-
-
-
+        <!-- Start Campaign Details-->     
         <div id="campaign_details" class="pagetitle">
           <h1>Campaign Details</h1>
         </div>
@@ -516,7 +577,7 @@
                       <input type="number" class="form-control" name = "Conversion_period" id="Conversion_period" value = "{% if Success == True%}{{form.ConversionPeriod}}{% endif %}">
                     </div>
                     <div class="text-center">
-                      <button type="submit" class="button-18" id = "Final_submit" name = "Final_submit" >Submit</button>
+                      <button type="submit" class="button-18" id = "Final_submit" name = "Final_submit" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
                     </div>
               </div>
           </div>
