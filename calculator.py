@@ -24,6 +24,7 @@ Flask_App.config["SESSION_TYPE"] = "filesystem"
 
 # Features = [ {'key':'Active on App' , 'value' : 'False'}, {'key':'Signed Up in last 7 days' , 'value' : 'False'}, {'key':'Signed up in last 15 days' , 'value' : 'False'}, {'key':'Birthday Month' , 'value' : 'False'}, {'key':'DEC' , 'value' : 'False'},{'key':'30 Days Inactive' , 'value' : 'False'}, {'key':'60 Days Inactive' , 'value' : 'False'}, {'key':'90 Days Inactive' , 'value' : 'False'}]
 
+
 THIS_FOLDER = Path(__file__).parent.resolve()
 final_data = str(THIS_FOLDER)+"\\DUMMY_DB.csv"
 data_Original = pd.read_csv(final_data)
@@ -40,12 +41,11 @@ def features(data):
 
 Features = features(data_Original)
 
-
 # Features = [ {'Active on App' : 'False'}, {'Signed Up in last 7 days' : 'False'}]
 # , {'key':'Signed up in last 15 days' , 'value' : 'False'}, {'key':'Birthday Month' , 'value' : 'False'}, {'key':'DEC' , 'value' : 'False'},{'key':'30 Days Inactive' , 'value' : 'False'}, {'key':'60 Days Inactive' , 'value' : 'False'}, {'key':'90 Days Inactive' , 'value' : 'False'}]
 
 Stratification_columns = [ {'key':'Customer Type' , 'value' : 'False'} , {'key':'Permanent Blocked' , 'value' : 'False'} ,  {'key':'Temporary Blocked' , 'value' : 'False'}, {'key':'60 Days Active' , 'value' : 'False'},{'key':'DEC' , 'value' : 'False'}, {'key':'90 Days Active' , 'value' : 'False'} ]
-Test_cases = [{'key': 'TestCase1', 'value' : ''},{'key': 'TestCase2', 'value' : ''},{'key': 'TestCase3', 'value' : ''},{'key': 'TestCase4', 'value' : ''},{'key': 'TestCase5', 'value' : ''}]
+Test_cases = [{'key': 'TestCase1', 'value' : '123'},{'key': 'TestCase2', 'value' : '123'},{'key': 'TestCase3', 'value' : ''},{'key': 'TestCase4', 'value' : ''},{'key': 'TestCase5', 'value' : ''}]
 today = date.today()
 today = today.strftime("%d-%m-%Y")
 button_variable = "False" 
@@ -93,12 +93,16 @@ def get_form_parameters():
     Form['CampaignType'] = request.form['Campaign_type_input']
     Form['ConversionMetric'] = request.form['Conversion_metric_input']
     Form['Sum'] = 0
+    
     for i in range(1,int(Form["DOE"])+1):
         variable = "Test_case_" + str(i)
         if (request.form.get(variable) != None and request.form.get(variable) != '') : 
            Form[variable] = request.form[variable]
+        #    List_values.append(Form[variable])
            Form['Sum'] += int(Form[variable])
-    
+        else : 
+            Form[variable] = 0
+   
            
     Form['evan_millers'] = 0
     Form['final_result'] = 0
@@ -161,6 +165,13 @@ def compare_size(evan_miller,basic_result):
     else :
         return int(basic_result)
     
+# def value_cal(testcase): 
+#     new_name = "Test_case_"+str(testcase)
+#     if (request.form[new_name] != ''):
+#         return request.form[new_name]
+#     else : 
+#         return 0
+
 
 def basic_Sample_Size(x,y):
     result = None
@@ -334,11 +345,14 @@ def index():
 @Flask_App.route('/Index',methods=['GET' , "POST"])
 def New_Testing():
     verification = ""
+    new_Tests = []
+    List_values = []
+    Test_case_1 = 700
+    
 
     if request.method == 'POST':
        forms = get_form_parameters()
-    #    for i in Test_cases:
-    #        Test_cases[i] = request.form['Test_case(i)']
+
            
        for i in Features: 
             if request.form.get(i['key']) :
@@ -370,6 +384,7 @@ def New_Testing():
        for i in Features: 
              if(i['value'] == True): 
                  selected_features.append(i['key'])
+
        forms["Current_Count"] = db_count(data_Original, selected_features)
 
        global button_variable 
@@ -377,31 +392,31 @@ def New_Testing():
            button_variable = "True"
            forms["Sample_suggestion"] = sample_suggest()
 
-
        if (forms['DOE'] != '' and forms['final_result'] != 0 and forms['Current_Count'] != ''):
             verification = verification_func(forms["DOE"], forms["final_result"], forms["Current_Count"])
             forms["required_db"] = requiredDB(forms["DOE"],forms["final_result"])
+            # if (verification == "False" ): 
+            #      new_Tests = []            
+            #      for testcase in range(1, forms["DOE"]+1):
+            #           if (request.form.get("Tests1") != ''):  
+            #               new_test={}
+            #               value_rn = value_cal(testcase)
+            #               new_test = {'key': testcase, 'value': value_rn}
+            #               new_Tests.append(new_test)                   
+            #           else : 
+            #               new_test={}
+            #               new_test = {'key': testcase, 'value': 0}
+            #               new_Tests.append(new_test)  
             if (verification == "False"): 
                 if (forms["Sum"] == 0): 
                     forms['Records_Available'] = forms['Current_Count'] - (forms['final_result']*forms['Total_cases'])
                 else : 
                     forms["Records_Available"] = forms['Current_Count'] - forms['final_result'] - forms['Sum']
+            
             if(verification == "True") : 
                 forms['location'] = "modal_message"
-           
-        
-    #    if ( forms['location'] == "sample_size"): 
-    #         verification = verification_func(forms["DOE"], forms["final_result"], forms["Current_Count"])
-    #         forms["required_db"] = requiredDB(forms["DOE"],forms["final_result"])
-    #         if(verification == "True") : 
-    #             forms['location'] = "modal_message"
-            
-    #    if(forms["Button_2"] != ""): 
-    #        forms["location"] = forms["Button_2"]
-    #    return redirect('Index#sample_size', Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today) 
-    #    return redirect(forms["location"], code=302)
 
-       return render_template('New_Testing.html', sum = sum, Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today, Verification =  verification) 
+       return render_template('New_Testing.html', Test_case_1 = Test_case_1, List_values = List_values, new_Tests = new_Tests, Test_cases = Test_cases, sum = sum, Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today, Verification =  verification) 
 
     return render_template('New_Testing.html' , features = Features, stratification_columns=Stratification_columns, date = today)
 
