@@ -93,15 +93,17 @@ def get_form_parameters():
     Form['CampaignType'] = request.form['Campaign_type_input']
     Form['ConversionMetric'] = request.form['Conversion_metric_input']
     Form['Sum'] = 0
+   
     
     for i in range(1,int(Form["DOE"])+1):
         variable = "Test_case_" + str(i)
         if (request.form.get(variable) != None and request.form.get(variable) != '') : 
+           Flag = True
            Form[variable] = request.form[variable]
         #    List_values.append(Form[variable])
            Form['Sum'] += int(Form[variable])
         else : 
-            Form[variable] = 0
+            Form[variable] = 0 
    
            
     Form['evan_millers'] = 0
@@ -348,11 +350,16 @@ def New_Testing():
     new_Tests = []
     List_values = []
     Test_case_1 = 700
+    Flag = False
     
 
     if request.method == 'POST':
        forms = get_form_parameters()
-
+    #    forms["Test_case_1"] = 0 
+    #    forms["Test_case_2"] = 0 
+    #    forms["Test_case_3"] = 0 
+    #    forms["Test_case_4"] = 0 
+    #    forms["Test_case_5"] = 0 
            
        for i in Features: 
             if request.form.get(i['key']) :
@@ -416,7 +423,7 @@ def New_Testing():
             if(verification == "True") : 
                 forms['location'] = "modal_message"
 
-       return render_template('New_Testing.html', Test_case_1 = Test_case_1, List_values = List_values, new_Tests = new_Tests, Test_cases = Test_cases, sum = sum, Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today, Verification =  verification) 
+       return render_template('New_Testing.html', Flag = Flag, Test_case_1 = Test_case_1, List_values = List_values, new_Tests = new_Tests, Test_cases = Test_cases, sum = sum, Success = True, form = forms, features = Features, stratification_columns=Stratification_columns, date = today, Verification =  verification) 
 
     return render_template('New_Testing.html' , features = Features, stratification_columns=Stratification_columns, date = today)
 
