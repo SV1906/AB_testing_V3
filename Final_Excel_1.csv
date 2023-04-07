@@ -18,3 +18,6 @@ ID ,Campaign name ,date of requirement ,Campaign Start Date,Campaign End Date ,C
 17,XYZ,24-03-2023,2023-03-25,2023-03-18,Inbox,FD Booked,2,
 18,XYZ,24-03-2023,2023-03-25,2023-03-18,Inbox,FD Booked,2,
 19,XYZ,24-03-2023,2023-03-25,2023-03-18,Inbox,FD Booked,2,
+20,XYZ,05-04-2023,2023-04-06,2023-04-06,Inbox,App Launch
+21,XYZ,05-04-2023,2023-04-06,2023-04-06,Inbox,App Launch
+22,XYZ,4,"['Android', 'Perm Block']",452,"[452, 452, 480, 452]",St,"['Emicard Dec', 'New_To_3In1']",Name,2023-04-07,2023-04-13,InApp-Pop,FD Booked,10

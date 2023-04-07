@@ -1,1 +1,4 @@
 ﻿ID ,Date_of_requirement ,Campaign_name ,Campaign_type ,Campaign_start_date,Campaign_end_date,Stratified On ,Test_control_base,Conversion_metric ,Conversion_period ,Processed Flag 
+,4,0,Default,XYZ,2023-04-22,2023-04-20,Banner,FD Booked,10
+2,,4,['Ptb'],803,[],SyC,[],XYZ,05-04-2023,2023-04-08,2023-04-21,InApp-Pop,FD Booked,10
+2,,3,['Ptb'],803,[],SyC,[],XYZ,[],05-04-2023,2023-04-13,2023-04-12,Push,Retention rate,10
