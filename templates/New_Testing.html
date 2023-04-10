@@ -53,16 +53,10 @@
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
               <li>
-                <a href= "#hypothesis" id="hypothesis_button" >
+                <a href= "#hypothesis_section" id="hypothesis_button" >
                   <i class="bi bi-circle"></i>
                   <span>Hypothesis</span>
                 </a>
-                <!-- <script>
-                  function test(x)
-                  {
-                    window.scrollTo({ top: document.getElementById(x).getBoundingClientRect().top, behavior: 'smooth'})
-                  }
-                </script> -->
               </li>
               <li>
                 <a href= "#select_filters">
@@ -101,12 +95,13 @@
     </aside>
     <!-- End Sidebar-->
     <!-- Main Body-->
+    <!-- Section 1 Start -->
     <main id="main" class="main">
       <form method="post"  action = "{{url_for('New_Testing')}}" >
         <fieldset {% if Success == True %}{% if form.Download == True %}disabled="disabled"{% endif %}{% endif %}>
         
         <!-- Start hypothesis -->
-        <div id="hypothesis" class="pagetitle">
+        <div id="hypothesis_section" class="pagetitle">
           <h1>Hypothesis</h1>
         </div>
         <div class="card  ">
@@ -123,8 +118,8 @@
               </h5>
             </div>
             <div class="col-9">
-              <textarea name="Hypothesis" id="Hypothesis" name="Hypothesis" class="form-control" rows="3">{% if Success == True %}{{form.Hypothesis}}{% endif %}</textarea>
-             </div>     
+              <textarea name="Hypothesis" id="Hypothesis" name="Hypothesis" class="form-control" rows="3" placeholder="" required>{% if Success == True %}{{form.Hypothesis}}{% endif %}</textarea>
+            </div>     
           </div>
     
           <div class="card-body  row">
@@ -220,11 +215,11 @@
                       <div class="col">
 												<div class="row">
 													<label for="Input1" class="form-label">Confidence Interval (%)</label>
-													<input type="number" class="form-control"  value="{% if Success == True %}{{form.ConversionInterval}}{% endif %}" name="confidence_Interval_Input" >
+													<input type="number" class="form-control"  value="{% if Success == True %}{{form.ConversionInterval}}{% endif %}" name="confidence_Interval_Input" min=0 max=100>
 												</div>
 												<div class="row">
 													<label for="Input2" class="form-label">Margin Error(%)</label>
-													<input type="number" class="form-control"  value = "{% if Success == True %}{{form.MarginError}}{% endif %}" name="margin_Error_Input" >
+													<input type="number" class="form-control"  value = "{% if Success == True %}{{form.MarginError}}{% endif %}" name="margin_Error_Input" min=0 max=100>
 												</div>
 											</div>
 											<div class = "card-body">
@@ -274,21 +269,21 @@
 											<div class="row g-3">
 												<div class="col-sm">
 													<label for="Input1" class="form-label">Baseline Conversion Rate (%)</label>
-													<input type="text" class="form-control" value = "{% if Success == True %}{{form.BaselineRate}}{% endif %}" name="baseline_Rate_Input">
+													<input type="text" class="form-control" value = "{% if Success == True %}{{form.BaselineRate}}{% endif %}" name="baseline_Rate_Input" min=0 max=100>
 												</div>
 												<div class="col-sm">
 													<label for="Input2" class="form-label">Minimum Detectable Effect (%)</label>
-													<input type="text" class="form-control" value = "{% if Success == True %}{{form.DetectableEffect}}{% endif %}" name="detectable_Effect_Input" >
+													<input type="text" class="form-control" value = "{% if Success == True %}{{form.DetectableEffect}}{% endif %}" name="detectable_Effect_Input" min=0 max=100>
 												</div>
 											</div>
 											<div class = "row g-3">
 												<div class="col-sm">
 													<label for="Input3" class="form-label">Significance Power  (%)</label>
-													<input type="text" class="form-control" value = "{% if Success == True %}{{form.SignificantPower}}{% endif %}" name="significance_Power_Input" >
+													<input type="text" class="form-control" value = "{% if Success == True %}{{form.SignificantPower}}{% endif %}" name="significance_Power_Input" min=0 max=100>
 												</div>
 												<div class="col-sm">
 													<label for="Input14" class="form-label">Significance level (%)</label>
-													<input type="text" class="form-control" value = "{% if Success == True %}{{form.SignificantLevel}}{% endif %}" name="significance_Level_Input" >
+													<input type="text" class="form-control" value = "{% if Success == True %}{{form.SignificantLevel}}{% endif %}" name="significance_Level_Input" min=0 max=100>
 												</div>
 											</div>
 											<div class = "card-body">											
@@ -310,15 +305,18 @@
 				</div>				
 		     <hr>
          <!--  End Calculator -->
+         <!-- Section 1 End -->
 
-         <!-- Starts Modal  -->
+         <!-- Section 2 Start  -->
+         
+         <fieldset {% if Section_open < 3 %}disabled{% endif %}>
+                   <!-- Starts Modal  -->
          {% if Verification == "True" %}
          <div id= "modal_message" class ="pagetitle">
           <h1> </h1>
          </div>
          <div class = "card">
           <div class = "card-body">
-              <!-- <h2><b>Error</b></h2> -->
               <div class="alert alert-warning" role="alert">
                 <strong>Warning : </strong>The base data selected isn't enough for the number of DOEs with the required minimum sample size.
               </div>
@@ -329,22 +327,6 @@
             3. Increase the base data
             </p>
             <h2></h2>
-            <!-- <table class="table table-borderless datatable">
-              <tbody>
-                <tr>
-                  <td><b>Total Cases (Control case + Test case/s)</b></td>
-                  <td><b>{% if Success == True %}{{form.Total_cases}}{% endif %}</b></td>
-                </tr>
-                <tr>
-                  <td><b>Sample Size</b></td>
-                  <td><b>{% if Success == True %}{{form.final_result}}{% endif %}</b></td>
-                </tr>
-                <tr>
-                  <td><b>Base data</b></td>
-                  <td><b>{% if Success == True %}{{form.Current_Count}}{% endif %}</b></td>
-                </tr>
-              </tbody>
-            </table> -->
             <table>
               <tr>
                 <th>Total Cases (Control case + Test case/s)</th>
@@ -385,7 +367,7 @@
               <!-- {{sum}} -->
               <div class="card-body  row "> 
                 {% if Success == True %}{{new_Tests}}{% endif %}
-                {% for i in range(1, form.DOE+1) %} 
+                {% for i in range(1, form.Total_cases) %} 
                 <div class="col-3">
                    <label for="Test_case{{i}}" class="form-label">Test Case {{i}}</label>
                   <input type="number" class="form-control" id = "Test_case_{{i}}" name="Test_case_{{i}}" value="{{ form['Test_case_'+ i|string] }}" min="{{form.final_result}}">
@@ -401,200 +383,210 @@
       </div> 
          <hr> 
          {% endif %}
-        
          <!-- Ends Modal  -->
+         </fieldset>
+        <!-- Section 2 End  -->
 
-       
+        <!-- Section 3 Start -->
 				<!-- Start Sampling Technique -->
-        <div id="sampling_technique" class="pagetitle">
-          <h1>Sampling Technique</h1>
-        </div>
-        <div class="card  ">
-            <div class="card-body">
-
-              <div class="d-flex align-items-center">
-                <div class="ps-3">
-                    <br>
-                    <button type="submit" value="Suggest Sampling Technique" class="button-18" name = "Button_id" id = "Button_id" {% if Verification == "True" %}disabled{% endif %}>Suggest Sampling Technique</button>
-                    <div class = "card-body">
-                      <b>{% if Success == True %} Suggested Technique : {{form.Sample_suggestion}}{% endif %}</b>
-                    </div>
-                  <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b>
-                    <sup>
-                      <b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki">
-                        <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                        <img>
-                      </b>
-                    </sup>, <b>Systematic Sampling </b>
-                    <sup>
-                      <b title="In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki">
-                        <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                        <img>
-                      </b>
-                    </sup> and <b>Stratified Sampling</b>
-                    <sup>
-                      <b title="In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations.-Wiki">
-                        <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                        <img>
-                      </b>
-                    </sup>
-                  </p>
-                  </p>
-                    <div> 
-                      <select property="status" styleClass="form-control" id = "operator" name = "operator">
-                        <option value="Default" disabled >Choose : </option>
-                        <option value="Random">Simple Random Sampling</option>
-                        <option value="Systematic">Systematic Sampling</option>
-                        <option value="Stratified">Stratified Sampling</option>
-                      </select>
-                      <script>
-                        document.querySelector('#operator').value = "{% if Success == True %}{{form.Operator}}{% else %}Default{% endif %}";
-                       </script>              
-                      <div class = "card-body">  
-                        <div class="text-center">
-                          <button type="submit" class="button-18" id = "Sampling_Technique_submit" name = "Sampling_Technique_submit" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
+        <fieldset {% if Section_open < 4 %}disabled{% endif %}>
+          <div id="sampling_technique" class="pagetitle">
+            <h1>Sampling Technique</h1>
+          </div>
+          <div class="card  ">
+              <div class="card-body">
+  
+                <div class="d-flex align-items-center">
+                  <div class="ps-3">
+                      <br>
+                      <button type="submit" value="Suggest Sampling Technique" class="button-18" name = "Button_id" id = "Button_id" {% if Verification == "True" %}disabled{% endif %}>Suggest Sampling Technique</button>
+                      <div class = "card-body">
+                        <b>{% if Success == True %} Suggested Technique : {{form.Sample_suggestion}}{% endif %}</b>
+                      </div>
+                    <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b>
+                      <sup>
+                        <b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki">
+                          <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                          <img>
+                        </b>
+                      </sup>, <b>Systematic Sampling </b>
+                      <sup>
+                        <b title="In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki">
+                          <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                          <img>
+                        </b>
+                      </sup> and <b>Stratified Sampling</b>
+                      <sup>
+                        <b title="In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations.-Wiki">
+                          <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                          <img>
+                        </b>
+                      </sup>
+                    </p>
+                    </p>
+                      <div> 
+                        <select property="status" styleClass="form-control" id = "operator" name = "operator">
+                          <option value="Default" disabled >Choose : </option>
+                          <option value="Random">Simple Random Sampling</option>
+                          <option value="Systematic">Systematic Sampling</option>
+                          <option value="Stratified">Stratified Sampling</option>
+                        </select>
+                        <script>
+                          document.querySelector('#operator').value = "{% if Success == True %}{{form.Operator}}{% else %}Default{% endif %}";
+                         </script>              
+                        <div class = "card-body">  
+                          <div class="text-center">
+                            <button type="submit" class="button-18" id = "Sampling_Technique_submit" name = "Sampling_Technique_submit" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
+                          </div>
                         </div>
+                        {% if Success %}
+                        {% if form.Sampling_Result == "Sampling Successful" %}
+                        <!-- Green -->
+                        <div class="alert alert-success" role="alert">
+                         {{form.Operator}} {{form.Sampling_Result}} 
+                        </div>                        
+                        {% elif form.Sampling_Result %}
+                        <!-- Yellow -->
+                        <div class="alert alert-warning" role="alert">
+                          {{form.Sampling_Result}}
+                        </div>                      
+                        {% endif %}
+                        {% endif %}
+                      </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <hr>
+       <!-- End of Sampling Technique-->
+               <!-- Start Stratify On --> 
+               {% if Success == True %}
+               {% if form.Operator == 'Stratified' %} 
+               <div id="stratify_on" class="pagetitle">
+                 <h1>Stratify On:</h1>
+                 <h9>Please select the columns to stratify on.</h9>
+               </div>
+               <div class="card">
+                 {% if form.Error == "Stratification_columns" %}
+                 <div class="alert alert-warning" role="alert">
+                   <strong>Warning :</strong>Choose atleast one column to stratify on 
+                 </div>
+                 {% endif %}
+                 <div class="card-body  row "> {% for i in stratification_columns %} <div class="col-3">
+                   {% if i.value == True %}
+                     <input class="form-check-input" type="checkbox" id="Strat{{i.key}}"    name = "Strat{{i.key}}" checked>
+                     <label class="form-check-label"  >{{i.key}}</label>   
+                   {% else %} 
+                   <input class="form-check-input" type="checkbox" id="Strat{{i.key}}"  name = "Strat{{i.key}}">
+                   <label class="form-check-label"  >{{i.key}}</label>   
+                   {% endif %}
+                 </div> 
+                   {% endfor %}
+                   <div class="text-center">
+                       <button type="submit" class="button-18" for = "stratify_button" id = "stratify_button" name = "stratify_button">Submit</button>     
+                   </div>  
+                 </div>
+             </div>
+             <hr> 
+             {% endif %}
+             {% endif %}
+               <!-- End  Stratify On -->
+        </fieldset>
+        <!-- Section 3 End -->
+
+        <!-- Section 4 Start-->
+        <fieldset {% if Section_open < 5 %}disabled{% endif %}>
+        <!-- Start Campaign Details-->   
+          <div id="campaign_details" class="pagetitle">
+            <h1>Campaign Details</h1>
+          </div>
+          <div class="card  ">
+            <div class="card-body">
+                <div class = "row g-3">
+                  <div class="mx-auto">
+                    <div class="form-group row">
+                      <label for="colFormLabel" class="col-sm-4 col-form-label"><b>Master Campaign Name</b></label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="campaign_name_input" name="campaign_name_input" value = "{% if Success == True%}{{form.CampaignName}}{% endif %}" required>
                       </div>
                     </div>
+                  </div>
+  
+                  {% if Success == True %}
+                  {% if form.Total_cases != 2 %}
+                  {% for i in range(1, form.Total_cases) %} 
+                  <div class="mx-auto">
+                    <div class="form-group row">
+                      <label for="colFormLabel" class="col-sm-4 col-form-label">Campaign Name for Experiment {{i}}</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="Campaign_Name_{{i}}" name="Campaign_Name_{{i}}" value = "{{ form['Campaign_Name_'+ i|string] }}" required>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %} 
+                  {% endif %}
+                  {% endif %}
+                
+                  <div class="col-md-4">                
+                      <label for="Date_of_requirement" class="form-label">Date of Requirement</label>                
+                  <div class = "card-body">
+                    <text>{{date}}</text> 
+                  </div>   
+                  </div>
+                  <div class="col-md-4">
+                    <label for="campaign_start_date" class="form-label">Campaign Start Date</label>
+                    <input type="date" class="form-control" id = "campaign_start_date" name="campaign_start_date" value = "{% if Success == True%}{{form.CampaignStartdate}}{% endif %}" required>
+                  </div>
+                  <div class="col-md-4"><label for="campaign_end_date" class="form-label">Campaign End Date</label>
+                    <input type="date" class="form-control" name="campaign_end_date" id="campaign_end_date" value = "{% if Success == True%}{{form.CampaignEnddate}}{% endif %}" required>
+                  </div>
+                  <div class="col-md-4"><label for="Campaign_type_input" class="form-label">Campaign Type</label>
+                    <select name = "Campaign_type_input" id="Campaign_type_input" class="form-select" >
+                      <option selected value="Push">Push</option>
+                      <option value="InApp-Pop">InApp-Pop</option>
+                      <option value="Inbox">Inbox</option>
+                      <option value="Banner">Banner</option>
+                    </select>
+                    <script>
+                      document.querySelector('#Campaign_type_input').value = "{% if Success == True %}{{form.CampaignType}}{% else %}Push{% endif %}";
+                     </script> 
+                  </div>
+                  <div class="col-md-4">
+                    <label for="Conversion_metric_input" class="form-label">Conversion Metric</label>
+                    <select name = "Conversion_metric_input" id ="Conversion_metric_input" class="form-select" >
+                      <option selected value="Retention rate">Retention rate</option>
+                      <option value="Digitization">Digitization</option>
+                      <option value="App Launch">App Launch</option>
+                      <option value="FD Booked">FD Booked</option>
+                      <option value="B2B Order Placed">B2B Order Placed</option>
+                    </select>
+                    <script>
+                      document.querySelector('#Conversion_metric_input').value = "{% if Success == True %}{{form.ConversionMetric}}{% else %}Retention rate{% endif %}";
+                     </script> 
+                  </div>
+                  <div class="col-md-4">
+                      <label for="Conversion_period" class="form-label">Conversion Period (in Days)</label>
+                        <input type="text" class="form-control" name = "Conversion_period_input" id="Conversion_period_input" value = "{% if Success == True%}{{form.ConversionPeriod}}{% endif %}" required>
+                      </div>
+                      <div class="text-center">
+                        <button type="submit" class="button-18" id = "Final_submit" name = "Final_submit" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
+                      </div>
+                      <!-- {% if Success == True %}{{form}}{% endif %} -->
+                      {% if Success == True %}
+                      {% if form.ExcelUpdate %}
+                      <div class="alert alert-warning" role="alert">
+                        <strong>Warning : </strong> {{form.ExcelUpdate}}
+                      </div>
+                      {% endif %}
+                      {% endif %}
                 </div>
-              </div>
             </div>
-        </div>
-        <hr>
-        <!-- End of Sampling Technique-->
-
-        <!-- Start Stratify On --> 
-        {% if Success == True %}
-				{% if form.Operator == 'Stratified' %} 
-        <div id="stratify_on" class="pagetitle">
-          <h1>Stratify On:</h1>
-          <h9>Please select the columns to stratify on.</h9>
-        </div>
-        <div class="card">
-          {% if form.Error == "Stratification_columns" %}
-          <div class="alert alert-warning" role="alert">
-            <strong>Warning :</strong>Choose atleast one column to stratify on 
           </div>
-          {% endif %}
-          <div class="card-body  row "> {% for i in stratification_columns %} <div class="col-3">
-            {% if i.value == True %}
-              <input class="form-check-input" type="checkbox" id="Strat{{i.key}}"    name = "Strat{{i.key}}" checked>
-              <label class="form-check-label"  >{{i.key}}</label>   
-            {% else %} 
-            <input class="form-check-input" type="checkbox" id="Strat{{i.key}}"  name = "Strat{{i.key}}">
-            <label class="form-check-label"  >{{i.key}}</label>   
-            {% endif %}
-          </div> 
-            {% endfor %}
-            <div class="text-center">
-                <button type="submit" class="button-18" for = "stratify_button" id = "stratify_button" name = "stratify_button">Submit</button>     
-            </div>  
-            <!-- {{selected_columns}} -->
-            {% if Success == True %}{{form.Strat_result}}{% endif %}          
-        </div>
-      </div>
-      <hr> 
-      {% endif %}
-      {% endif %}
-        <!-- End  Stratify On -->
+          <hr>
+        </fieldset>
+        <!-- Section 4 End -->
 
-        <!-- Start Campaign Details-->     
-        <div id="campaign_details" class="pagetitle">
-          <!-- Temp open-->
-          {% if Success == True %}{{form.Random_Result}}{% endif %} 
-          {% if Success == True %}{{form.Systematic_Result}}{% endif %}  
-          <!-- Temp closed-->
-          <h1>Campaign Details</h1>
-        </div>
-        <div class="card  ">
-          <div class="card-body">
-              <div class = "row g-3">
-                <!-- <div class="col-md-12">
-                  <label  class="form-label">Campaign Name</label>
-                  <input type="text" class="form-control" id = "campaign_name_input" name="campaign_name_input" value = "{% if Success == True%}{{form.CampaignName}}{% endif %}">
-                </div> -->
-                <div class="mx-auto">
-                  <div class="form-group row">
-                    <label for="colFormLabel" class="col-sm-4 col-form-label"><b>Master Campaign Name</b></label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="campaign_name_input" name="campaign_name_input" value = "{% if Success == True%}{{form.CampaignName}}{% endif %}">
-                    </div>
-                  </div>
-                </div>
 
-                {% if Success == True %}
-                {% if form.DOE != 1 %}
-                {% for i in range(1, form.DOE+1) %} 
-                <div class="mx-auto">
-                  <div class="form-group row">
-                    <label for="colFormLabel" class="col-sm-4 col-form-label">Campaign Name for Experiment {{i}}</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="Campaign_Name_{{i}}" name="Campaign_Name_{{i}}" value = "{{ form['Campaign_Name_'+ i|string] }}">
-                    </div>
-                  </div>
-                </div>
-                {% endfor %} 
-                {% endif %}
-                {% endif %}
-              
-                <div class="col-md-4">                
-                    <label for="Date_of_requirement" class="form-label">Date of Requirement</label>                
-                <div class = "card-body">
-                  <text>{{date}}</text> 
-                </div>   
-                </div>
-                <div class="col-md-4">
-                  <label for="campaign_start_date" class="form-label">Campaign Start Date</label>
-                  <input type="date" class="form-control" id = "campaign_start_date" name="campaign_start_date" value = "{% if Success == True%}{{form.CampaignStartdate}}{% endif %}">
-                </div>
-                <div class="col-md-4"><label for="campaign_end_date" class="form-label">Campaign End Date</label>
-                  <input type="date" class="form-control" name="campaign_end_date" id="campaign_end_date" value = "{% if Success == True%}{{form.CampaignEnddate}}{% endif %}" >
-                </div>
-                <div class="col-md-4"><label for="Campaign_type_input" class="form-label">Campaign Type</label>
-                  <select name = "Campaign_type_input" id="Campaign_type_input" class="form-select" >
-                    <option selected value="Push">Push</option>
-                    <option value="InApp-Pop">InApp-Pop</option>
-                    <option value="Inbox">Inbox</option>
-                    <option value="Banner">Banner</option>
-                  </select>
-                  <script>
-                    document.querySelector('#Campaign_type_input').value = "{% if Success == True %}{{form.CampaignType}}{% else %}Push{% endif %}";
-                   </script> 
-                </div>
-                <div class="col-md-4">
-                  <label for="Conversion_metric_input" class="form-label">Conversion Metric</label>
-                  <select name = "Conversion_metric_input" id ="Conversion_metric_input" class="form-select" >
-                    <option selected value="Retention rate">Retention rate</option>
-                    <option value="Digitization">Digitization</option>
-                    <option value="App Launch">App Launch</option>
-                    <option value="FD Booked">FD Booked</option>
-                    <option value="B2B Order Placed">B2B Order Placed</option>
-                  </select>
-                  <script>
-                    document.querySelector('#Conversion_metric_input').value = "{% if Success == True %}{{form.ConversionMetric}}{% else %}Retention rate{% endif %}";
-                   </script> 
-                </div>
-                <div class="col-md-4">
-                    <label for="Conversion_period" class="form-label">Conversion Period (in Days)</label>
-                      <input type="text" class="form-control" name = "Conversion_period_input" id="Conversion_period_input" value = "{% if Success == True%}{{form.ConversionPeriod}}{% endif %}">
-                    </div>
-                    <div class="text-center">
-                      <button type="submit" class="button-18" id = "Final_submit" name = "Final_submit" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
-                    </div>
-                    <!-- {% if Success == True %}{{form}}{% endif %} -->
-
-                    {% if Success == True %}
-                    {% if form.ExcelUpdate %}
-                    <div class="alert alert-warning" role="alert">
-                      <strong>Warning : </strong> {{form.ExcelUpdate}}
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                   
-              </div>
-          </div>
-        </div>
-        <hr>
         <!-- End Campaign Details -->
       </fieldset>
         <!--Start Download Section --> 
@@ -605,6 +597,13 @@
 							<h5 class="card-title">Download</span></h5>
 							<div class="text-center">
 								<a class="button-18" href="{{url_for('download')}}" id="Download_button" name = "Download_button">Download</a>
+                <a class="button-18" type="button" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a>
+
+                <!-- <form>
+                  <input type="button" value="Go back!" onclick="history.back()">
+                 </form> -->
+                <!-- <a class="button-18" id="Edit_button" name = "Edit_button">Edit</a> -->
+                <!-- <button type="submit" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button" >Edit</button>      -->
 							</div>
 						</div>
 					</div>
