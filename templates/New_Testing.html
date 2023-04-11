@@ -45,9 +45,9 @@
     <aside id="sidebar" class="sidebar">
       <div class = "card-body">
         <ul class="sidebar-nav" id="sidebar-nav">
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="{{url_for('New_Testing')}}">            
-              <i class="bi bi-menu-button-wide"></i>
+              <i class="bi bi-menu-button-wide active"></i>
               <span>New Testing</span>
               <i class="bi bi-chevron-down ms-auto"></i>
             </a>
@@ -150,7 +150,6 @@
         <div id="select_filters" class="pagetitle">
           <h1>Select Conditions/Filters</h1>
           <h9>Please select the conditions and filters.</h9>
-          <!-- <B>{% if Success == True%}{{form}}{% endif %}</B> -->
         </div>
         <div class="card">
           <div class="card-body  row "> {% for i in features %} <div class="col-4">
@@ -165,8 +164,7 @@
             {% endfor %} 
             <div class ="card-body">
               <div class="text-center">
-                <!-- <button type="submit" class="button-18" for = "Features_button"   ><a class="button-18"  href= "#sample_size" >Submit</a></button> -->
-                <button type="submit" class="button-18" for = "Features_button" id = "Features_button" name = "Features_button" >Calculate</button>     
+                   <button type="submit" class="button-18" for = "Features_button" id = "Features_button" name = "Features_button" >Calculate</button>     
               </div>   	
               <div class = "text-center">
                 <b>{% if Success == True %}Current DB Count: {{form.Current_Count}}{% endif %} </b>  
@@ -364,19 +362,18 @@
             </div>
             {% endif %}
               <p><b>{% if Success == True %}{{form.Records_Available}}{% endif %}</b></p>
-              <!-- {{sum}} -->
               <div class="card-body  row "> 
                 {% if Success == True %}{{new_Tests}}{% endif %}
                 {% for i in range(1, form.Total_cases) %} 
                 <div class="col-3">
                    <label for="Test_case{{i}}" class="form-label">Test Case {{i}}</label>
-                  <input type="number" class="form-control" id = "Test_case_{{i}}" name="Test_case_{{i}}" value="{{ form['Test_case_'+ i|string] }}" min="{{form.final_result}}">
+                  <input type="number" class="form-control" id = "Test_case_{{i}}" name="Test_case_{{i}}" value="{{ form['Test_case_'+ i|string] }}">
                 </div>
                 {% endfor %} 
               </div>
               <div class="text-center">
                 <button type="submit" class="button-18" name ="Test_cases_button" id = "Test_cases_button">Submit</button>                          
-              </div>              
+              </div>          
           </div>
          </div>
         </div>
@@ -401,6 +398,20 @@
                       <br>
                       <button type="submit" value="Suggest Sampling Technique" class="button-18" name = "Button_id" id = "Button_id" {% if Verification == "True" %}disabled{% endif %}>Suggest Sampling Technique</button>
                       <div class = "card-body">
+                        {% if Success %}
+                        {% if form.Sampling_Result == "Sampling Successful" %}
+                        <!-- Green -->
+                        <div class="alert alert-success" role="alert">
+                         {{form.Operator}} {{form.Sampling_Result}} 
+                        </div>                        
+                        {% elif form.Sampling_Result %}
+                        <!-- Yellow -->
+                        <div class="alert alert-warning" role="alert">
+                          {{form.Sampling_Result}}
+                        </div>                      
+                        {% endif %}
+                        {% endif %}
+
                         <b>{% if Success == True %} Suggested Technique : {{form.Sample_suggestion}}{% endif %}</b>
                       </div>
                     <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b>
@@ -436,22 +447,36 @@
                          </script>              
                         <div class = "card-body">  
                           <div class="text-center">
-                            <button type="submit" class="button-18" id = "Sampling_Technique_submit" name = "Sampling_Technique_submit" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
+                            <button type="submit" class="button-18" id = "Sampling_Technique_submit"  onclick="update()" name = "Sampling_Technique_submit" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
                           </div>
                         </div>
-                        {% if Success %}
-                        {% if form.Sampling_Result == "Sampling Successful" %}
-                        <!-- Green -->
-                        <div class="alert alert-success" role="alert">
-                         {{form.Operator}} {{form.Sampling_Result}} 
-                        </div>                        
-                        {% elif form.Sampling_Result %}
-                        <!-- Yellow -->
-                        <div class="alert alert-warning" role="alert">
-                          {{form.Sampling_Result}}
-                        </div>                      
-                        {% endif %}
-                        {% endif %}
+                      
+                        
+                          <div class="progress" style="height: 6px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" id = "myprogressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+                          </div>
+                        
+                        
+                        <script>
+                          function update() {
+                              var element = document.getElementById("myprogressBar");   
+                              var width = 1;
+                              var identity = setInterval(scene, 10);
+                              function scene() {
+                              if (width >= 100) {
+                                  clearInterval(identity);
+                              } else {
+                                  width++; 
+                                  element.style.width = width + '%'; 
+                                  }
+                              }
+                          }
+                          </script>
+
+
+
+
+ 
                       </div>
                   </div>
                 </div>
@@ -459,6 +484,7 @@
           </div>
           <hr>
        <!-- End of Sampling Technique-->
+
                <!-- Start Stratify On --> 
                {% if Success == True %}
                {% if form.Operator == 'Stratified' %} 
@@ -483,7 +509,7 @@
                  </div> 
                    {% endfor %}
                    <div class="text-center">
-                       <button type="submit" class="button-18" for = "stratify_button" id = "stratify_button" name = "stratify_button">Submit</button>     
+                       <button type="submit" class="button-18" for = "stratify_button" onclick="update()" id = "stratify_button" name = "stratify_button">Submit</button>     
                    </div>  
                  </div>
              </div>
@@ -502,12 +528,19 @@
           </div>
           <div class="card  ">
             <div class="card-body">
+              {% if Success == True %}
+              {% if form.Campaign_Details_Error%}
+              <div class="alert alert-warning" role="alert">
+                {{form.Campaign_Details_Error}}
+              </div>   
+              {% endif %}
+              {% endif %}
                 <div class = "row g-3">
                   <div class="mx-auto">
                     <div class="form-group row">
                       <label for="colFormLabel" class="col-sm-4 col-form-label"><b>Master Campaign Name</b></label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="campaign_name_input" name="campaign_name_input" value = "{% if Success == True%}{{form.CampaignName}}{% endif %}" required>
+                        <input type="text" class="form-control" id="campaign_name_input" name="campaign_name_input" value = "{% if Success == True%}{{form.CampaignName}}{% endif %}">
                       </div>
                     </div>
                   </div>
@@ -519,7 +552,8 @@
                     <div class="form-group row">
                       <label for="colFormLabel" class="col-sm-4 col-form-label">Campaign Name for Experiment {{i}}</label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="Campaign_Name_{{i}}" name="Campaign_Name_{{i}}" value = "{{ form['Campaign_Name_'+ i|string] }}" required>
+                        <input type="text" class="form-control" id="Campaign_Name_{{i}}" name="Campaign_Name_{{i}}" value = "{{ form['Campaign_Name_'+ i|string] }}"
+                        >
                       </div>
                     </div>
                   </div>
@@ -535,10 +569,10 @@
                   </div>
                   <div class="col-md-4">
                     <label for="campaign_start_date" class="form-label">Campaign Start Date</label>
-                    <input type="date" class="form-control" id = "campaign_start_date" name="campaign_start_date" value = "{% if Success == True%}{{form.CampaignStartdate}}{% endif %}" required>
+                    <input type="date" class="form-control" id = "campaign_start_date" name="campaign_start_date" value = "{% if Success == True%}{{form.CampaignStartdate}}{% endif %}" >
                   </div>
                   <div class="col-md-4"><label for="campaign_end_date" class="form-label">Campaign End Date</label>
-                    <input type="date" class="form-control" name="campaign_end_date" id="campaign_end_date" value = "{% if Success == True%}{{form.CampaignEnddate}}{% endif %}" required>
+                    <input type="date" class="form-control" name="campaign_end_date" id="campaign_end_date" value = "{% if Success == True%}{{form.CampaignEnddate}}{% endif %}">
                   </div>
                   <div class="col-md-4"><label for="Campaign_type_input" class="form-label">Campaign Type</label>
                     <select name = "Campaign_type_input" id="Campaign_type_input" class="form-select" >
@@ -566,12 +600,11 @@
                   </div>
                   <div class="col-md-4">
                       <label for="Conversion_period" class="form-label">Conversion Period (in Days)</label>
-                        <input type="text" class="form-control" name = "Conversion_period_input" id="Conversion_period_input" value = "{% if Success == True%}{{form.ConversionPeriod}}{% endif %}" required>
+                        <input type="text" class="form-control" name = "Conversion_period_input" id="Conversion_period_input" value = "{% if Success == True%}{{form.ConversionPeriod}}{% endif %}">
                       </div>
                       <div class="text-center">
                         <button type="submit" class="button-18" id = "Final_submit" name = "Final_submit" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
                       </div>
-                      <!-- {% if Success == True %}{{form}}{% endif %} -->
                       {% if Success == True %}
                       {% if form.ExcelUpdate %}
                       <div class="alert alert-warning" role="alert">
@@ -584,6 +617,7 @@
           </div>
           <hr>
         </fieldset>
+        
         <!-- Section 4 End -->
 
 
@@ -596,15 +630,12 @@
 						<div class="card-body">
 							<h5 class="card-title">Download</span></h5>
 							<div class="text-center">
-								<a class="button-18" href="{{url_for('download')}}" id="Download_button" name = "Download_button">Download</a>
+                <button type="submit" class="button-18" for = "Download_button" id = "Download_button" name = "Download_button">Download</button>
+								
                 <a class="button-18" type="button" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a>
-
-                <!-- <form>
-                  <input type="button" value="Go back!" onclick="history.back()">
-                 </form> -->
-                <!-- <a class="button-18" id="Edit_button" name = "Edit_button">Edit</a> -->
-                <!-- <button type="submit" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button" >Edit</button>      -->
-							</div>
+							  <!-- <a class="button-18" type="submit" id = "Edit_button" name = "Edit_button"  for = "Edit_button">Edit</a>  -->
+                <!-- <button type="button" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button">Edit</button>	 -->
+              </div>
 						</div>
 					</div>
         <hr> 
@@ -621,38 +652,6 @@
 				window.scrollTo({ top: document.getElementById("{{form.location}}").getBoundingClientRect().top, behavior: 'smooth'})
 			</script>
 			{% endif %}
-
-			
-			<!-- {% if section == "sample_size" %}
-			<script>
-				window.scrollTo({ top: document.getElementById('sample_size').getBoundingClientRect().top, behavior: 'smooth'})
-			</script>
-
-			{% endif %} -->
-
-			
-         <!--
-	{% block body %}
-	{% if section == "hypothesis" %}
-	<script>
-		window.scrollTo({ top: document.getElementById('hypothesis').getBoundingClientRect().top + window.pageYOffset + 640, behavior: 'smooth' })
-		</script>
-	{% elif section == "section_samplesize" %}
-	<script>
-		window.scrollTo({ top: document.getElementById('section_samplesize').getBoundingClientRect().top + window.pageYOffset + 640, behavior: 'smooth' })
-	</script>
-	{% elif section == 'section_sampling' %}
-	<script>
-		window.scrollTo({ top: document.getElementById('section_sampling').getBoundingClientRect().top + window.pageYOffset + 1000, behavior: 'auto' })
-			</script>
-	{% else %}
-	<script>
-		document.getElementById('main').scrollIntoView({ behavior: "smooth", block: "start", inline: "start" }); 
-	</script>
-	{% endif %}
-	{% endblock %}
-	-->
-	
 
    
     </main>
