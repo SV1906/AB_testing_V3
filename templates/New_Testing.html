@@ -130,7 +130,7 @@
               </h5>
             </div>
             <div class="col-3">
-              <select name = "Doe_input" id="Doe_input" class="form-select" >
+              <select name = "Experiment_input" id="Experiment_input" class="form-select" >
                 <option selected value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -138,7 +138,7 @@
                 <option value="5">5</option>
               </select>
               <script>
-                document.querySelector('#Doe_input').value = "{% if Success == True %}{{form.DOE}}{% else %}1{% endif %}";
+                document.querySelector('#Experiment_input').value = "{% if Success == True %}{{form.Experiment}}{% else %}1{% endif %}";
                </script> 
             </div>  
           </div>
@@ -180,7 +180,7 @@
 					<h1>Minimum Sample Size Calculator</h1>
           <h9>Please fill in the information for minimum sample size calculation.</h9>
         </div>
-				<div class="card" style="height: 400px;">
+				<div class="card" style="height: 460px;">
 					<div class="card-body">
 						<ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item" role="presentation">
@@ -224,11 +224,35 @@
 												<div class="text-center">
                           <button type="submit" class="button-18" for = "Sample_Size_submit_1" id = "Sample_Size_submit_1" name = "Sample_Size_submit_1">Submit</button>	
                         </div>
-                        <div class="text-center">
-													{% if Success == True %}Minimum Sample Size (Basic): {{form.basic_result}}{% endif %} <br> 
-                          {% if Success == True %}Minimum Sample Size (Evan Millers): {{form.evan_millers}}{% endif %} <br> 
-                          <b>{% if Success == True %}Final Minimum Sample Size: {{form.final_result}}{% endif %} </b>                         
-												</div>                        		
+                        <!-- <div class="text-center"> -->
+                            {% if Success == True %} 
+                            <div class="card-body">
+                              <table>
+                                <tr>
+                                  <th width="10px" >Minimum Sample Size (Basic):</th>
+                                  <td width="10px" >{{form.basic_result}}</td>
+                                </tr>
+                                <tr>
+                                  <th width="10px" >Minimum Sample Size (Evan Millers):</th>
+                                  <td width="10px" >{{form.evan_millers}}</td>
+                                </tr>
+                                <tr>
+                                  <th width="10px" >Final Minimum Sample Size: 
+                                    <!-- <button id = "change_button" for = "change_button" name = "change_button" type="submit" class="btn btn-secondary btn-sm">change</button>  -->
+                                  </th>
+                                  <td width="10px" >{{form.final_result}}</td>
+                                </tr>
+                              </table>
+
+                            </div>
+                          
+                          
+                            {% endif %}
+
+													<!-- {% if Success == True %} {{form.basic_result}}{% endif %} <br> 
+                          {% if Success == True %} {{form.evan_millers}}{% endif %} <br> 
+                          <b>{% if Success == True %}{{final_result}}{% endif %} </b>                          -->
+												<!-- </div>                        		 -->
 											</div>
 									</div>    
                 </div>
@@ -316,11 +340,11 @@
          <div class = "card">
           <div class = "card-body">
               <div class="alert alert-warning" role="alert">
-                <strong>Warning : </strong>The base data selected isn't enough for the number of DOEs with the required minimum sample size.
+                <strong>Warning : </strong>The base data selected isn't enough for the number of Experiments with the required minimum sample size.
               </div>
             <p><i><b>Please solve this to proceed forward.</b></i><br> 
              Please do one of the following : <br>
-            1. Decrease the number of DOEs<br> 
+            1. Decrease the number of Experiments<br> 
             2. Decrease the minimum sample size<br>
             3. Increase the base data
             </p>
@@ -412,7 +436,7 @@
                         {% endif %}
                         {% endif %}
 
-                        <b>{% if Success == True %} Suggested Technique : {{form.Sample_suggestion}}{% endif %}</b>
+                        <b>{% if Success == True %}{% if form.Sample_suggestion %}Suggested Technique :{{form.Sample_suggestion}}{% endif %}{% endif %}</b>
                       </div>
                     <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b>
                       <sup>
@@ -610,6 +634,7 @@
                       <div class="alert alert-warning" role="alert">
                         <strong>Warning : </strong> {{form.ExcelUpdate}}
                       </div>
+                      {{test_size}}
                       {% endif %}
                       {% endif %}
                 </div>
@@ -626,15 +651,15 @@
         <!--Start Download Section --> 
         {% if Success == True %}
 				{% if form.Download == True %}
+        {{Stratification_columns}}
 				 <div class="card ">
 						<div class="card-body">
 							<h5 class="card-title">Download</span></h5>
 							<div class="text-center">
                 <button type="submit" class="button-18" for = "Download_button" id = "Download_button" name = "Download_button">Download</button>
 								
-                <a class="button-18" type="button" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a>
-							  <!-- <a class="button-18" type="submit" id = "Edit_button" name = "Edit_button"  for = "Edit_button">Edit</a>  -->
-                <!-- <button type="button" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button">Edit</button>	 -->
+                <!-- <a class="button-18" type="button" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a> -->
+                 
               </div>
 						</div>
 					</div>
