@@ -1,20 +1,13 @@
-from flask import Flask, render_template, request, send_file, redirect, url_for, abort, flash, session
+from flask import Flask, render_template, request, send_file
 from datetime import date
 from sklearn.model_selection import train_test_split
 import math
 import scipy.stats as stats 
-from werkzeug.utils import secure_filename
 import pandas as pd 
-import random 
-from kneed import KneeLocator
-import os 
 from pathlib import Path
 import numpy as np
 from csv import writer
-from sklearn.cluster import KMeans
-from sklearn.cluster import Birch
 from datetime import datetime 
-# from flask_download_btn import DownloadBtnManager, DownloadBtnMixin
 
 file_name = None 
 Flask_App = Flask(__name__) 
@@ -67,13 +60,10 @@ def get_form_parameters():
     Form  = {}
     if (request.form.get("Edit_button") != None) : 
             Form["Download"] = False
-
-         
     Form['Hypothesis'] = request.form['Hypothesis'] if (request.form.get('Hypothesis') != None) else ''
     Form['Experiment'] = request.form['Experiment_input'] if (request.form.get('Experiment_input') != None) else 0
     Form['ConversionInterval'] = request.form['confidence_Interval_Input'] if (request.form.get('confidence_Interval_Input') != None) else 0
     Form["MarginError"] = request.form['margin_Error_Input'] if (request.form.get('margin_Error_Input') != None) else 0
-    # Form['Button'] =  if (request.form.get('Button_id') != None) else ''
     Form['BaselineRate'] = request.form['baseline_Rate_Input'] if (request.form.get('baseline_Rate_Input') != None) else 0
     Form['DetectableEffect'] = request.form['detectable_Effect_Input'] if (request.form.get('detectable_Effect_Input') != None) else 0
     Form['SignificantPower'] = request.form['significance_Power_Input'] if (request.form.get('significance_Power_Input') != None) else 0
@@ -89,21 +79,6 @@ def get_form_parameters():
     Form['ConversionMetric'] = request.form['Conversion_metric_input'] if (request.form.get('Conversion_metric_input') != None) else 'Retention rate'
     Form['ConversionPeriod'] = request.form['Conversion_period_input'] if (request.form.get('Conversion_period_input') != None) else ''
     Form['Sum'] = 0
-    # for i in range(1,int(Form["Experiment"])+1):
-    #     variable = "Test_case_" + str(i)
-    #     if (request.form.get(variable) != None and request.form.get(variable) != '') : 
-    #        Form[variable] = request.form[variable] 
-    #        Form['Sum'] += int(Form[variable])
-    #     else : 
-    #         Form[variable] = Form["final_result"]
-      
-
-    # for i in range(1,int(Form["Experiment"])+1):
-    #     variable = "Campaign_Name_" + str(i)
-    #     if (request.form.get(variable) != None and request.form.get(variable) != '') : 
-    #        Form[variable] = request.form[variable] 
-    #     else : 
-    #         Form[variable] = ''
 
     Form['evan_millers'] = 0
     Form['final_result'] = 0
@@ -111,7 +86,7 @@ def get_form_parameters():
     Form['Records_Available'] = 0 
     Form["Sampling_Result"] =""
 
-    Button_Section = {"Sample_Size_submit_1":"sample_size", "Sample_Size_submit_2":"sample_size","Features_button":"select_filters","Sampling_Technique_submit":"sampling_technique","Final_submit":"campaign_details","Random_button":"sampling_technique","Test_cases_button":"Test_cases","stratify_button":"sampling_technique","Button_id":"sampling_technique", "Edit_button":"hypothesis_section"}
+    Button_Section = {"basic_button":"sample_size" , "Evan_Millers_button" :"sample_size","Sample_Size_submit_1":"sample_size", "Sample_Size_submit_2":"sample_size","Features_button":"select_filters","Sampling_Technique_submit":"sampling_technique","Final_submit":"campaign_details","Random_button":"sampling_technique","Test_cases_button":"Test_cases","stratify_button":"sampling_technique","Button_id":"sampling_technique", "Edit_button":"hypothesis_section"}
     for key,value in Button_Section.items(): 
         if (request.form.get(key) != None) : 
             Form['location'] = value
@@ -137,9 +112,7 @@ def db_count(data,selected):
         return 0 
     
 def Output_file(data_list):
-    try : 
-       
-        # with pd.ExcelWriter("C:\\Users\\Sandhya\\Downloads\\output.xlsx") as writer:
+    try :    
         with pd.ExcelWriter(str(THIS_FOLDER)+"\\output.xlsx") as writer:
             for i in range(0,len(data_list)):
                 data_list[i].to_excel(writer, sheet_name= "Sheet " + str(i+1))
@@ -233,8 +206,8 @@ def base_data(data,Selected_DataBase):
              data = data[(data[i])==1]
         return data
 
-def compare_size(evan_miller,basic_result): 
-    return evan_miller if evan_miller >= basic_result else basic_result
+# def compare_size(evan_miller,basic_result): 
+#     return evan_miller if evan_miller >= basic_result else basic_result
 
 def basic_Sample_Size(x,y):
     if (int(x) == 0 or int(y) == 0 ):
@@ -287,13 +260,8 @@ def New_Testing():
     
 
     if request.method == 'POST':
-    
-
-       forms = get_form_parameters()
-
-       
+       forms = get_form_parameters()  
        forms["Strat_result"] = ''
-    #    forms["Campaign_Details_Error"] = ""
 
        for i in Features: 
             if request.form.get(i['key']) :
@@ -310,19 +278,33 @@ def New_Testing():
       
        if (forms["ConversionInterval"] != '' and forms["MarginError"] != ''):   
             forms ["basic_result"] = basic_Sample_Size(forms["ConversionInterval"], forms["MarginError"])
-            # forms ["evan_millers"] =  evan_Millers(forms["BaselineRate"], forms["DetectableEffect"], forms["SignificantPower"], forms["SignificantLevel"])
-            forms["final_result"] = compare_size(forms["evan_millers"],forms["basic_result"])
+            forms["final_result"] = forms ["basic_result"]
                
        if (forms["BaselineRate"] != '' and forms["DetectableEffect"] != '' and forms["SignificantPower"] != '' and forms["SignificantLevel"] != ''):           
            forms ["evan_millers"] =  evan_Millers(forms["BaselineRate"], forms["DetectableEffect"], forms["SignificantPower"], forms["SignificantLevel"])
-           forms["final_result"] = compare_size(forms["evan_millers"],forms["basic_result"])
+        #    forms["final_result"] = forms ["evan_millers"]
+       
+       #User selects basic_result 
+       if (request.form.get("basic_button") != None): 
+            forms["final_result"] = forms ["basic_result"]
+            # for i in range(1,int(forms["Experiment"])+1):
+            #      variable = "Test_case_" + str(i)
+            #      forms[variable] = 
+            #             forms['Sum'] += int(forms[variable])
+            
+       else: 
+            forms["final_result"] = forms ["evan_millers"]
+
+       #User selects 
 
        for i in range(1,int(forms["Experiment"])+1):
              variable = "Test_case_" + str(i)
-             if (request.form.get(variable) != None and request.form.get(variable) != '') : 
+             if (request.form.get(variable) != None) : 
+                 #If it's not empty 
                  forms[variable] = request.form[variable] 
                  forms['Sum'] += int(forms[variable])
              else : 
+                #If it's empty 
                 forms[variable] = forms["final_result"]
 
        if (int(forms['Experiment']) == 1): 
@@ -426,13 +408,6 @@ def New_Testing():
 
        return render_template('New_Testing.html', Sub_Campaign_Names = Sub_Campaign_Names, Section_open = Section_open, stratification_columns = Stratification_columns, selected_columns =selected_columns, sum = sum, Success = True, form = forms, features = Features, date = today, Verification =  verification) 
     return render_template('New_Testing.html' , Section_open = Section_open, features = Features, Stratification_columns=Stratification_columns, date = today)
-
-
-# @Flask_App.route('/download')
-# def download():
-#     final_path = "C:\\Users\\Sandhya\\Downloads\\output.xlsx" 
-#     return send_file(final_path, as_attachment=True)
-  
   
 if __name__ == '__main__':
     Flask_App.debug = True

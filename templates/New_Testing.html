@@ -180,7 +180,7 @@
 					<h1>Minimum Sample Size Calculator</h1>
           <h9>Please fill in the information for minimum sample size calculation.</h9>
         </div>
-				<div class="card" style="height: 460px;">
+				<div class="card" style="height: 500px;">
 					<div class="card-body">
 						<ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item" role="presentation">
@@ -236,17 +236,29 @@
                                   <th width="10px" >Minimum Sample Size (Evan Millers):</th>
                                   <td width="10px" >{{form.evan_millers}}</td>
                                 </tr>
-                                <tr>
-                                  <th width="10px" >Final Minimum Sample Size: 
-                                    <!-- <button id = "change_button" for = "change_button" name = "change_button" type="submit" class="btn btn-secondary btn-sm">change</button>  -->
+                                <tfoot>
+                                  <th width="10px" >Final Minimum Sample Size:                           
                                   </th>
                                   <td width="10px" >{{form.final_result}}</td>
-                                </tr>
+                                </tfoot>
+                               
                               </table>
-
-                            </div>
-                          
-                          
+                              <div class="text-center">
+                               
+                                <div class = "card-body">
+                                  <text>Choose one of the Sample Size : </text>
+                                  <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                    {% if form.final_result == form.basic_result %}
+                                    <button type="submit" id = "basic_button" for = "basic_button" name = "basic_button" class="btn btn-outline-secondary active" >Basic</button>
+                                    <button type="submit"  id = "Evan_Millers_button" for = "Evan_Millers_button" name = "Evan_Millers_button" class="btn btn-outline-secondary">Evan Miller</button>                                 
+                                    {% else %}
+                                    <button type="submit" id = "basic_button" for = "basic_button" name = "basic_button" class="btn btn-outline-secondary">Basic</button>
+                                    <button type="submit"  id = "Evan_Millers_button" for = "Evan_Millers_button" name = "Evan_Millers_button" class="btn btn-outline-secondary active" >Evan Miller</button>
+                                    {% endif %}
+                                  </div>
+                                </div>                 
+                              </div>
+                            </div>                     
                             {% endif %}
 
 													<!-- {% if Success == True %} {{form.basic_result}}{% endif %} <br> 
@@ -312,11 +324,40 @@
 												<div class="text-center">
 													<button type="submit" class="button-18" name ="Sample_Size_submit_2" id = "Sample_Size_submit_2">Submit</button>                          
 												</div>
-                        <div class="text-center">
-                          {% if Success == True %}Minimum Sample Size (Basic): {{form.basic_result}}{% endif %} <br> 
-                          {% if Success == True %}Minimum Sample Size (Evan Millers): {{form.evan_millers}}{% endif %} <br>  
-                          <b>{% if Success == True %}Final Minimum Sample Size: {{form.final_result}}{% endif %} </b>  								                        
-												</div>              
+                        {% if Success == True %} 
+                            <div class="card-body">
+                              <table>
+                                <tr>
+                                  <th width="10px" >Minimum Sample Size (Basic):</th>
+                                  <td width="10px" >{{form.basic_result}}</td>
+                                </tr>
+                                <tr>
+                                  <th width="10px" >Minimum Sample Size (Evan Millers):</th>
+                                  <td width="10px" >{{form.evan_millers}}</td>
+                                </tr>
+                                <tr>
+                                  <th width="10px" >Final Minimum Sample Size:                           
+                                  </th>
+                                  <td width="10px" >{{form.final_result}}</td>
+                                </tr> 
+                              </table>
+                              <div class="text-center">
+                               
+                                <div class = "card-body">
+                                  <text> Select one of the following : </text>
+                                  <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                    {% if form.final_result == form.basic_result %}
+                                    <button type="submit" id = "basic_button" for = "basic_button" name = "basic_button" class="btn btn-outline-secondary active" >Basic</button>
+                                    <button type="submit"  id = "Evan_Millers_button" for = "Evan_Millers_button" name = "Evan_Millers_button" class="btn btn-outline-secondary">Evan Miller</button>                                 
+                                    {% else %}
+                                    <button type="submit" id = "basic_button" for = "basic_button" name = "basic_button" class="btn btn-outline-secondary">Basic</button>
+                                    <button type="submit"  id = "Evan_Millers_button" for = "Evan_Millers_button" name = "Evan_Millers_button" class="btn btn-outline-secondary active" >Evan Miller</button>
+                                    {% endif %}
+                                  </div>
+                                </div>                 
+                              </div>
+                            </div>                     
+                            {% endif %}            
 											</div>																				 
 									</div> 
                 </div>
@@ -391,7 +432,7 @@
                 {% for i in range(1, form.Total_cases) %} 
                 <div class="col-3">
                    <label for="Test_case{{i}}" class="form-label">Test Case {{i}}</label>
-                  <input type="number" class="form-control" id = "Test_case_{{i}}" name="Test_case_{{i}}" value="{{ form['Test_case_'+ i|string] }}">
+                  <input type="number" class="form-control" id = "Test_case_{{i}}" name="Test_case_{{i}}" value="{{ form['Test_case_'+ i|string] }}" min = {{form.final_result}}>
                 </div>
                 {% endfor %} 
               </div>
@@ -634,7 +675,7 @@
                       <div class="alert alert-warning" role="alert">
                         <strong>Warning : </strong> {{form.ExcelUpdate}}
                       </div>
-                      {{test_size}}
+                      <!-- {{test_size}} -->
                       {% endif %}
                       {% endif %}
                 </div>
