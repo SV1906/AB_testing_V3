@@ -118,7 +118,7 @@
               </h5>
             </div>
             <div class="col-9">
-              <textarea name="Hypothesis" id="Hypothesis" name="Hypothesis" class="form-control" rows="3" placeholder="" required>{% if Success == True %}{{form.Hypothesis}}{% endif %}</textarea>
+              <textarea name="Hypothesis" id="Hypothesis" name="Hypothesis" class="form-control" rows="3" placeholder="" required onkeypress="enable_button('Hypothesis_button')">{% if Success == True %}{{form.Hypothesis}}{% endif %}</textarea>
             </div>     
           </div>
     
@@ -130,7 +130,7 @@
               </h5>
             </div>
             <div class="col-3">
-              <select name = "Experiment_input" id="Experiment_input" class="form-select" >
+              <select name = "Experiment_input" id="Experiment_input" class="form-select" onchange="enable_button('Hypothesis_button')">
                 <option selected value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -140,7 +140,19 @@
               <script>
                 document.querySelector('#Experiment_input').value = "{% if Success == True %}{{form.Experiment}}{% else %}1{% endif %}";
                </script> 
+
+
+              <script>
+              function enable_button(x) {
+                document.getElementById(x).disabled = false;
+              }
+
+              </script>
+
             </div>  
+            <div class="text-center">
+              <button type="submit" class="button-18" for = "Hypothesis_button" id = "Hypothesis_button" name = "Hypothesis_button" disabled = true>Submit</button>     
+         </div>  
           </div>
         </div>
         <hr>
@@ -152,7 +164,7 @@
           <h9>Please select the conditions and filters.</h9>
         </div>
         <div class="card">
-          <div class="card-body  row "> {% for i in features %} <div class="col-4">
+          <div class="card-body  row "> {% for i in features %} <div class="col-4" onchange="enable_button('Features_button')">
               {% if i.value == True %}
               <input class="form-check-input" type="checkbox" id="{{i.key}}"    name = "{{i.key}}" checked>
               <label class="form-check-label"  >{{i.key}}</label>   
@@ -164,7 +176,7 @@
             {% endfor %} 
             <div class ="card-body">
               <div class="text-center">
-                   <button type="submit" class="button-18" for = "Features_button" id = "Features_button" name = "Features_button" >Calculate</button>     
+                   <button type="submit" class="button-18" for = "Features_button" id = "Features_button" name = "Features_button" disabled>Calculate</button>     
               </div>   	
               <div class = "text-center">
                 <b>{% if Success == True %}Current DB Count: {{form.Current_Count}}{% endif %} </b>  
@@ -212,17 +224,17 @@
 								  <div class="card-body col-12">	
                       <div class="col">
 												<div class="row">
-													<label for="Input1" class="form-label">Confidence Interval (%)</label>
-													<input type="number" class="form-control"  value="{% if Success == True %}{{form.ConversionInterval}}{% endif %}" name="confidence_Interval_Input" min=0 max=100>
+													<label for="Input1" class="form-label" >Confidence Interval (%)</label>
+													<input type="number" class="form-control" onkeyup="enable_button('Sample_Size_submit_1')"  value="{% if Success == True %}{{form.ConversionInterval}}{% endif %}" name="confidence_Interval_Input" min=0 max=100>
 												</div>
 												<div class="row">
 													<label for="Input2" class="form-label">Margin Error(%)</label>
-													<input type="number" class="form-control"  value = "{% if Success == True %}{{form.MarginError}}{% endif %}" name="margin_Error_Input" min=0 max=100>
+													<input type="number" class="form-control" onkeyup="enable_button('Sample_Size_submit_1')" value = "{% if Success == True %}{{form.MarginError}}{% endif %}" name="margin_Error_Input" min=0 max=100>
 												</div>
 											</div>
 											<div class = "card-body">
 												<div class="text-center">
-                          <button type="submit" class="button-18" for = "Sample_Size_submit_1" id = "Sample_Size_submit_1" name = "Sample_Size_submit_1">Submit</button>	
+                          <button type="submit" class="button-18" for = "Sample_Size_submit_1" id = "Sample_Size_submit_1" name = "Sample_Size_submit_1" disabled>Submit</button>	
                         </div>
                         <!-- <div class="text-center"> -->
                             {% if Success == True %} 
@@ -243,28 +255,9 @@
                                 </tfoot>
                                
                               </table>
-                              <div class="text-center">
-                               
-                                <div class = "card-body">
-                                  <text>Choose one of the Sample Size : </text>
-                                  <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                    {% if form.final_result == form.basic_result %}
-                                    <button type="submit" id = "basic_button" for = "basic_button" name = "basic_button" class="btn btn-outline-secondary active" >Basic</button>
-                                    <button type="submit"  id = "Evan_Millers_button" for = "Evan_Millers_button" name = "Evan_Millers_button" class="btn btn-outline-secondary">Evan Miller</button>                                 
-                                    {% else %}
-                                    <button type="submit" id = "basic_button" for = "basic_button" name = "basic_button" class="btn btn-outline-secondary">Basic</button>
-                                    <button type="submit"  id = "Evan_Millers_button" for = "Evan_Millers_button" name = "Evan_Millers_button" class="btn btn-outline-secondary active" >Evan Miller</button>
-                                    {% endif %}
-                                  </div>
-                                </div>                 
-                              </div>
+                       
                             </div>                     
                             {% endif %}
-
-													<!-- {% if Success == True %} {{form.basic_result}}{% endif %} <br> 
-                          {% if Success == True %} {{form.evan_millers}}{% endif %} <br> 
-                          <b>{% if Success == True %}{{final_result}}{% endif %} </b>                          -->
-												<!-- </div>                        		 -->
 											</div>
 									</div>    
                 </div>
@@ -302,27 +295,27 @@
 									<div class = "card-body col-12">
 											<div class="row g-3">
 												<div class="col-sm">
-													<label for="Input1" class="form-label">Baseline Conversion Rate (%)</label>
-													<input type="text" class="form-control" value = "{% if Success == True %}{{form.BaselineRate}}{% endif %}" name="baseline_Rate_Input" min=0 max=100>
+													<label for="Input1" class="form-label" >Baseline Conversion Rate (%)</label>
+													<input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')" value = "{% if Success == True %}{{form.BaselineRate}}{% endif %}" name="baseline_Rate_Input" min=0 max=100>
 												</div>
 												<div class="col-sm">
-													<label for="Input2" class="form-label">Minimum Detectable Effect (%)</label>
-													<input type="text" class="form-control" value = "{% if Success == True %}{{form.DetectableEffect}}{% endif %}" name="detectable_Effect_Input" min=0 max=100>
+													<label for="Input2" class="form-label" >Minimum Detectable Effect (%)</label>
+													<input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{% if Success == True %}{{form.DetectableEffect}}{% endif %}" name="detectable_Effect_Input" min=0 max=100>
 												</div>
 											</div>
 											<div class = "row g-3">
 												<div class="col-sm">
-													<label for="Input3" class="form-label">Significance Power  (%)</label>
-													<input type="text" class="form-control" value = "{% if Success == True %}{{form.SignificantPower}}{% endif %}" name="significance_Power_Input" min=0 max=100>
+													<label for="Input3" class="form-label" >Significance Power (%)</label>
+													<input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{% if Success == True %}{{form.SignificantPower}}{% endif %}" name="significance_Power_Input" min=0 max=100>
 												</div>
 												<div class="col-sm">
 													<label for="Input14" class="form-label">Significance level (%)</label>
-													<input type="text" class="form-control" value = "{% if Success == True %}{{form.SignificantLevel}}{% endif %}" name="significance_Level_Input" min=0 max=100>
+													<input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{% if Success == True %}{{form.SignificantLevel}}{% endif %}" name="significance_Level_Input" min=0 max=100>
 												</div>
 											</div>
 											<div class = "card-body">											
 												<div class="text-center">
-													<button type="submit" class="button-18" name ="Sample_Size_submit_2" id = "Sample_Size_submit_2">Submit</button>                          
+													<button type="submit" class="button-18" name ="Sample_Size_submit_2" id = "Sample_Size_submit_2" disabled>Submit</button>                          
 												</div>
                         {% if Success == True %} 
                             <div class="card-body">
@@ -341,7 +334,7 @@
                                   <td width="10px" >{{form.final_result}}</td>
                                 </tr> 
                               </table>
-                              <div class="text-center">
+                              <!-- <div class="text-center">
                                
                                 <div class = "card-body">
                                   <text> Select one of the following : </text>
@@ -355,7 +348,7 @@
                                     {% endif %}
                                   </div>
                                 </div>                 
-                              </div>
+                              </div> -->
                             </div>                     
                             {% endif %}            
 											</div>																				 
@@ -501,7 +494,7 @@
                     </p>
                     </p>
                       <div> 
-                        <select property="status" styleClass="form-control" id = "operator" name = "operator">
+                        <select property="status" styleClass="form-control" id = "operator" name = "operator" onchange="enable_button('Sampling_Technique_submit')">
                           <option value="Default" disabled >Choose : </option>
                           <option value="Random">Simple Random Sampling</option>
                           <option value="Systematic">Systematic Sampling</option>
@@ -512,10 +505,10 @@
                          </script>              
                         <div class = "card-body">  
                           <div class="text-center">
-                            <button type="submit" class="button-18" id = "Sampling_Technique_submit"  onclick="update()" name = "Sampling_Technique_submit" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
+                            <button type="submit" class="button-18" id = "Sampling_Technique_submit"  onclick="update()" name = "Sampling_Technique_submit" disabled {% if Verification == "True" %}disabled{% endif %}>Submit</button>
                           </div>
                         </div>
-                      
+                    
                         
                           <div class="progress" style="height: 6px;">
                             <div class="progress-bar progress-bar-striped progress-bar-animated" id = "myprogressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
@@ -537,11 +530,6 @@
                               }
                           }
                           </script>
-
-
-
-
- 
                       </div>
                   </div>
                 </div>
@@ -563,9 +551,9 @@
                    <strong>Warning :</strong>Choose atleast one column to stratify on 
                  </div>
                  {% endif %}
-                 <div class="card-body  row "> {% for i in stratification_columns %} <div class="col-3">
+                 <div class="card-body  row "> {% for i in stratification_columns %} <div class="col-3" onchange="enable_button('stratify_button')">
                    {% if i.value == True %}
-                     <input class="form-check-input" type="checkbox" id="Strat{{i.key}}"    name = "Strat{{i.key}}" checked>
+                     <input class="form-check-input" type="checkbox" id="Strat{{i.key}}" name = "Strat{{i.key}}" checked>
                      <label class="form-check-label"  >{{i.key}}</label>   
                    {% else %} 
                    <input class="form-check-input" type="checkbox" id="Strat{{i.key}}"  name = "Strat{{i.key}}">
@@ -593,19 +581,12 @@
           </div>
           <div class="card  ">
             <div class="card-body">
-              {% if Success == True %}
-              {% if form.Campaign_Details_Error%}
-              <div class="alert alert-warning" role="alert">
-                {{form.Campaign_Details_Error}}
-              </div>   
-              {% endif %}
-              {% endif %}
                 <div class = "row g-3">
                   <div class="mx-auto">
                     <div class="form-group row">
                       <label for="colFormLabel" class="col-sm-4 col-form-label"><b>Master Campaign Name</b></label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="campaign_name_input" name="campaign_name_input" value = "{% if Success == True%}{{form.CampaignName}}{% endif %}">
+                        <input type="text" class="form-control" id="campaign_name_input" name="campaign_name_input" value = "{% if Success == True%}{{form.CampaignName}}{% endif %}" onkeyup="enable_button('Final_submit')">
                       </div>
                     </div>
                   </div>
@@ -617,8 +598,7 @@
                     <div class="form-group row">
                       <label for="colFormLabel" class="col-sm-4 col-form-label">Campaign Name for Experiment {{i}}</label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="Campaign_Name_{{i}}" name="Campaign_Name_{{i}}" value = "{{ form['Campaign_Name_'+ i|string] }}"
-                        >
+                        <input type="text" class="form-control" id="Campaign_Name_{{i}}" name="Campaign_Name_{{i}}" value = "{{ form['Campaign_Name_'+ i|string] }}" onkeyup="enable_button('Final_submit')">
                       </div>
                     </div>
                   </div>
@@ -634,13 +614,13 @@
                   </div>
                   <div class="col-md-4">
                     <label for="campaign_start_date" class="form-label">Campaign Start Date</label>
-                    <input type="date" class="form-control" id = "campaign_start_date" name="campaign_start_date" value = "{% if Success == True%}{{form.CampaignStartdate}}{% endif %}" >
+                    <input type="date" class="form-control" id = "campaign_start_date" name="campaign_start_date" value = "{% if Success == True%}{{form.CampaignStartdate}}{% endif %}" onkeyup="enable_button('Sampling_Technique_submit')">
                   </div>
                   <div class="col-md-4"><label for="campaign_end_date" class="form-label">Campaign End Date</label>
-                    <input type="date" class="form-control" name="campaign_end_date" id="campaign_end_date" value = "{% if Success == True%}{{form.CampaignEnddate}}{% endif %}">
+                    <input type="date" class="form-control" name="campaign_end_date" id="campaign_end_date" value = "{% if Success == True%}{{form.CampaignEnddate}}{% endif %}" onkeyup="enable_button('Sampling_Technique_submit')">
                   </div>
                   <div class="col-md-4"><label for="Campaign_type_input" class="form-label">Campaign Type</label>
-                    <select name = "Campaign_type_input" id="Campaign_type_input" class="form-select" >
+                    <select name = "Campaign_type_input" id="Campaign_type_input" class="form-select" onchange="enable_button('Final_submit')">
                       <option selected value="Push">Push</option>
                       <option value="InApp-Pop">InApp-Pop</option>
                       <option value="Inbox">Inbox</option>
@@ -652,7 +632,7 @@
                   </div>
                   <div class="col-md-4">
                     <label for="Conversion_metric_input" class="form-label">Conversion Metric</label>
-                    <select name = "Conversion_metric_input" id ="Conversion_metric_input" class="form-select" >
+                    <select name = "Conversion_metric_input" id ="Conversion_metric_input" class="form-select" onchange="enable_button('Final_submit')">
                       <option selected value="Retention rate">Retention rate</option>
                       <option value="Digitization">Digitization</option>
                       <option value="App Launch">App Launch</option>
@@ -665,10 +645,10 @@
                   </div>
                   <div class="col-md-4">
                       <label for="Conversion_period" class="form-label">Conversion Period (in Days)</label>
-                        <input type="text" class="form-control" name = "Conversion_period_input" id="Conversion_period_input" value = "{% if Success == True%}{{form.ConversionPeriod}}{% endif %}">
+                        <input type="text" class="form-control" name = "Conversion_period_input" id="Conversion_period_input" value = "{% if Success == True%}{{form.ConversionPeriod}}{% endif %}" onkeyup="enable_button('Final_submit')">
                       </div>
                       <div class="text-center">
-                        <button type="submit" class="button-18" id = "Final_submit" name = "Final_submit" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
+                        <button type="submit" class="button-18" id = "Final_submit" name = "Final_submit" disabled {% if Verification == "True" %}disabled{% endif %}>Submit</button>
                       </div>
                       {% if Success == True %}
                       {% if form.ExcelUpdate %}
@@ -692,19 +672,23 @@
         <!--Start Download Section --> 
         {% if Success == True %}
 				{% if form.Download == True %}
-        {{Stratification_columns}}
 				 <div class="card ">
 						<div class="card-body">
 							<h5 class="card-title">Download</span></h5>
 							<div class="text-center">
-                <button type="submit" class="button-18" for = "Download_button" id = "Download_button" name = "Download_button">Download</button>
-								
-                <!-- <a class="button-18" type="button" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a> -->
-                 
+                <button type="submit" class="button-18" for = "Download_button" id = "Download_button" name = "Download_button">Download</button>						
+                <!-- <a class="button-18" type="button" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a> -->        
               </div>
 						</div>
 					</div>
         <hr> 
+        {% if Success == True %}
+        {% if form.Campaign_Details_Error%}
+        <div class="alert alert-warning" role="alert">
+          {{form.Campaign_Details_Error}}
+        </div>   
+        {% endif %}
+        {% endif %}
 				{% endif %} 
         {% endif %}
         <!-- End Download Section-->

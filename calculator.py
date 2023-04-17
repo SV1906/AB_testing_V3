@@ -18,6 +18,9 @@ data_Original = pd.read_csv(final_data)
 today = date.today()
 today = today.strftime("%d-%m-%Y")
 button_variable = "False" 
+array_output_final = []
+forms = {'Campaign_Name_1' : '', 'Campaign_Name_2': '', 'Operator' : 'Default', 'Hypothesis':'', 'Experiment':'', 'CampaignName' : '','CampaignStartdate' : '','CampaignEnddate' : '', 'CampaignType':'Push' , 'ConversionMetric':'Retention Rate' ,'ConversionPeriod' : ''}
+
 
 def features(data):
     data = data.drop(['profile_phone', 'Signup_date'],axis=1)
@@ -46,38 +49,40 @@ add_columns = ['Customer Type', 'Payments Active']
 Stratification_columns = Stratified_On(data_Original, remove_columns, add_columns)
 
 #Function to update to Master File 
-def excel_update(forms, selected_features,test_size, selected_columns, today, Sub_Campaign_Names): 
-    file = (str(THIS_FOLDER)+"\\Master_Sheet.csv")
-    df = pd.read_csv(file, on_bad_lines='skip')
+def excel_update(array_output_final): 
+    file = (str(THIS_FOLDER)+"\\Master_Sheet_V2.csv")
+    df = pd.read_csv(file, on_bad_lines=None)
     index_len = len(df)+1
-    array_output = [index_len,forms["Hypothesis"],forms['Experiment'],selected_features,forms["final_result"],test_size,forms["Operator"],selected_columns,forms["CampaignName"], Sub_Campaign_Names, today, forms['CampaignStartdate'], forms['CampaignEnddate'], forms['CampaignType'], forms['ConversionMetric'], forms['ConversionPeriod']]
+    array_output_local = array_output_final.copy()
+    array_output_local.insert(0,index_len)
     with open(file, 'a' , newline ='') as f_object:
           writer_object = writer(f_object)
-          writer_object.writerow(array_output)
+          writer_object.writerow(array_output_local)
           f_object.close()
+
 
 def get_form_parameters():
     Form  = {}
     if (request.form.get("Edit_button") != None) : 
             Form["Download"] = False
-    Form['Hypothesis'] = request.form['Hypothesis'] if (request.form.get('Hypothesis') != None) else ''
-    Form['Experiment'] = request.form['Experiment_input'] if (request.form.get('Experiment_input') != None) else 0
-    Form['ConversionInterval'] = request.form['confidence_Interval_Input'] if (request.form.get('confidence_Interval_Input') != None) else 0
-    Form["MarginError"] = request.form['margin_Error_Input'] if (request.form.get('margin_Error_Input') != None) else 0
-    Form['BaselineRate'] = request.form['baseline_Rate_Input'] if (request.form.get('baseline_Rate_Input') != None) else 0
-    Form['DetectableEffect'] = request.form['detectable_Effect_Input'] if (request.form.get('detectable_Effect_Input') != None) else 0
-    Form['SignificantPower'] = request.form['significance_Power_Input'] if (request.form.get('significance_Power_Input') != None) else 0
-    Form['SignificantLevel'] = request.form['significance_Level_Input'] if (request.form.get('significance_Level_Input') != None) else 0
+    Form['Hypothesis'] = request.form['Hypothesis'] if (request.form.get('Hypothesis') != None) else forms['Hypothesis']
+    Form['Experiment'] = request.form['Experiment_input'] if (request.form.get('Experiment_input') != None) else forms['Experiment']
+    Form['ConversionInterval'] = request.form['confidence_Interval_Input'] if (request.form.get('confidence_Interval_Input') != None) else forms['ConversionInterval']
+    Form["MarginError"] = request.form['margin_Error_Input'] if (request.form.get('margin_Error_Input') != None) else forms['MarginError']
+    Form['BaselineRate'] = request.form['baseline_Rate_Input'] if (request.form.get('baseline_Rate_Input') != None) else forms['BaselineRate']
+    Form['DetectableEffect'] = request.form['detectable_Effect_Input'] if (request.form.get('detectable_Effect_Input') != None) else forms['DetectableEffect']
+    Form['SignificantPower'] = request.form['significance_Power_Input'] if (request.form.get('significance_Power_Input') != None) else forms['SignificantPower']
+    Form['SignificantLevel'] = request.form['significance_Level_Input'] if (request.form.get('significance_Level_Input') != None) else forms['SignificantLevel']
     Form["Total_cases"] = int(Form['Experiment'])+1
     Form['Operator'] = 'Default'
     if (request.form.get('operator') != None) : 
         Form['Operator'] = request.form['operator']
-    Form['CampaignName'] = request.form['campaign_name_input'] if (request.form.get('campaign_name_input') != None) else ''
-    Form['CampaignStartdate'] = request.form['campaign_start_date'] if (request.form.get('campaign_start_date') != None) else ''
-    Form['CampaignEnddate'] = request.form['campaign_end_date'] if (request.form.get('campaign_end_date') != None) else ''
+    Form['CampaignName'] = request.form['campaign_name_input'] if (request.form.get('campaign_name_input') != None) else forms['CampaignName']
+    Form['CampaignStartdate'] = request.form['campaign_start_date'] if (request.form.get('campaign_start_date') != None) else forms['CampaignStartdate']
+    Form['CampaignEnddate'] = request.form['campaign_end_date'] if (request.form.get('campaign_end_date') != None) else forms['CampaignEnddate']
     Form['CampaignType'] = request.form['Campaign_type_input'] if (request.form.get('Campaign_type_input') != None) else 'Push'
     Form['ConversionMetric'] = request.form['Conversion_metric_input'] if (request.form.get('Conversion_metric_input') != None) else 'Retention rate'
-    Form['ConversionPeriod'] = request.form['Conversion_period_input'] if (request.form.get('Conversion_period_input') != None) else ''
+    Form['ConversionPeriod'] = request.form['Conversion_period_input'] if (request.form.get('Conversion_period_input') != None) else forms['ConversionPeriod']
     Form['Sum'] = 0
 
     Form['evan_millers'] = 0
@@ -86,7 +91,7 @@ def get_form_parameters():
     Form['Records_Available'] = 0 
     Form["Sampling_Result"] =""
 
-    Button_Section = {"basic_button":"sample_size" , "Evan_Millers_button" :"sample_size","Sample_Size_submit_1":"sample_size", "Sample_Size_submit_2":"sample_size","Features_button":"select_filters","Sampling_Technique_submit":"sampling_technique","Final_submit":"campaign_details","Random_button":"sampling_technique","Test_cases_button":"Test_cases","stratify_button":"sampling_technique","Button_id":"sampling_technique", "Edit_button":"hypothesis_section"}
+    Button_Section = {"Sample_Size_submit_1":"sample_size", "Sample_Size_submit_2":"sample_size","Features_button":"select_filters","Sampling_Technique_submit":"sampling_technique","Final_submit":"campaign_details","Random_button":"sampling_technique","Test_cases_button":"Test_cases","stratify_button":"sampling_technique","Button_id":"sampling_technique", "Edit_button":"hypothesis_section"}
     for key,value in Button_Section.items(): 
         if (request.form.get(key) != None) : 
             Form['location'] = value
@@ -206,8 +211,8 @@ def base_data(data,Selected_DataBase):
              data = data[(data[i])==1]
         return data
 
-# def compare_size(evan_miller,basic_result): 
-#     return evan_miller if evan_miller >= basic_result else basic_result
+def compare_size(evan_miller,basic_result): 
+    return evan_miller if evan_miller >= basic_result else basic_result
 
 def basic_Sample_Size(x,y):
     if (int(x) == 0 or int(y) == 0 ):
@@ -260,6 +265,7 @@ def New_Testing():
     
 
     if request.method == 'POST':
+       global forms 
        forms = get_form_parameters()  
        forms["Strat_result"] = ''
 
@@ -278,22 +284,15 @@ def New_Testing():
       
        if (forms["ConversionInterval"] != '' and forms["MarginError"] != ''):   
             forms ["basic_result"] = basic_Sample_Size(forms["ConversionInterval"], forms["MarginError"])
-            forms["final_result"] = forms ["basic_result"]
+            forms["final_result"] = compare_size(forms["evan_millers"],forms["basic_result"])
                
        if (forms["BaselineRate"] != '' and forms["DetectableEffect"] != '' and forms["SignificantPower"] != '' and forms["SignificantLevel"] != ''):           
            forms ["evan_millers"] =  evan_Millers(forms["BaselineRate"], forms["DetectableEffect"], forms["SignificantPower"], forms["SignificantLevel"])
+           forms["final_result"] = compare_size(forms["evan_millers"],forms["basic_result"])
         #    forms["final_result"] = forms ["evan_millers"]
        
        #User selects basic_result 
-       if (request.form.get("basic_button") != None): 
-            forms["final_result"] = forms ["basic_result"]
-            # for i in range(1,int(forms["Experiment"])+1):
-            #      variable = "Test_case_" + str(i)
-            #      forms[variable] = 
-            #             forms['Sum'] += int(forms[variable])
-            
-       else: 
-            forms["final_result"] = forms ["evan_millers"]
+
 
        #User selects 
 
@@ -306,6 +305,18 @@ def New_Testing():
              else : 
                 #If it's empty 
                 forms[variable] = forms["final_result"]
+       
+    #    if (request.form.get("basic_button") != None): 
+    #         forms["final_result"] = forms ["basic_result"]
+    #         for i in range(1,int(forms["Experiment"])+1):
+    #              variable = "Test_case_" + str(i)
+    #              forms[variable] = forms["final_result"]
+            
+    #    elif (request.form.get("Evan_Millers_button") != None): 
+    #         forms["final_result"] = forms ["evan_millers"]
+    #         for i in range(1,int(forms["Experiment"])+1):
+    #              variable = "Test_case_" + str(i)
+    #              forms[variable] = forms["final_result"]
 
        if (int(forms['Experiment']) == 1): 
             Sub_Campaign_Names.append(forms['CampaignName'])
@@ -393,21 +404,25 @@ def New_Testing():
                 forms["Campaign_Details_Error"] = "Please fill in all the Sub Campaign Names"
             if (datetime.strptime(forms["CampaignStartdate"], '%Y-%m-%d') > datetime.strptime(forms["CampaignEnddate"], '%Y-%m-%d')):
                forms["Campaign_Details_Error"] = "The Campaign End Date should be after the Campaign Start DateStart date"
-            if (forms["Campaign_Details_Error"] == ""):        
-                try :  
-                    excel_update(forms, selected_features,test_size, selected_columns, today,Sub_Campaign_Names)
+            if (forms["Campaign_Details_Error"] == ""):      
+                    global array_output_final
+                    array_output_final = [forms["Hypothesis"],forms['Experiment'],selected_features,forms["final_result"],test_size,forms["Operator"],selected_columns,forms["CampaignName"], Sub_Campaign_Names, today, forms['CampaignStartdate'], forms['CampaignEnddate'], forms['CampaignType'], forms['ConversionMetric'], forms['ConversionPeriod']]
                     forms ["Download"] = True  
-                except : 
-                    forms["ExcelUpdate"] = "There is a problem while updating the Excel. Please Try again."
        if (forms["Sampling_Result"] == "Sampling Successful"):
                 Section_open = 5
        
        if (request.form.get("Download_button") != None): 
-            path = (str(THIS_FOLDER)+"\\output.xlsx")
-            return send_file(path, as_attachment=True)
+            try : 
+                 excel_update(array_output_final)
+                 path = (str(THIS_FOLDER)+"\\output.xlsx")
+                 return send_file(path, as_attachment=True)
+            except : 
+                  forms["ExcelUpdate"] = "There is a problem while updating the Excel. Please Try again."
+                  forms ["Download"] = True 
 
-       return render_template('New_Testing.html', Sub_Campaign_Names = Sub_Campaign_Names, Section_open = Section_open, stratification_columns = Stratification_columns, selected_columns =selected_columns, sum = sum, Success = True, form = forms, features = Features, date = today, Verification =  verification) 
-    return render_template('New_Testing.html' , Section_open = Section_open, features = Features, Stratification_columns=Stratification_columns, date = today)
+
+       return render_template('New_Testing.html', array_output_final = array_output_final,  Sub_Campaign_Names = Sub_Campaign_Names, Section_open = Section_open, stratification_columns = Stratification_columns, selected_columns =selected_columns, sum = sum, Success = True, form = forms, features = Features, date = today, Verification =  verification) 
+    return render_template('New_Testing.html' , array_output_final = array_output_final, Section_open = Section_open, features = Features, Stratification_columns=Stratification_columns, date = today)
   
 if __name__ == '__main__':
     Flask_App.debug = True
