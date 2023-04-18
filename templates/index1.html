@@ -41,7 +41,7 @@
 
     <div class="nav-link nav-profile d-flex align-items-center pe-0">
       <i class="bi bi-list toggle-sidebar-btn"></i>
-      <a href="templates/index.html" class="logo d-flex align-items-center">  
+      <a href="templates/index1.html" class="logo d-flex align-items-center">  
         <img src="{{url_for('static', filename='image/apple-touch-icon1.png')}}" alt="">
         <span class="d-none d-lg-block">Bajaj Finserv</span>
       </a>
@@ -53,39 +53,39 @@
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-        <li class="nav-item">
+        <li class="nav-item" active>
           <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="{{url_for('New_Testing')}}">
             <i class="bi bi-menu-button-wide"></i><span>New Testing</span><i class="bi bi-chevron-down ms-auto"></i>
           </a>
           <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>   
-              <a href="{{url_for('New_Testing')}}">
+              <a href="{{url_for('New_Testing')}}#hypothesis_section">
                 <i class="bi bi-circle"></i><span>Hypothesis</span>
               </a>
             </li>
             <li>
-              <a href="{{url_for('New_Testing')}}">
+              <a href="{{url_for('New_Testing')}}#select_filters">
                 <i class="bi bi-circle"></i><span>Select Conditions/Filters</span>
               </a>
             </li>
             <li>
-              <a href="{{url_for('New_Testing')}}">
+              <a href="{{url_for('New_Testing')}}#sample_size">
                 <i class="bi bi-circle"></i><span>Minimum Sample Size</span>
               </a>
             </li>
             <li>
-              <a href="{{url_for('New_Testing')}}">
+              <a href="{{url_for('New_Testing')}}#sampling_technique">
                 <i class="bi bi-circle"></i><span>Sampling Technique</span>
               </a>
             </li>
             <li>
-              <a href="{{url_for('New_Testing')}}">
+              <a href="{{url_for('New_Testing')}}#campaign_details">
                 <i class="bi bi-circle"></i><span>Campaign Details</span>
               </a>
             </li>
           </ul>
           <li class="nav-item">
-            <a class="nav-link " href="{{url_for('index')}}">
+            <a class="nav-link active" href="{{url_for('index')}}">
               <i class="bi bi-graph-up"></i>
               <span>Reports</span>
             </a>
@@ -98,7 +98,7 @@
 
   <main id="main" class="main">
 
-    <div class="pagetitle">
+    <!-- <div class="pagetitle">
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
@@ -106,7 +106,8 @@
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
-    </div><!-- End Page Title -->
+    </div> -->
+    <!-- End Page Title -->
 
     <section class="section dashboard">
       <div class="row">

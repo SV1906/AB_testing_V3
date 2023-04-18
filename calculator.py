@@ -21,7 +21,8 @@ button_variable = "False"
 array_output_final = []
 forms = {'Campaign_Name_1' : '', 'Campaign_Name_2': '', 'Operator' : 'Default', 'Hypothesis':'', 'Experiment':'', 'CampaignName' : '','CampaignStartdate' : '','CampaignEnddate' : '', 'CampaignType':'Push' , 'ConversionMetric':'Retention Rate' ,'ConversionPeriod' : ''}
 
-
+#To dynamically return the features from the database 
+#Removal of the columns - Profile phone and SignUp date 
 def features(data):
     data = data.drop(['profile_phone', 'Signup_date'],axis=1)
     new_features = []
@@ -31,9 +32,12 @@ def features(data):
         new_features.append(new_feature)
     return new_features
  
+#To dynamically return the columns from the database  
 def Stratified_On(data, remove_columns, add_columns):
+    #Removal of the columns - Profile phone and SignUp date 
     data = data.drop(['profile_phone', 'Signup_date'],axis=1)
     Stratified_on = list(data.columns.copy()) 
+    #The removal of columns - (Etb, Ntb, Ptb) and (Upi_Flag, Ppi_Flag, Bbps_Flag) replaced with Customer Type and Payments active respectively 
     res = list(set(Stratified_on) - set(remove_columns)) 
     final_stratified_on = res+ add_columns
     new_features =[]
@@ -43,15 +47,20 @@ def Stratified_On(data, remove_columns, add_columns):
         new_features.append(new_feature)
     return new_features
 
+#To call the features function and store in this variable - Features 
 Features = features(data_Original)
+# To save the array of columns to be remove in the Stratified on columns and store in the variable - remove_columns 
 remove_columns = ['Etb', 'Ntb','Ptb', 'Upi_Flag','Ppi_Flag','Bbps_Flag']
+# To save the array of columns to be added in the Stratified on columns and store in the variable - add_columns 
 add_columns = ['Customer Type', 'Payments Active']
+#To call the Stratified_On function and store in this variable - Stratification_columns
 Stratification_columns = Stratified_On(data_Original, remove_columns, add_columns)
 
-#Function to update to Master File 
+#To update the master file using the details from the global array - Array_output_file  
 def excel_update(array_output_final): 
     file = (str(THIS_FOLDER)+"\\Master_Sheet_V2.csv")
     df = pd.read_csv(file, on_bad_lines=None)
+    #To have the variable index_len for the index number in the Master Sheet excel 
     index_len = len(df)+1
     array_output_local = array_output_final.copy()
     array_output_local.insert(0,index_len)
@@ -91,27 +100,35 @@ def get_form_parameters():
     Form['Records_Available'] = 0 
     Form["Sampling_Result"] =""
 
+    # To save the details regarding the button clicked and the ID where it's supposed to get scrolled to 
     Button_Section = {"Sample_Size_submit_1":"sample_size", "Sample_Size_submit_2":"sample_size","Features_button":"select_filters","Sampling_Technique_submit":"sampling_technique","Final_submit":"campaign_details","Random_button":"sampling_technique","Test_cases_button":"Test_cases","stratify_button":"sampling_technique","Button_id":"sampling_technique", "Edit_button":"hypothesis_section"}
     for key,value in Button_Section.items(): 
-        if (request.form.get(key) != None) : 
+        if (request.form.get(key) != None) :
+            #Location key in the form is the ID where it's supposed to get scrolled to  
             Form['location'] = value
     return Form  
-    
+
+
 def sample_suggest(): 
     return "Systematic Sampling"   
 
+#To verify if with the chosen sample size, number of experiment and current count it is possible to do the furture calculations 
 def verification_func(doe, sample_size, current_count):
    if ((int(doe)+1)*int(sample_size) > int(current_count)):
        return "True"
    else : 
        return "False"
    
+#To calculate how much of data base is required for the selected experiment number and minimum sample Size 
+# Called when there is an error   
 def requiredDB(doe, sample_size):
     return (int(doe)+1)*int(sample_size)
 
 #To Efficiently return the count of the selected features 
+#This function only returns the value 
 def db_count(data,selected): 
     try:
+        #The sum of the selected columns are counts and checked if it matches that of the 
         return (data[selected].sum(axis=1)).value_counts()[len(selected)]
     except:
         return 0 
@@ -176,6 +193,7 @@ def Random_Sampling_result(data, test_size,minimum_size):
             return "Sampling Successful but problem with saving in file."
     except : 
         return "Change the base data"
+
     
 def Stratification_result(data, test_size,Selected, minimum_size):
     Test = []
@@ -205,15 +223,20 @@ def Stratification_result(data, test_size,Selected, minimum_size):
             return "Reduce the number of Experiments or change the columns to be stratified on "
         else : 
             return "The least populated class in y has only 1 member. Please change the columns to be stratified on"
-     
+
+#To return the base data.
+# This is called after the Sampling Technique is chosen 
+# The result of the number of base data is a different function.      
 def base_data(data,Selected_DataBase): 
         for i in Selected_DataBase: 
              data = data[(data[i])==1]
         return data
 
+#To compare the results of both the sample sizes and returns the larger one 
 def compare_size(evan_miller,basic_result): 
     return evan_miller if evan_miller >= basic_result else basic_result
 
+#To return the result of basic sample size 
 def basic_Sample_Size(x,y):
     if (int(x) == 0 or int(y) == 0 ):
          return 0 
@@ -225,6 +248,7 @@ def basic_Sample_Size(x,y):
         result = round(0.25/math.pow((MOE/z_score_CI),2))
         return result
 
+#To result the result of Evan Miller Sample Size 
 def evan_Millers(input1, input2, input3, input4):
     if (int(input1) == 0 or int(input2) == 0 or int(input3)==0 or int(input4) == 0 ):
          return 0 
@@ -249,12 +273,12 @@ def evan_Millers(input1, input2, input3, input4):
         return result 
 
 #To display the intial page 
-@Flask_App.route('/', methods=['GET'])
+@Flask_App.route('/Index', methods=['GET'])
 def index():
     return render_template('Index1.html')
 
 
-@Flask_App.route('/Index',methods=['GET' , "POST"])
+@Flask_App.route('/',methods=['GET' , "POST"])
 def New_Testing():
 
     Section_open = 1 
@@ -421,7 +445,7 @@ def New_Testing():
                   forms ["Download"] = True 
 
 
-       return render_template('New_Testing.html', array_output_final = array_output_final,  Sub_Campaign_Names = Sub_Campaign_Names, Section_open = Section_open, stratification_columns = Stratification_columns, selected_columns =selected_columns, sum = sum, Success = True, form = forms, features = Features, date = today, Verification =  verification) 
+       return render_template('New_Testing.html',  array_output_final = array_output_final,  Sub_Campaign_Names = Sub_Campaign_Names, Section_open = Section_open, stratification_columns = Stratification_columns, selected_columns =selected_columns, sum = sum, Success = True, form = forms, features = Features, date = today, Verification =  verification) 
     return render_template('New_Testing.html' , array_output_final = array_output_final, Section_open = Section_open, features = Features, Stratification_columns=Stratification_columns, date = today)
   
 if __name__ == '__main__':

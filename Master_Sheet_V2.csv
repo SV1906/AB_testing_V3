@@ -1,3 +1,4 @@
 Index ,Hypothesis ,No_of_experiments,Selected_features,Minimum_sample_size ,Test_sizes,Sampling_technique ,Stratified_on,Master_campaign_name,Sub_campaign_names,Date_of_requirement,Campaign_start_date ,Campaign_end_date ,Campaign_type,Conversion_metric,Conversion_period 
 1,H,2,['Android'],452,"[452, 452]",Random,[],XYZ,"['ExperimentName2', 'Exper2']",17-04-2023,2023-04-18,2023-05-07,Push,Retention rate,10
 2,H,4,"['Android', 'Etb']",430,"[465, 430, 430, 430]",Random,[],XYZ,"['Experiment1', 'Experiment2', 'Exper3', 'Experiment4']",17-04-2023,2023-04-21,2023-04-30,Push,Retention rate,10
+3,Hypothesis,4,['Android'],452,"[452, 452, 452, 452]",Random,[],XYZ,"['ExperimentName2', 'ExperimentName3', 'Exper7', 'Experiment4']",18-04-2023,2023-04-21,2023-05-07,Push,Retention rate,10

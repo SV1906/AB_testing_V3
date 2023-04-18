@@ -45,50 +45,62 @@
     <aside id="sidebar" class="sidebar">
       <div class = "card-body">
         <ul class="sidebar-nav" id="sidebar-nav">
-          <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="{{url_for('New_Testing')}}">            
-              <i class="bi bi-menu-button-wide active"></i>
+            <a class="nav-link active" data-bs-target="#components-nav" data-bs-toggle="collapse" href="{{url_for('New_Testing')}}">            
+              <i class="bi bi-menu-button-wide" href="{{url_for('New_Testing')}}"></i>
               <span>New Testing</span>
               <i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-              <li>
-                <a href= "#hypothesis_section" id="hypothesis_button" >
+            <ul id="components-nav" class="nav-content " data-bs-parent="#sidebar-nav">
+              <li> 
+                <a href= "{{url_for('New_Testing')}}#hypothesis_section" id="hypothesis_button">
                   <i class="bi bi-circle"></i>
                   <span>Hypothesis</span>
                 </a>
               </li>
               <li>
-                <a href= "#select_filters">
+                <a href= "{{url_for('New_Testing')}}#select_filters">
                   <i class="bi bi-circle"></i>
                   <span>Select Conditions/Filters</span>
                 </a>
               </li>
               <li>
-                <a href="#sample_size">
+                <a href="{{url_for('New_Testing')}}#sample_size">
                   <i class="bi bi-circle"></i>
                   <span>Minimum Sample Size</span>
                 </a>
               </li>
               <li>
-                <a href="#sampling_technique">
+                <a href="{{url_for('New_Testing')}}#sampling_technique">
                   <i class="bi bi-circle"></i>
                   <span>Sampling Technique</span>
                 </a>
               </li>
               <li>
-                <a href="#campaign_details">
+                <a href="{{url_for('New_Testing')}}#campaign_details">
                   <i class="bi bi-circle"></i>
                   <span>Campaign Details</span>
                 </a>
               </li>
             </ul>
+            <!-- <li class="nav-item active">
+              <a class="nav-link" href="{{url_for('New_Testing')}}">
+                <i class="bi bi-graph-up"></i>
+                <span>New_Testing</span>
+              </a>
+            </li>  -->
           <li class="nav-item">
-            <a class="nav-link " href="{{url_for('index')}}">
+            <a class="nav-link collapsed" href="{{url_for('index')}}">
               <i class="bi bi-graph-up"></i>
               <span>Reports</span>
             </a>
           </li>
+
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="{{url_for('New_Testing')}}">
+              <i class="bi bi-graph-up"></i>
+              <span>Reports_12</span>
+            </a>
+          </li> -->
         </ul>
       </div>
       
@@ -158,6 +170,8 @@
         <hr>
         <!--End Hypothesis -->
 
+
+        <!-- Section 2 Start -->
         <!--  Start Select filters -->
         <div id="select_filters" class="pagetitle">
           <h1>Select Conditions/Filters</h1>
@@ -186,7 +200,9 @@
       </div>
         <hr>
         <!--End Select filters -->
+         <!-- Section 2 End -->
 
+         <!-- Section 3 Start --> 
 				<!--  Start Calculator -->
 				<div id="sample_size" class="pagetitle">
 					<h1>Minimum Sample Size Calculator</h1>
@@ -361,12 +377,11 @@
 				</div>				
 		     <hr>
          <!--  End Calculator -->
-         <!-- Section 1 End -->
+        <!-- Section 4 Start --> 
 
-         <!-- Section 2 Start  -->
-         
-         <fieldset {% if Section_open < 3 %}disabled{% endif %}>
-                   <!-- Starts Modal  -->
+       
+         <!-- Section 3 Start  -->
+         <!-- Starts Modal  -->
          {% if Verification == "True" %}
          <div id= "modal_message" class ="pagetitle">
           <h1> </h1>
@@ -439,7 +454,6 @@
          <hr> 
          {% endif %}
          <!-- Ends Modal  -->
-         </fieldset>
         <!-- Section 2 End  -->
 
         <!-- Section 3 Start -->
@@ -583,6 +597,13 @@
             <div class="card-body">
                 <div class = "row g-3">
                   <div class="mx-auto">
+                    {% if Success == True %}
+                    {% if form.Campaign_Details_Error%}
+                    <div class="alert alert-warning" role="alert">
+                      {{form.Campaign_Details_Error}}
+                    </div>   
+                    {% endif %}
+                    {% endif %}
                     <div class="form-group row">
                       <label for="colFormLabel" class="col-sm-4 col-form-label"><b>Master Campaign Name</b></label>
                       <div class="col-sm-8">
@@ -605,7 +626,6 @@
                   {% endfor %} 
                   {% endif %}
                   {% endif %}
-                
                   <div class="col-md-4">                
                       <label for="Date_of_requirement" class="form-label">Date of Requirement</label>                
                   <div class = "card-body">
@@ -662,11 +682,8 @@
             </div>
           </div>
           <hr>
-        </fieldset>
-        
+        </fieldset>      
         <!-- Section 4 End -->
-
-
         <!-- End Campaign Details -->
       </fieldset>
         <!--Start Download Section --> 
@@ -677,34 +694,24 @@
 							<h5 class="card-title">Download</span></h5>
 							<div class="text-center">
                 <button type="submit" class="button-18" for = "Download_button" id = "Download_button" name = "Download_button">Download</button>						
-                <!-- <a class="button-18" type="button" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a> -->        
+                <button type="submit" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button">Edit</button>						
+
+                <!-- <a class="button-18" type="submit" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a>         -->
               </div>
 						</div>
 					</div>
         <hr> 
-        {% if Success == True %}
-        {% if form.Campaign_Details_Error%}
-        <div class="alert alert-warning" role="alert">
-          {{form.Campaign_Details_Error}}
-        </div>   
-        {% endif %}
-        {% endif %}
 				{% endif %} 
         {% endif %}
         <!-- End Download Section-->
-
 			</form>
-
-      
-
         {% if  Success== True %}
 			<script>
-				window.scrollTo({ top: document.getElementById("{{form.location}}").getBoundingClientRect().top, behavior: 'smooth'})
+				window.scrollTo({ top: document.getElementById("{{form.location}}").getBoundingClientRect().top - 70, behavior: 'smooth'})
 			</script>
 			{% endif %}
-
-   
     </main>
+
     <!--End #main -->
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer"></footer>
