@@ -113,6 +113,7 @@
         <fieldset id="First_Part" {% if form.Download == True %}disabled{% endif %}>    
         <!-- Start hypothesis -->
         <div id="hypothesis_section" class="pagetitle">
+          {{Sub_Campaign_Names}}
           <h1>Hypothesis</h1>
           <!-- {{selected_features}} -->
         </div>
@@ -681,8 +682,7 @@
 							<div class="text-center">
                 <button type="submit" class="button-18" for = "Download_button" id = "Download_button" name = "Download_button">Download</button>						
                 <button type="submit" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button">Edit</button>		
-      
-                <!-- <button type="button" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button" onclick="EditFunction()">Edit</button>		
+                      <!-- <button type="button" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button" onclick="EditFunction()">Edit</button>		
       
                 <script>
                   function EditFunction() {

@@ -25,7 +25,7 @@ button_variable = "False"
 #To declare a global array 'array_output_final' for storing the values required to update the master sheet  
 array_output_final = []
 Sub_Campaign_Names = []
-# selected_features = []
+selected_features = []
 selected_columns = []
 
 #To globally declare the variable form 
@@ -34,16 +34,16 @@ test_size = []
 
 #To dynamically return the features from the database 
 #Removal of the columns - Profile phone and SignUp date 
-def features(data):
+def features(data, selected_features):
     data = data.drop(['profile_phone', 'Signup_date'],axis=1)
     new_features = []
     for feature in data.columns:
         new_feature={}
-        # if (feature in selected_features) : 
-        #      new_feature = {'key': feature, 'value': True}
-        # else : 
-        #      new_feature = {'key': feature, 'value': False}
-        new_feature = {'key': feature, 'value': False}
+        if (feature in selected_features) : 
+             new_feature = {'key': feature, 'value': True}
+        else : 
+             new_feature = {'key': feature, 'value': False}
+        # new_feature = {'key': feature, 'value': False}
         new_features.append(new_feature)
     return new_features
  
@@ -62,8 +62,9 @@ def Stratified_On(data, remove_columns, add_columns):
         new_features.append(new_feature)
     return new_features
 
+# global selected_features 
 #To call the features function and store in this variable - Features 
-Features = features(data_Original)
+Features = features(data_Original,selected_features)
 # To save the array of columns to be remove in the Stratified on columns and store in the variable - remove_columns 
 remove_columns = ['Etb', 'Ntb','Ptb', 'Upi_Flag','Ppi_Flag','Bbps_Flag']
 # To save the array of columns to be added in the Stratified on columns and store in the variable - add_columns 
@@ -301,43 +302,32 @@ def New_Testing():
 
     Section_open = 0
     verification = ""
-    selected_features = []
+
     
     if request.method == 'POST':
        global forms 
        forms = get_form_parameters()  
        forms["Strat_result"] = ''
 
-    #    global selected_features
+       global selected_features
        global Features
 
        global array_output_final       
        for i in Features: 
-            if ((request.form.get(i['key']))):
+            if ((request.form.get(i['key'])) or ((i['key'] in selected_features) and request.form.get("Edit_button") != None)):
                 i['value'] = True
                 selected_features.append(i['key'])
             else : 
                 i ['value'] = False 
+                if (i['key'] in selected_features): 
+                    selected_features.remove(i['key'])
        selected_features = list(set(selected_features))
-
-    #    for i in Features:                    
-    #         if (request.form.get(i['key'])):
-    #              i['value'] = True    
-    #              selected_features.append(i['key'])
-    #         else :     
-    #              i['value'] = False 
-    #              if (i['key'] in selected_features):
-    #                   selected_features.remove(i['key'])
-                 
-    #    selected_features = list(set(selected_features))
-         
                 
-
 
        global selected_columns
        for i in Stratification_columns: 
             variable = "Strat" + i['key']
-            if ((request.form.get(variable)) or (i['key'] in selected_columns)) :
+            if ((request.form.get(variable)) or ((i['key'] in selected_columns) and request.form.get("Edit_button") != None)) :
                 i['value'] = True
             else : 
                 i ['value'] = False 
@@ -364,19 +354,23 @@ def New_Testing():
                 #      forms[variable] = variable[i-1]
                 # else : 
                      forms[variable] = forms['final_result']
-    
+       
+       global Sub_Campaign_Names
+       
+       if (len(Sub_Campaign_Names) != int(forms['Experiment'])): 
+            Sub_Campaign_Names = [""]*int(forms['Experiment'])
 
        if (int(forms['Experiment']) == 1): 
-            Sub_Campaign_Names.append(forms['CampaignName'])
+            Sub_Campaign_Names[0]= forms['CampaignName']
        
        for i in range(1,int(forms["Experiment"])+1):
              variable = "Campaign_Name_" + str(i)
-             if (request.form.get(variable) != None and request.form.get(variable) != '') : 
+             forms[variable] = ''
+             if (request.form.get(variable) != None) : 
                     forms[variable] = request.form[variable] 
-                    Sub_Campaign_Names.append(forms[variable])
+                    Sub_Campaign_Names[i-1] = forms[variable]
              else : 
-                   forms[variable] = ''
-                #    Sub_Campaign_Names.append(forms[variable])
+                    forms[variable] = Sub_Campaign_Names[i-1]
        
        base_data_input =  base_data(data_Original, selected_features)  
        forms["Current_Count"] = db_count(data_Original, selected_features)
@@ -447,7 +441,7 @@ def New_Testing():
 
        if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != '' and request.form.get("Final_submit") != None):           
             forms["Campaign_Details_Error"] = ""
-            if (len(Sub_Campaign_Names) != int(forms["Experiment"]) and int(forms["Experiment"]) != 1): 
+            if ((len(Sub_Campaign_Names) != int(forms["Experiment"]) and (int(forms["Experiment"]) != 1)) or ('' in Sub_Campaign_Names)): 
                 forms["Campaign_Details_Error"] = "Please fill in all the Sub Campaign Names"
             if (datetime.strptime(forms["CampaignStartdate"], '%Y-%m-%d') > datetime.strptime(forms["CampaignEnddate"], '%Y-%m-%d')):
                forms["Campaign_Details_Error"] = "The Campaign End Date should be after the Campaign Start DateStart date"

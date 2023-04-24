@@ -9,3 +9,5 @@ Index ,Hypothesis ,No_of_experiments,Selected_features,Minimum_sample_size ,Test
 8,H,1,['Android'],452,[452],Systematic,[],XYZ,"['', '', '', '', 'XYZ', 'XYZ']",24-04-2023,2023-04-28,2023-04-30,Push,Retention rate,10
 9,H,3,['Perm Block'],452,"[452, 452, 452]",Random,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3']",24-04-2023,2023-04-22,2023-04-30,Push,Retention rate,10
 10,H,3,['Android'],452,"[452, 452, 452]",Systematic,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3']",24-04-2023,2023-04-29,2023-04-30,Push,Retention rate,10
+11,H,2,"['Ptb', 'Android']",452,"[452, 452]",Random,[],XYZ,"['ExperimentName1', ' Experiment5']",24-04-2023,2023-04-29,2023-04-30,Push,Retention rate,10
+12,H,5,[],452,"[452, 452, 452, 452, 452]",Systematic,[],Master Campaign Name ,"['ExperimentName2', 'sys-2', 'Experiment3', 'Exper4', 'Exp5']",24-04-2023,2023-04-26,2023-05-07,Push,Retention rate,10
