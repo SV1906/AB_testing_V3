@@ -25,7 +25,7 @@ button_variable = "False"
 #To declare a global array 'array_output_final' for storing the values required to update the master sheet  
 array_output_final = []
 Sub_Campaign_Names = []
-selected_features = []
+# selected_features = []
 selected_columns = []
 
 #To globally declare the variable form 
@@ -39,6 +39,10 @@ def features(data):
     new_features = []
     for feature in data.columns:
         new_feature={}
+        # if (feature in selected_features) : 
+        #      new_feature = {'key': feature, 'value': True}
+        # else : 
+        #      new_feature = {'key': feature, 'value': False}
         new_feature = {'key': feature, 'value': False}
         new_features.append(new_feature)
     return new_features
@@ -178,8 +182,12 @@ def Systematic_Sampling_result(data, test_size):
                  return "Sampling Successful"
              else : 
                  return "Sampling Successful but problem with saving in file."
-        except : 
-            return "Change the base data"
+        except :             
+            # if (sum(test_size) == 0):
+            #       return "Final Minimum size can't be zero"
+            # else : 
+                 return test_size
+        
 
 def Random_Sampling_result(data, test_size,minimum_size):
     Test = []
@@ -293,30 +301,38 @@ def New_Testing():
 
     Section_open = 0
     verification = ""
-    
-    
-    Sub_Campaign_Names = []
+    selected_features = []
     
     if request.method == 'POST':
        global forms 
        forms = get_form_parameters()  
        forms["Strat_result"] = ''
 
-       global selected_features
-        
+    #    global selected_features
+       global Features
 
        global array_output_final       
-       for i in Features:                    
-            if (request.form.get(i['key'])):
-                 i['value'] = True    
-                 selected_features.append(i['key'])
-            else :     
-                 i['value'] = False 
-                 if (i['key'] in selected_features):
-                      selected_features.remove(i['key'])
-                 
+       for i in Features: 
+            if ((request.form.get(i['key']))):
+                i['value'] = True
+                selected_features.append(i['key'])
+            else : 
+                i ['value'] = False 
        selected_features = list(set(selected_features))
+
+    #    for i in Features:                    
+    #         if (request.form.get(i['key'])):
+    #              i['value'] = True    
+    #              selected_features.append(i['key'])
+    #         else :     
+    #              i['value'] = False 
+    #              if (i['key'] in selected_features):
+    #                   selected_features.remove(i['key'])
+                 
+    #    selected_features = list(set(selected_features))
+         
                 
+
 
        global selected_columns
        for i in Stratification_columns: 
@@ -361,10 +377,6 @@ def New_Testing():
              else : 
                    forms[variable] = ''
                 #    Sub_Campaign_Names.append(forms[variable])
-      
-       
-
-
        
        base_data_input =  base_data(data_Original, selected_features)  
        forms["Current_Count"] = db_count(data_Original, selected_features)
@@ -399,7 +411,6 @@ def New_Testing():
            Section_open = 1
        else : 
            Section_open = 0
-
            forms["Feature_Error"] = "Feature_Error"
 
        global button_variable 
@@ -413,22 +424,23 @@ def New_Testing():
                 forms[variable] = forms["final_result"]
                 forms["Sum"] += forms["final_result"] 
                         
-       if (forms['final_result'] != 0 and forms['Current_Count'] != ''):
+       if (forms['final_result'] != 0 and forms['Current_Count'] != '' and len(selected_features)!= 0 ):
             # Records allocation opens up
             Section_open = 2
             verification = verification_func(forms["Experiment"], forms["final_result"], forms["Current_Count"])
             forms["required_db"] = requiredDB(forms["Experiment"],forms["final_result"])
-            if (verification == "False"):
+            if (verification == "False" ):
                     forms["Records_Available"] = forms['Current_Count'] - forms['final_result'] - forms['Sum']
                     if (forms["Records_Available"] < 0): 
                         forms["Records_Available"] = "Please Reduce the number of record by " + str(abs(forms["Records_Available"]))
                         forms["Error"] ="Error-lessRecords"
                     else : 
                          forms["Records_Available"] = "Records Available for Allocation : " + str(forms['Current_Count'] - forms['final_result'] - forms['Sum'])
-                        #  if (request.form.get('Test_cases_button') != None): 
-                           # Sampling Techniques opens up only when the button is clicked 
-                         Section_open = 3
-                        
+                         if (request.form.get('Test_cases_button') != None): 
+                        #    Sampling Techniques opens up only when the button is clicked 
+                             Section_open = 3
+                    
+                         
 
             if(verification == "True") : 
                 forms['location'] = "modal_message"
@@ -439,11 +451,10 @@ def New_Testing():
                 forms["Campaign_Details_Error"] = "Please fill in all the Sub Campaign Names"
             if (datetime.strptime(forms["CampaignStartdate"], '%Y-%m-%d') > datetime.strptime(forms["CampaignEnddate"], '%Y-%m-%d')):
                forms["Campaign_Details_Error"] = "The Campaign End Date should be after the Campaign Start DateStart date"
-            if (forms["Campaign_Details_Error"] == ""):      
-                    
+            if (forms["Campaign_Details_Error"] == ""):    
                     array_output_final = [forms["Hypothesis"],forms['Experiment'],selected_features,forms["final_result"],test_size,forms["Operator"],selected_columns,forms["CampaignName"], Sub_Campaign_Names, today, forms['CampaignStartdate'], forms['CampaignEnddate'], forms['CampaignType'], forms['ConversionMetric'], forms['ConversionPeriod']]
                     forms ["Download"] = True  
-       if (forms["Sampling_Result"] == "Sampling Successful"):
+       if (forms["Sampling_Result"] == "Sampling Successful" and len(selected_features)!= 0):
                 #Campaign Details section opens up 
                 Section_open = 4
        

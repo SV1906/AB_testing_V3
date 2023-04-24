@@ -110,11 +110,11 @@
     <!-- Section 1 Start -->
     <main id="main" class="main">
       <form method="post"  action = "{{url_for('New_Testing')}}" >
-        <fieldset {% if form.Download == True %}disabled="disabled"{% endif %}>    
+        <fieldset id="First_Part" {% if form.Download == True %}disabled{% endif %}>    
         <!-- Start hypothesis -->
         <div id="hypothesis_section" class="pagetitle">
           <h1>Hypothesis</h1>
-          {{selected_features}}
+          <!-- {{selected_features}} -->
         </div>
         <div class="card  ">
           <div class="card-body  row">
@@ -149,6 +149,7 @@
                 <option value="4">4</option>
                 <option value="5">5</option>
               </select>
+            </div> 
               <script>
                 document.querySelector('#Experiment_input').value = "{{form.Experiment}}";
                </script> 
@@ -157,10 +158,9 @@
               function enable_button(x) {
                 document.getElementById(x).disabled = false;
               }
-
               </script>
 
-            </div>  
+             
             <div class="text-center">
               <button type="submit" class="button-18" for = "Hypothesis_button" id = "Hypothesis_button" name = "Hypothesis_button" disabled = true>Submit</button>     
          </div>  
@@ -177,7 +177,7 @@
         <div class="card">
           {% if form.Feature_Error == "Feature_Error" %}
                  <div class="alert alert-warning" role="alert">
-                   <strong>Warning :</strong>Choose atleast one feature
+                   <strong>Warning : Choose atleast one feature </strong>
                  </div>
           {% endif %}
           <div class="card-body  row "> {% for i in features %} <div class="col-4" onchange="enable_button('Features_button')">
@@ -195,11 +195,13 @@
                    <button type="submit" class="button-18" for = "Features_button" id = "Features_button" name = "Features_button" disabled>Calculate</button>     
               </div>   	
               <div class = "text-center">
+
+                {% if form.Feature_Error == "Feature_Error" %}
+                <b>Total DB Count: {{form.Current_Count}} </b>  
+                {% else %}   
                 <b>Current DB Count: {{form.Current_Count}} </b>  
-                
-             
-                {{test_size}}
-                {{form.Experiment}}
+                {% endif %}
+            
               </div>
             </div>
         </div>
@@ -208,7 +210,7 @@
         <!--End Select filters -->    
 
          <!-- Section 1 Start -->
-         <fieldset {% if Section_open < 1 %}disabled{% endif %}>
+         <fieldset {% if Section_open < 1 %} disabled {% endif %}>
           <!--  Start Calculator -->
 				<div id="sample_size" class="pagetitle">
 					<h1>Minimum Sample Size Calculator</h1>
@@ -383,7 +385,7 @@
          <div class = "card">
           <div class = "card-body">
               <div class="alert alert-warning" role="alert">
-                <strong>Warning : </strong>The base data selected isn't enough for the number of Experiments with the required minimum sample size.
+                <strong>Warning : The base data selected isn't enough for the number of Experiments with the required minimum sample size. </strong>
               </div>
             <p><i><b>Please solve this to proceed forward.</b></i><br> 
              Please do one of the following : <br>
@@ -424,7 +426,7 @@
           <div class = "card-body">
             {% if form.Error == "Error-lessRecords" %}
             <div class="alert alert-warning" role="alert">
-              <strong>Warning :</strong>Reduce the number of records in test cases. 
+              <strong>Warning : Reduce the number of records in test cases. </strong>
             </div>
             {% endif %}
               <p><b>{{form.Records_Available}}</b></p>
@@ -433,12 +435,12 @@
                 {% for i in range(1, form.Total_cases) %} 
                 <div class="col-3">
                    <label for="Test_case{{i}}" class="form-label">Test Case {{i}}</label>
-                  <input type="number" class="form-control" id = "Test_case_{{i}}" name="Test_case_{{i}}" value="{{ form['Test_case_'+ i|string] }}" min = {{form.final_result}} onkeypress="enable_button('Test_cases_button')">
+                  <input type="number" class="form-control" id = "Test_case_{{i}}" name="Test_case_{{i}}" value="{{ form['Test_case_'+ i|string] }}" min = {{form.final_result}} onkeyup="enable_button('Test_cases_button')">
                 </div>
                 {% endfor %} 
               </div>
               <div class="text-center">
-                <button type="submit" class="button-18" name ="Test_cases_button" for = "Test_cases_button" id = "Test_cases_button" >Submit</button>                          
+                <button type="submit" class="button-18" name ="Test_cases_button" for = "Test_cases_button" id = "Test_cases_button" {% if Section_open > 2 %}disabled{% endif %}>Submit</button>                          
               </div>          
           </div>
          </div>
@@ -457,27 +459,20 @@
             <h1>Sampling Technique</h1>
           </div>
           <div class="card  ">
+            {% if form.Sampling_Result == "Sampling Successful" %}
+            <!-- Green -->
+            <div class="alert alert-success" role="alert">
+             {{form.Operator}} {{form.Sampling_Result}} 
+            </div>                        
+            {% elif form.Sampling_Result %}
+            <!-- Yellow -->
+            <div class="alert alert-warning" role="alert">
+              {{form.Sampling_Result}}
+            </div>                      
+            {% endif %}
               <div class="card-body">
-  
-                <div class="d-flex align-items-center">
-                  <div class="ps-3">
-                      <br>
                       <button type="submit" value="Suggest Sampling Technique" class="button-18" name = "Button_id" id = "Button_id" {% if Verification == "True" %}disabled{% endif %}>Suggest Sampling Technique</button>
                       <div class = "card-body">
-                       
-                        {% if form.Sampling_Result == "Sampling Successful" %}
-                        <!-- Green -->
-                        <div class="alert alert-success" role="alert">
-                         {{form.Operator}} {{form.Sampling_Result}} 
-                        </div>                        
-                        {% elif form.Sampling_Result %}
-                        <!-- Yellow -->
-                        <div class="alert alert-warning" role="alert">
-                          {{form.Sampling_Result}}
-                        </div>                      
-                        {% endif %}
-                        
-
                         <b>{% if form.Sample_suggestion %}Suggested Technique :{{form.Sample_suggestion}}{% endif %}</b>
                       </div>
                     <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b>
@@ -502,12 +497,14 @@
                     </p>
                     </p>
                       <div> 
-                        <select property="status" styleClass="form-control" id = "operator" name = "operator" onchange="enable_button('Sampling_Technique_submit')">
-                          <option value="Default" disabled >Choose : </option>
-                          <option value="Random">Simple Random Sampling</option>
-                          <option value="Systematic">Systematic Sampling</option>
-                          <option value="Stratified">Stratified Sampling</option>
-                        </select>
+                        <div class="col-4">
+                          <select class="form-select" name = "operator" id="operator" class="operator" onchange="enable_button('Sampling_Technique_submit')">
+                            <option value="Default" disabled >Choose : </option>
+                            <option value="Random">Simple Random Sampling</option>
+                            <option value="Systematic">Systematic Sampling</option>
+                            <option value="Stratified">Stratified Sampling</option>
+                          </select>
+                        </div> 
                         <script>
                           document.querySelector('#operator').value = "{{form.Operator}}";
                          </script>              
@@ -515,17 +512,15 @@
                           <div class="text-center">
                             <button type="submit" class="button-18" id = "Sampling_Technique_submit"  onclick="update()" name = "Sampling_Technique_submit" disabled {% if Verification == "True" %}disabled{% endif %}>Submit</button>
                           </div>
-                        </div>
-                    
-                        
-                          <div class="progress" style="height: 6px;">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" id = "myprogressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-                          </div>
-                        
-                        
+                        </div>          
+                          <div class="progress" style="height: 6px;visibility: hidden" id="Progress_bar_visibility">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" id = "myprogressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%; " ></div>
+                          </div>                                      
                         <script>
                           function update() {
-                              var element = document.getElementById("myprogressBar");   
+                              var element = document.getElementById("myprogressBar");  
+                              document.getElementById("Progress_bar_visibility").style.visibility = "visible";  
+                             
                               var width = 1;
                               var identity = setInterval(scene, 10);
                               function scene() {
@@ -538,9 +533,7 @@
                               }
                           }
                           </script>
-                      </div>
-                  </div>
-                </div>
+                      </div>            
               </div>
           </div>
           <hr>
@@ -555,7 +548,7 @@
                <div class="card">
                  {% if form.Error == "Stratification_columns" %}
                  <div class="alert alert-warning" role="alert">
-                   <strong>Warning :</strong>Choose atleast one column to stratify on 
+                   <strong>Warning : Choose atleast one column to stratify on </strong>
                  </div>
                  {% endif %}
                  <div class="card-body  row "> {% for i in stratification_columns %} <div class="col-3" onchange="enable_button('stratify_button')">
@@ -668,7 +661,7 @@
                     
                       {% if form.ExcelUpdate %}
                       <div class="alert alert-warning" role="alert">
-                        <strong>Warning : </strong> {{form.ExcelUpdate}}
+                        <strong>Warning : {{form.ExcelUpdate}} </strong> 
                       </div>
                       {% endif %}
                      
@@ -682,12 +675,20 @@
       </fieldset>
         <!--Start Download Section --> 
 				{% if form.Download == True %}
-				 <div class="card ">
+				 <div class="card " id = "Second_Part">
 						<div class="card-body">
 							<h5 class="card-title">Download</span></h5>
 							<div class="text-center">
                 <button type="submit" class="button-18" for = "Download_button" id = "Download_button" name = "Download_button">Download</button>						
-                <button type="submit" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button">Edit</button>						
+                <button type="submit" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button">Edit</button>		
+      
+                <!-- <button type="button" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button" onclick="EditFunction()">Edit</button>		
+      
+                <script>
+                  function EditFunction() {
+                   
+                  }
+                  </script>				 -->
 
                 <!-- <a class="button-18" type="submit" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a>         -->
               </div>
