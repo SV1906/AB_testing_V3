@@ -113,6 +113,7 @@ def get_form_parameters():
     Form['basic_result'] = 0
     Form['Records_Available'] = 0 
     Form["Sampling_Result"] =""
+    Form["Download"] = False
 
     # To save the details regarding the button clicked and the ID where it's supposed to get scrolled to 
     Button_Section = {"Sample_Size_submit_1":"sample_size", "Sample_Size_submit_2":"sample_size","Features_button":"select_filters","Sampling_Technique_submit":"sampling_technique","Final_submit":"campaign_details","Random_button":"sampling_technique","Test_cases_button":"Test_cases","stratify_button":"sampling_technique","Button_id":"sampling_technique", "Edit_button":"hypothesis_section"}
@@ -314,7 +315,7 @@ def New_Testing():
 
        global array_output_final       
        for i in Features: 
-            if ((request.form.get(i['key'])) or ((i['key'] in selected_features) and request.form.get("Edit_button") != None)):
+            if ((request.form.get(i['key'])) or ((i['key'] in selected_features) and (forms["Download"] == False))):
                 i['value'] = True
                 selected_features.append(i['key'])
             else : 
@@ -327,7 +328,7 @@ def New_Testing():
        global selected_columns
        for i in Stratification_columns: 
             variable = "Strat" + i['key']
-            if ((request.form.get(variable)) or ((i['key'] in selected_columns) and request.form.get("Edit_button") != None)) :
+            if ((request.form.get(variable)) or ((i['key'] in selected_columns) and (forms["Download"] == False))) :
                 i['value'] = True
             else : 
                 i ['value'] = False 
@@ -356,7 +357,7 @@ def New_Testing():
                      forms[variable] = forms['final_result']
        
        global Sub_Campaign_Names
-       
+
        if (len(Sub_Campaign_Names) != int(forms['Experiment'])): 
             Sub_Campaign_Names = [""]*int(forms['Experiment'])
 
