@@ -6,12 +6,19 @@ Index ,Hypothesis ,No_of_experiments,Selected_features,Minimum_sample_size ,Test
 5,Hypot,2,['Ptb'],452,"[452, 452]",Random,[],XYZ,"['ExperimentName2', 'Exper2']",18-04-2023,19-04-2023,30-04-2023,Push,Retention rate,10
 6,H,3,"['Android', 'Ptb']",452,"[452, 452, 452]",Random,[],XYZ,"['ExperimentName2', 'ExperimentName3', 'Experiment3']",18-04-2023,20-04-2023,30-04-2023,Push,Retention rate,10
 7,H,2,[],7225,"[7225, 7229]",Random,['Soa_Used'],XYZ,"['ExperimentName2', 'Exper2']",24-04-2023,28-04-2023,07-05-2023,Push,Retention rate,10
-8,H,1,['Android'],452,[452],Systematic,[],XYZ,"['', '', '', '', 'XYZ', 'XYZ']",24-04-2023,2023-04-28,2023-04-30,Push,Retention rate,10
-9,H,3,['Perm Block'],452,"[452, 452, 452]",Random,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3']",24-04-2023,2023-04-22,2023-04-30,Push,Retention rate,10
-10,H,3,['Android'],452,"[452, 452, 452]",Systematic,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3']",24-04-2023,2023-04-29,2023-04-30,Push,Retention rate,10
-11,H,2,"['Ptb', 'Android']",452,"[452, 452]",Random,[],XYZ,"['ExperimentName1', ' Experiment5']",24-04-2023,2023-04-29,2023-04-30,Push,Retention rate,10
-12,H,5,[],452,"[452, 452, 452, 452, 452]",Systematic,[],Master Campaign Name ,"['ExperimentName2', 'sys-2', 'Experiment3', 'Exper4', 'Exp5']",24-04-2023,2023-04-26,2023-05-07,Push,Retention rate,10
-13,H,4,[],452,"[452, 452, 452, 452]",Systematic,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3', 'Exper4']",24-04-2023,2023-04-26,2023-05-07,Push,Retention rate,10
-14,H,4,[],452,"[452, 452, 452, 452]",Systematic,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3', 'Exper4']",24-04-2023,2023-04-28,2023-04-30,Push,Retention rate,10
-15,H,3,[],452,"[452, 452, 452]",Random,[],Master Campaign Name ,"['ExperimentName1', 'sys-2', 'Exper7']",24-04-2023,2023-04-26,2023-04-30,Push,Retention rate,10
-16,H,3,"['Ptb', 'Android', 'Android', 'Ptb']",452,"[452, 452, 452]",Random,[],XYZ,"['ExperimentName2', ' Experiment5', 'ExperimentName3']",24-04-2023,2023-04-27,2023-05-07,Push,Retention rate,10
+8,H,1,['Android'],452,[452],Systematic,[],XYZ,"['', '', '', '', 'XYZ', 'XYZ']",24-04-2023,28-04-2023,30-04-2023,Push,Retention rate,10
+9,H,3,['Perm Block'],452,"[452, 452, 452]",Random,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3']",24-04-2023,22-04-2023,30-04-2023,Push,Retention rate,10
+10,H,3,['Android'],452,"[452, 452, 452]",Systematic,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3']",24-04-2023,29-04-2023,30-04-2023,Push,Retention rate,10
+11,H,2,"['Ptb', 'Android']",452,"[452, 452]",Random,[],XYZ,"['ExperimentName1', ' Experiment5']",24-04-2023,29-04-2023,30-04-2023,Push,Retention rate,10
+12,H,5,[],452,"[452, 452, 452, 452, 452]",Systematic,[],Master Campaign Name ,"['ExperimentName2', 'sys-2', 'Experiment3', 'Exper4', 'Exp5']",24-04-2023,26-04-2023,07-05-2023,Push,Retention rate,10
+13,H,4,[],452,"[452, 452, 452, 452]",Systematic,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3', 'Exper4']",24-04-2023,26-04-2023,07-05-2023,Push,Retention rate,10
+14,H,4,[],452,"[452, 452, 452, 452]",Systematic,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3', 'Exper4']",24-04-2023,28-04-2023,30-04-2023,Push,Retention rate,10
+15,H,3,[],452,"[452, 452, 452]",Random,[],Master Campaign Name ,"['ExperimentName1', 'sys-2', 'Exper7']",24-04-2023,26-04-2023,30-04-2023,Push,Retention rate,10
+16,H,3,"['Ptb', 'Android', 'Android', 'Ptb']",452,"[452, 452, 452]",Random,[],XYZ,"['ExperimentName2', ' Experiment5', 'ExperimentName3']",24-04-2023,27-04-2023,07-05-2023,Push,Retention rate,10
+17,He,3,"['Android', 'Android']",452,"[452, 452, 452]",Stratified,"['App_unInstalled_flag', 'App_unInstalled_flag']",XYZ,"['ExperimentName2', 'Exper2', 'Exper3']",25-04-2023,27-04-2023,30-04-2023,Push,Retention rate,19
+18,H,3,"['Android', 'Ptb', 'Android', 'Ptb']",452,"[998, 1000, 1000]",Stratified,"['No Emi Card', 'No Emi Card']",XYZ,"['ExperimentName2', 'Exper2', 'Experiment3']",25-04-2023,26-04-2023,30-04-2023,Push,Retention rate,17
+19,H,3,"['Android', 'Etb', 'Android', 'Etb']",452,"[1000, 2000, 3000]",Systematic,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3']",25-04-2023,2023-04-26,2023-04-30,Push,Retention rate,17
+20,H,3,[],452,"[1000, 2000, 3000]",Systematic,[],XYZ,"['ExperimentName2', ' Experiment5', 'ExperimentName3']",25-04-2023,2023-04-26,2023-04-30,Push,Retention rate,19
+21,H,3,[],452,"[1000, 2000, 452]",Systematic,[],XYZ,"['ExperimentName2', 'Exper2', 'Sys5']",25-04-2023,2023-04-26,2023-04-30,Push,Retention rate,19
+22,H,3,[],452,"[500, 500, 500]",Systematic,[],Master Campaign Name ,"['ExperimentName2', 'ExperimentName3', 'Experiment3']",25-04-2023,2023-04-27,2023-04-30,Push,Retention rate,20
+23,H,1,['Android'],452,[452],Systematic,[],Master Campaign Name ,['Master Campaign Name '],25-04-2023,2023-04-26,2023-04-30,Push,Retention rate,3

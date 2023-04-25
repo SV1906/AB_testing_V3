@@ -22,6 +22,7 @@ today = date.today()
 today = today.strftime("%d-%m-%Y")
 #To have a varible 'button_variable' for the Suggest Sampling technique button 
 button_variable = "False" 
+Test_case_button = False 
 #To declare a global array 'array_output_final' for storing the values required to update the master sheet  
 array_output_final = []
 Sub_Campaign_Names = []
@@ -169,13 +170,13 @@ def Systematic_Sampling_result(data, test_size):
         try : 
              for i in range(0, Total): 
                  step = (len(data)/test_size[i])
-                 indexes = np.arange(0, len(data), step=step)
+                 indexes = np.arange(0, len(data)-1, step=step)
                  systematic_sample = data.iloc[indexes]
                  data.drop(systematic_sample.index, axis=0,inplace=True)
                  Test.append(systematic_sample)
              if (len(data) > threshold_control):
                  step = (len(data)/threshold_control)
-                 indexes = np.arange(0, len(data), step=step)
+                 indexes = np.arange(0, len(data)-1, step=step)
                  systematic_sample = data.iloc[indexes]
                  Test.append(systematic_sample)
              else : 
@@ -188,7 +189,7 @@ def Systematic_Sampling_result(data, test_size):
             # if (sum(test_size) == 0):
             #       return "Final Minimum size can't be zero"
             # else : 
-                 return test_size
+                 return "Change the base data"
         
 
 def Random_Sampling_result(data, test_size,minimum_size):
@@ -303,7 +304,6 @@ def New_Testing():
 
     Section_open = 0
     verification = ""
-
     
     if request.method == 'POST':
        global forms 
@@ -315,12 +315,12 @@ def New_Testing():
 
        global array_output_final       
        for i in Features: 
-            if ((request.form.get(i['key'])) or ((i['key'] in selected_features) and (forms["Download"] == False))):
+            if ((request.form.get(i['key'])) or ((i['key'] in selected_features) and (request.form.get("Edit_button") != None))):
                 i['value'] = True
                 selected_features.append(i['key'])
             else : 
                 i ['value'] = False 
-                if (i['key'] in selected_features): 
+                if ((i['key'] in selected_features) and (request.form.get("Edit_button") == None)): 
                     selected_features.remove(i['key'])
        selected_features = list(set(selected_features))
                 
@@ -328,7 +328,7 @@ def New_Testing():
        global selected_columns
        for i in Stratification_columns: 
             variable = "Strat" + i['key']
-            if ((request.form.get(variable)) or ((i['key'] in selected_columns) and (forms["Download"] == False))) :
+            if ((request.form.get(variable)) or ((i['key'] in selected_columns) and  (request.form.get("Edit_button") != None))) :
                 i['value'] = True
             else : 
                 i ['value'] = False 
@@ -345,16 +345,14 @@ def New_Testing():
        global test_size
        for i in range(1,int(forms["Experiment"])+1):
              variable = "Test_case_" + str(i)
-             if (request.form.get(variable) != None) : 
+             #To make sure that a blank values isn't submitted to the Test_Case inputs 
+             if (request.form.get(variable) != None and request.form.get(variable) != '') : 
                  #If it's not empty 
                  forms[variable] = request.form[variable] 
                  forms['Sum'] += int(forms[variable])
              else : 
                 # If it's empty 
-                # if (variable != 0):
-                #      forms[variable] = variable[i-1]
-                # else : 
-                     forms[variable] = forms['final_result']
+                forms[variable] = forms['final_result']
        
        global Sub_Campaign_Names
 
@@ -372,10 +370,9 @@ def New_Testing():
                     Sub_Campaign_Names[i-1] = forms[variable]
              else : 
                     forms[variable] = Sub_Campaign_Names[i-1]
-       
+
        base_data_input =  base_data(data_Original, selected_features)  
        forms["Current_Count"] = db_count(data_Original, selected_features)
-
       
        dummy_test_size =[]
        for i in range(0,int(forms["Total_cases"])-1):
@@ -431,12 +428,12 @@ def New_Testing():
                         forms["Error"] ="Error-lessRecords"
                     else : 
                          forms["Records_Available"] = "Records Available for Allocation : " + str(forms['Current_Count'] - forms['final_result'] - forms['Sum'])
-                         if (request.form.get('Test_cases_button') != None): 
+                        #Have a better if statement below. 
+                         global Test_case_button
+                         if ((request.form.get('Test_cases_button') != None) or (Test_case_button == True)): 
                         #    Sampling Techniques opens up only when the button is clicked 
                              Section_open = 3
-                    
-                         
-
+                             Test_case_button = True                
             if(verification == "True") : 
                 forms['location'] = "modal_message"
 
@@ -461,7 +458,6 @@ def New_Testing():
             except : 
                   forms["ExcelUpdate"] = "There is a problem while updating the Excel. Please Try again."
                   forms ["Download"] = True 
-
 
        return render_template('New_Testing.html', test_size = test_size, Stratification_columns = Stratification_columns, selected_features = selected_features, array_output_final = array_output_final,  Sub_Campaign_Names = Sub_Campaign_Names, Section_open = Section_open, stratification_columns = Stratification_columns, selected_columns =selected_columns, sum = sum, Success = True, form = forms, features = Features, date = today, Verification =  verification) 
     return render_template('New_Testing.html' , array_output_final = array_output_final, Section_open = Section_open, features = Features, Stratification_columns=Stratification_columns, date = today, form = forms)
