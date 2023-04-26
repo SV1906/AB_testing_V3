@@ -31,7 +31,7 @@ selected_columns = []
 
 #To globally declare the variable form 
 forms = {'Total_cases': 2, 'Experiment': '1', 'ConversionInterval':'' , 'MarginError':'' , 'BaselineRate':'' , 'DetectableEffect':'' , 'SignificantPower':'' , 'SignificantLevel':'' ,'Campaign_Name_1' : '', 'Campaign_Name_2': '', 'Operator' : 'Default', 'Hypothesis':'', 'CampaignName' : '','CampaignStartdate' : '','CampaignEnddate' : '', 'CampaignType':'Push' , 'ConversionMetric':'Retention Rate' ,'ConversionPeriod' : ''}
-test_size = [] 
+# test_size = [] 
 
 #To dynamically return the features from the database 
 #Removal of the columns - Profile phone and SignUp date 
@@ -152,6 +152,7 @@ def db_count(data,selected):
     
 def Output_file(data_list):
     try :    
+    
         with pd.ExcelWriter(str(THIS_FOLDER)+"\\output.xlsx") as writer:
             for i in range(0,len(data_list)):
                 data_list[i].to_excel(writer, sheet_name= "Sheet " + str(i+1))
@@ -181,7 +182,7 @@ def Systematic_Sampling_result(data, test_size):
                  Test.append(systematic_sample)
              else : 
                  Test.append(systematic_sample) 
-             if (Output_file(Test)):
+             if (Output_file(Test) ):
                  return "Sampling Successful"
              else : 
                  return "Sampling Successful but problem with saving in file."
@@ -304,6 +305,7 @@ def New_Testing():
 
     Section_open = 0
     verification = ""
+    test_size = []
     
     if request.method == 'POST':
        global forms 
@@ -320,7 +322,7 @@ def New_Testing():
                 selected_features.append(i['key'])
             else : 
                 i ['value'] = False 
-                if ((i['key'] in selected_features) and (request.form.get("Edit_button") == None)): 
+                if ((i['key'] in selected_features) and (request.form.get("Edit_button") == None) and (request.form.get("Download_button") == None)): 
                     selected_features.remove(i['key'])
        selected_features = list(set(selected_features))
                 
@@ -341,18 +343,20 @@ def New_Testing():
            forms ["evan_millers"] =  evan_Millers(forms["BaselineRate"], forms["DetectableEffect"], forms["SignificantPower"], forms["SignificantLevel"])
            forms["final_result"] = compare_size(forms["evan_millers"],forms["basic_result"])
      
-
-       global test_size
+       
+    #    global test_size
        for i in range(1,int(forms["Experiment"])+1):
              variable = "Test_case_" + str(i)
              #To make sure that a blank values isn't submitted to the Test_Case inputs 
-             if (request.form.get(variable) != None and request.form.get(variable) != '') : 
+             if (request.form.get(variable) != None) : 
                  #If it's not empty 
                  forms[variable] = request.form[variable] 
                  forms['Sum'] += int(forms[variable])
              else : 
                 # If it's empty 
                 forms[variable] = forms['final_result']
+                if (len(array_output_final) > 0):
+                     forms[variable] = array_output_final[4][i-1] 
        
        global Sub_Campaign_Names
 
@@ -412,7 +416,10 @@ def New_Testing():
         
        for i in range(1,int(forms["Experiment"])+1):
             variable = "Test_case_" + str(i)
-            if (request.form.get(variable) == None or request.form.get(variable) == '' or int(request.form.get(variable))< int(forms["final_result"])):
+            if (len(array_output_final) > 0):
+                     forms[variable] = array_output_final[4][i-1] 
+                     forms["Sum"] += forms["final_result"] 
+            elif(request.form.get(variable) == None or request.form.get(variable) == '' or int(request.form.get(variable))< int(forms["final_result"])):
                 forms[variable] = forms["final_result"]
                 forms["Sum"] += forms["final_result"] 
                         
