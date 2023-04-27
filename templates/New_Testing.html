@@ -42,6 +42,7 @@
       </div>      
     </header>
    
+
     <aside id="sidebar" class="sidebar">
       <div class = "card-body">
         <ul class="sidebar-nav" id="sidebar-nav">
@@ -96,581 +97,593 @@
     <!-- End Sidebar-->
     <!-- Main Body-->
     <!-- Section 1 Start -->
-    <main id="main" class="main">
-      <form method="post"  action = "{{url_for('New_Testing')}}" >
-        <fieldset id="First_Part" {% if form.Download == True %}disabled{% endif %}>    
-        <!-- Start hypothesis -->
-        <div id="hypothesis_section" class="pagetitle">
-          {{Sub_Campaign_Names}}
-          {{test_size}}
-          <h1>Hypothesis</h1>
-          <!-- {{selected_features}} -->
-        </div>
-        <div class="card  ">
-          <div class="card-body  row">
-            <div class="col-3 align-items-center" style="display: inline-flex;">
-              <h5 class=" card-title">
-                <label for="Insight_input" class="form-label">Define Hypothesis <sup>
-                    <b title="Sample of Hypothesis : Given that a significant number of users drop off during the onboarding process, sending personalized welcome messages to new users will result in a higher retention rate.">
-                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                      <img>
-                    </b>
-                  </sup>
-                </label>                
-              </h5>
-            </div>
-            <div class="col-9">
-              <textarea name="Hypothesis" id="Hypothesis" name="Hypothesis" class="form-control" rows="3" placeholder="" required onkeypress="enable_button('Hypothesis_button')">{{form.Hypothesis}}</textarea>
-            </div>     
-          </div>
-    
-          <div class="card-body  row">
-            <div class="col-3 align-items-center" style="display: inline-flex;">
-              <h5 class=" card-title">
-                <label for="Insight_input" class="form-label">Number of Experiments
-                </label>                
-              </h5>
-            </div>
-            <div class="col-3">
-              <select name = "Experiment_input" id="Experiment_input" class="form-select" onchange=" enable_button('Hypothesis_button'); enable_button('Test_cases_button')" >
-                <option selected value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div> 
-              <script>
-                document.querySelector('#Experiment_input').value = "{{form.Experiment}}";
-               </script> 
-
-              <script>
-              function enable_button(x) {
-                document.getElementById(x).disabled = false;
-              }
-              </script>
-            <div class="text-center">
-              <button type="submit" class="button-18" for = "Hypothesis_button" id = "Hypothesis_button" name = "Hypothesis_button" disabled>Submit</button>     
-         </div>  
-          </div>
-        </div>
-        <hr>
-        <!--End Hypothesis -->
-
-        <!--  Start Select filters -->
-        <div id="select_filters" class="pagetitle">
-          <h1>Select Conditions/Filters</h1>
-          <h9>Please select the conditions and filters.</h9>
-        </div>
-        <div class="card">
-          {% if form.Feature_Error == "Feature_Error" %}
-                 <div class="alert alert-warning" role="alert">
-                   <strong>Warning : Choose atleast one feature </strong>
-                 </div>
-          {% endif %}
-          <div class="card-body  row "> {% for i in features %} <div class="col-4" onchange="enable_button('Button_id'); enable_button('Features_button')">              
-              <input class="form-check-input" type="checkbox" id="{{i.key}}"    name = "{{i.key}}" {% if i.value == True %}checked{% endif %}>
-              <label class="form-check-label"  >{{i.key}}</label>        
-          </div> 
-            {% endfor %} 
-            <div class ="card-body">
-              <div class="text-center">
-                   <button type="submit" class="button-18" for = "Features_button" id = "Features_button" name = "Features_button" disabled>Calculate</button>     
-              </div>   	
-              <div class = "text-center">
-
-                {% if form.Feature_Error == "Feature_Error" %}
-                <b>Total DB Count: {{form.Current_Count}} </b>  
-                {% else %}   
-                <b>Current DB Count: {{form.Current_Count}} </b>  
-                {% endif %}
-            
-              </div>
-            </div>
-        </div>
-      </div>
-        <hr>
-        <!--End Select filters -->    
-
-         <!-- Section 1 Start -->
-         <fieldset {% if Section_open < 1 %} disabled {% endif %}>
-          <!--  Start Calculator -->
-				<div id="sample_size" class="pagetitle">
-					<h1>Minimum Sample Size Calculator</h1>
-          <h9>Please fill in the information for minimum sample size calculation.</h9>
-        </div>
-				<div class="card" style="height: 500px;">
-					<div class="card-body">
-						<ul class="nav nav-tabs" id="myTab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Basic Sample Size</button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Evan Millers</button>
-              </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-                <!--Basic Sample Size-->
-                <div class="card-body col-12">
-                  <h9>Required values for the calculation are - <b>Confidence Interval </b>
-                    <sup>
-                      <b title="A confidence interval shows the probability that a parameter will fall between a pair of values around the mean.&#013; Recommended Margin of Error : 90% - 99%">
-                        <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                        <img>
-                      </b>
-                    </sup>and <b>Margin of Error </b>
-                    <sup>
-                      <b title="The margin of error means the degree of uncertainty that your survey results might have.&#013; Recommended Margin of Error : 3% - 10%">
-                        <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                        <img>
-                      </b>
-                    </sup>The default values for Confidence Interval and Margin of Error are already mentioned below.
-                  </h9>
-                
-								  <div class="card-body col-12">	
-                      <div class="col">
-												<div class="row">
-													<label for="Input1" class="form-label" >Confidence Interval (%)</label>
-													<input type="number" class="form-control" onkeyup="enable_button('Sample_Size_submit_1')"  value="{{form.ConversionInterval}}" name="confidence_Interval_Input" min=0 max=100>
-												</div>
-												<div class="row">
-													<label for="Input2" class="form-label">Margin Error(%)</label>
-													<input type="number" class="form-control" onkeyup="enable_button('Sample_Size_submit_1')" value = "{{form.MarginError}}" name="margin_Error_Input" min=0 max=100>
-												</div>
-											</div>
-											<div class = "card-body">
-												<div class="text-center">
-                          <button type="submit" class="button-18" for = "Sample_Size_submit_1" id = "Sample_Size_submit_1" name = "Sample_Size_submit_1" disabled>Submit</button>	
-                        </div>
-                            
-                            <div class="card-body">
-                              <table>
-                                <tr>
-                                  <th width="10px" >Minimum Sample Size (Basic):</th>
-                                  <td width="10px" >{{form.basic_result}}</td>
-                                </tr>
-                                <tr>
-                                  <th width="10px" >Minimum Sample Size (Evan Millers):</th>
-                                  <td width="10px" >{{form.evan_millers}}</td>
-                                </tr>
-                                <tfoot>
-                                  <th width="10px" >Final Minimum Sample Size:                           
-                                  </th>
-                                  <td width="10px" >{{form.final_result}}</td>
-                                </tfoot>
-                               
-                              </table>
-                              <div class="text-center">
-                                <h9><i>The Final Minimum Sample Size is the greater value of the two sample sizes.</i></h9>
-                              </div>                         
-                            </div>                     
-                          
-											</div>
-									</div>    
-                </div>
-              </div>
-              <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                <!--Evan Miller's-->
-								<div class="card-body col-12">
-                <h9>Required values for the calculation are - <b>Baseline Conversion Rate </b>
-                  <sup>
-                    <b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. ">
-                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                      <img>
-                    </b>
-                  </sup>, <b>Minimum Detectable Effect </b>
-                  <sup>
-                    <b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. ">
-                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                      <img>
-                    </b>
-                  </sup>, <b>Statistical Power </b>
-                  <sup>
-                    <b title="Statistical Power is the likelihood that you will detect a difference between variant A and variant B. &#013; A Higher power is always prefered.&#013; Minimum of 80% is usually recommended">
-                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                      <img>
-                    </b>
-                  </sup> and <b>Statistical level </b>
-                  <sup>
-                    <b title="Statistic level is the level of error you're willing to accept in your test. &#013; Usually 1% to 5%. ">
-                      <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                      <img>
-                    </b>
-                  </sup>. The default values for Statistical Power and Statistical Level are already mentioned below.
-                </h9>
-                <div>
-									<div class = "card-body col-12">
-											<div class="row g-3">
-												<div class="col-sm">
-													<label for="Input1" class="form-label" >Baseline Conversion Rate (%)</label>
-													<input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')" value = "{{form.BaselineRate}}" name="baseline_Rate_Input" min=0 max=100>
-												</div>
-												<div class="col-sm">
-													<label for="Input2" class="form-label" >Minimum Detectable Effect (%)</label>
-													<input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{{form.DetectableEffect}}" name="detectable_Effect_Input" min=0 max=100>
-												</div>
-											</div>
-											<div class = "row g-3">
-												<div class="col-sm">
-													<label for="Input3" class="form-label" >Significance Power (%)</label>
-													<input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{{form.SignificantPower}}" name="significance_Power_Input" min=0 max=100>
-												</div>
-												<div class="col-sm">
-													<label for="Input14" class="form-label">Significance level (%)</label>
-													<input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{{form.SignificantLevel}}" name="significance_Level_Input" min=0 max=100>
-												</div>
-											</div>
-											<div class = "card-body">											
-												<div class="text-center">
-													<button type="submit" class="button-18" name ="Sample_Size_submit_2" id = "Sample_Size_submit_2" disabled>Submit</button>                          
-												</div>
-                        
-                            <div class="card-body">
-                              <table>
-                                <tr>
-                                  <th width="10px" >Minimum Sample Size (Basic):</th>
-                                  <td width="10px" >{{form.basic_result}}</td>
-                                </tr>
-                                <tr>
-                                  <th width="10px" >Minimum Sample Size (Evan Millers):</th>
-                                  <td width="10px" >{{form.evan_millers}}</td>
-                                </tr>
-                                <tr>
-                                  <th width="10px" >Final Minimum Sample Size:                           
-                                  </th>
-                                  <td width="10px" >{{form.final_result}}</td>
-                                </tr> 
-                              </table>                          
-                            </div>                     
-                                    
-											</div>																				 
-									</div> 
-                </div>
-              </div>
-						</div>
-            </div>
-					</div>
-				</div>				
-		     <hr>
-         <!--  End Calculator -->
-        </fieldset>			
-        <!-- Section 1 Start --> 
-
-       
-      
-         <!-- Starts Modal  -->
-         <!-- Condition 1 Starts -->
-         {% if Verification == "True" %}
-         <div id= "modal_message" class ="pagetitle">
-          <h1> </h1>
-         </div>
-         <div class = "card">
-          <div class = "card-body">
-              <div class="alert alert-warning" role="alert">
-                <strong>Warning : The base data selected isn't enough for the number of Experiments with the required minimum sample size. </strong>
-              </div>
-            <p><i><b>Please solve this to proceed forward.</b></i><br> 
-             Please do one of the following : <br>
-            1. Decrease the number of Experiments<br> 
-            2. Decrease the minimum sample size<br>
-            3. Increase the base data
-            </p>
-            <h2></h2>
-            <table>
-              <tr>
-                <th>Total Cases (Control case + Test case/s)</th>
-                <td>{{form.Total_cases}}</td>
-              </tr>
-              <tr>
-                <th>Minimum Sample Size per case</th>
-                <td>{{form.final_result}}</td>
-              </tr>
-              <tr>
-                <th>Required Base Data</th>
-                <td>{{form.required_db}}</td>
-              </tr>
-              <tr>
-                <th>Base Data</th>
-                <td>{{form.Current_Count}}</td>
-              </tr>
-            </table>
-          </div>
-         </div>
-         <hr> 
-         {% endif %}
-         <!-- Condition 1 Ends  -->
-
-        <!-- Condition 2 Starts -->
-         {% if Verification == "False" %}
-         <div id= "Test_cases" class ="pagetitle">
-          <h1> </h1>
-         </div>
-         <div class = "card">
-          <div class = "card-body">
-            {% if form.Error == "Error-lessRecords" %}
-            <div class="alert alert-warning" role="alert">
-              <strong>Warning : Reduce the number of records in test cases. </strong>
-            </div>
-            {% endif %}
-              <p><b>{{form.Records_Available}}</b></p>
-              <div class="card-body  row "> 
-                {{new_Tests}}
-                {% for i in range(1, form.Total_cases) %} 
-                <div class="col-3">
-                   <label for="Test_case{{i}}" class="form-label">Test Case {{i}}</label>
-                  <input type="number" class="form-control" id = "Test_case_{{i}}" name="Test_case_{{i}}" value="{{ form['Test_case_'+ i|string] }}" min = {{form.final_result}} onchange="enable_button('Test_cases_button')">
-                </div>
-                {% endfor %} 
-              </div>
-              <div class="text-center">
-                <button type="submit" class="button-18" name ="Test_cases_button" for = "Test_cases_button" id = "Test_cases_button" {% if Section_open > 2 %}disabled{% endif %}>Submit</button>                          
-              </div>          
-          </div>
-         </div>
-        </div>
-      </div> 
-         <hr> 
-         {% endif %}
-         <!-- Condition 2 ends -->
-         <!-- Ends Modal  -->
-  
-
-        <!-- Section 3 Start -->
-				<!-- Start Sampling Technique -->
-        <fieldset {% if Section_open < 3 %}disabled{% endif %}>
-          <div id="sampling_technique" class="pagetitle">
-            <h1>Sampling Technique</h1>
+    <div id="cover-spin"></div>
+      <main id="main" class="main">
+        <form method="post"  action = "{{url_for('New_Testing')}}" >
+          <fieldset id="First_Part" {% if form.Download == True %}disabled{% endif %}>    
+          <!-- Start hypothesis -->
+          <div id="hypothesis_section" class="pagetitle">
+            {{Sub_Campaign_Names}}
+            {{test_size}}
+            <h1>Hypothesis</h1>
+            <!-- {{selected_features}} -->
           </div>
           <div class="card  ">
-            {% if form.Sampling_Result == "Sampling Successful" %}
-            <!-- Green -->
-            <div class="alert alert-success" role="alert">
-             {{form.Operator}} {{form.Sampling_Result}} 
-            </div>                        
-            {% elif form.Sampling_Result %}
-            <!-- Yellow -->
-            <div class="alert alert-warning" role="alert">
-              {{form.Sampling_Result}}
-            </div>                      
-            {% endif %}
-              <div class="card-body">
-                      <button type="submit" value="Suggest Sampling Technique" class="button-18" name = "Button_id" id = "Button_id" {% if Verification == "True" or form.Sample_suggestion %}disabled{% endif %}>Suggest Sampling Technique</button>
-                      <div class = "card-body">
-                        <b>{% if form.Sample_suggestion %}Suggested Technique :{{form.Sample_suggestion}}{% endif %}</b>
-                      </div>
-                    <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b>
-                      <sup>
-                        <b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki">
-                          <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                          <img>
-                        </b>
-                      </sup>, <b>Systematic Sampling </b>
-                      <sup>
-                        <b title="In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki">
-                          <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                          <img>
-                        </b>
-                      </sup> and <b>Stratified Sampling</b>
-                      <sup>
-                        <b title="In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations.-Wiki">
-                          <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
-                          <img>
-                        </b>
-                      </sup>
-                    </p>
-                    </p>
-                      <div> 
-                        <div class="col-4">
-                          <select class="form-select" name = "operator" id="operator" class="operator" onchange="enable_button('Sampling_Technique_submit')">
-                            <option value="Default" disabled >Choose : </option>
-                            <option value="Random">Simple Random Sampling</option>
-                            <option value="Systematic">Systematic Sampling</option>
-                            <option value="Stratified">Stratified Sampling</option>
-                          </select>
-                        </div> 
-                        <script>
-                          document.querySelector('#operator').value = "{{form.Operator}}";
-                         </script>              
-                        <div class = "card-body">  
-                          <div class="text-center">
-                            <button type="submit" class="button-18" id = "Sampling_Technique_submit"  onclick="update()" name = "Sampling_Technique_submit" disabled {% if Verification == "True" %}disabled{% endif %}>Submit</button>
-                          </div>
-                        </div>          
-                          <div class="progress" style="height: 6px;visibility: hidden" id="Progress_bar_visibility">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" id = "myprogressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%; " ></div>
-                          </div>                                      
-                        <script>
-                          function update() {
-                              var element = document.getElementById("myprogressBar");  
-                              document.getElementById("Progress_bar_visibility").style.visibility = "visible";  
-                             
-                              var width = 1;
-                              var identity = setInterval(scene, 10);
-                              function scene() {
-                              if (width >= 100) {
-                                  clearInterval(identity);
-                              } else {
-                                  width++; 
-                                  element.style.width = width + '%'; 
-                                  }
-                              }
-                          }
-                          </script>
-                      </div>            
+            <div class="card-body  row">
+              <div class="col-3 align-items-center" style="display: inline-flex;">
+                <h5 class=" card-title">
+                  <label for="Insight_input" class="form-label">Define Hypothesis <sup>
+                      <b title="Sample of Hypothesis : Given that a significant number of users drop off during the onboarding process, sending personalized welcome messages to new users will result in a higher retention rate.">
+                        <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                        <img>
+                      </b>
+                    </sup>
+                  </label>                
+                </h5>
               </div>
+              <div class="col-9">
+                <textarea name="Hypothesis" id="Hypothesis" name="Hypothesis" class="form-control" rows="3" placeholder="" required onkeypress="enable_button('Hypothesis_button')">{{form.Hypothesis}}</textarea>
+              </div>     
+            </div>
+      
+            <div class="card-body  row">
+              <div class="col-3 align-items-center" style="display: inline-flex;">
+                <h5 class=" card-title">
+                  <label for="Insight_input" class="form-label">Number of Experiments
+                  </label>                
+                </h5>
+              </div>
+              <div class="col-3">
+                <select name = "Experiment_input" id="Experiment_input" class="form-select" onchange=" enable_button('Hypothesis_button'); enable_button('Test_cases_button')" >
+                  <option selected value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div> 
+                <script>
+                  document.querySelector('#Experiment_input').value = "{{form.Experiment}}";
+                 </script> 
+  
+                <script>
+                function enable_button(x) {
+                  document.getElementById(x).disabled = false;
+                }
+                // function grey_out_spinner(){
+                //   document.getElementById('main').style.opacity = 0.3; 
+                // }
+                function spinner_button(){
+                  document.getElementById('cover-spin').style.visibility = 'visible'; 
+                }
+                </script>
+              <div class="text-center">
+                <button type="submit" class="button-18" for = "Hypothesis_button" id = "Hypothesis_button" name = "Hypothesis_button" disabled onclick="spinner_button()">Submit</button>     
+           </div>  
+            </div>
           </div>
           <hr>
-       <!-- End of Sampling Technique-->
-
-               <!-- Start Stratify On --> 
-               {% if form.Operator == 'Stratified' %} 
-               <div id="stratify_on" class="pagetitle">
-                 <h1>Stratify On:</h1>
-                 <h9>Please select the columns to stratify on.</h9>
-               </div>
-               <div class="card">
-                 {% if form.Error == "Stratification_columns" %}
-                 <div class="alert alert-warning" role="alert">
-                   <strong>Warning : Choose atleast one column to stratify on </strong>
-                 </div>
-                 {% endif %}
-                 <div class="card-body  row "> {% for i in stratification_columns %} <div class="col-3" onchange="enable_button('stratify_button')">                 
-                     <input class="form-check-input" type="checkbox" id="Strat{{i.key}}" name = "Strat{{i.key}}" {% if i.value == True %}checked{% endif %}>
-                     <label class="form-check-label"  >{{i.key}}</label>               
-                 </div> 
-                   {% endfor %}
-                   <div class="text-center">
-                       <button type="submit" class="button-18" for = "stratify_button" onclick="update()" id = "stratify_button" name = "stratify_button">Submit</button>     
-                   </div>  
-                 </div>
-             </div>
-             <hr> 
-             {% endif %}
-        
-               <!-- End  Stratify On -->
-        </fieldset>
-        <!-- Section 3 End -->
-
-        <!-- Section 4 Start-->
-        <fieldset {% if Section_open < 4 %}disabled{% endif %}>
-        <!-- Start Campaign Details-->   
-          <div id="campaign_details" class="pagetitle">
-            <h1>Campaign Details</h1>
-          </div>
-          <div class="card  ">
-            <div class="card-body">
-                <div class = "row g-3">
-                  <div class="mx-auto">
-                   
-                    {% if form.Campaign_Details_Error%}
-                    <div class="alert alert-warning" role="alert">
-                      {{form.Campaign_Details_Error}}
-                    </div>   
-                    {% endif %}
-               
-                    <div class="form-group row">
-                      <label for="colFormLabel" class="col-sm-4 col-form-label"><b>Master Campaign Name</b></label>
-                      <div class="col-sm-8">
-                        <input type="text" class="form-control" id="campaign_name_input" name="campaign_name_input" value = "{{form.CampaignName}}" onkeyup="enable_button('Final_submit')">
-                      </div>
-                    </div>
-                  </div>
+          <!--End Hypothesis -->
   
-                
-                  {% if form.Total_cases != 2 %}
+          <!--  Start Select filters -->
+          <div id="select_filters" class="pagetitle">
+            <h1>Select Conditions/Filters</h1>
+            <h9>Please select the conditions and filters.</h9>
+          </div>
+          <div class="card">
+            {% if form.Feature_Error == "Feature_Error" %}
+                   <div class="alert alert-warning" role="alert">
+                     <strong>Warning : Choose atleast one feature </strong>
+                   </div>
+            {% endif %}
+            <div class="card-body  row "> {% for i in features %} <div class="col-4" onchange="enable_button('Button_id'); enable_button('Features_button')">              
+                <input class="form-check-input" type="checkbox" id="{{i.key}}"    name = "{{i.key}}" {% if i.value == True %}checked{% endif %}>
+                <label class="form-check-label"  >{{i.key}}</label>        
+            </div> 
+              {% endfor %} 
+              <div class ="card-body">
+                <div class="text-center">
+                     <button type="submit" class="button-18" for = "Features_button" id = "Features_button" name = "Features_button" onclick="spinner_button()" disabled>Calculate</button>     
+                </div>   	
+                <div class = "text-center">
+  
+                  {% if form.Feature_Error == "Feature_Error" %}
+                  <b>Total DB Count: {{form.Current_Count}} </b>  
+                  {% else %}   
+                  <b>Current DB Count: {{form.Current_Count}} </b>  
+                  {% endif %}
+              
+                </div>
+              </div>
+          </div>
+        </div>
+          <hr>
+          <!--End Select filters -->    
+  
+           <!-- Section 1 Start -->
+           <fieldset {% if Section_open < 1 %} disabled {% endif %}>
+            <!--  Start Calculator -->
+          <div id="sample_size" class="pagetitle">
+            <h1>Minimum Sample Size Calculator</h1>
+            <h9>Please fill in the information for minimum sample size calculation.</h9>
+          </div>
+          <div class="card" {% if form.final_result %}style= "height: 500px;"{% else %}style= "height: 370px;"{% endif %} >
+            <div class="card-body">
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Basic Sample Size</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Evan Millers</button>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                  <!--Basic Sample Size-->
+                  <div class="card-body col-12">
+                    <h9>Required values for the calculation are - <b>Confidence Interval </b>
+                      <sup>
+                        <b title="A confidence interval shows the probability that a parameter will fall between a pair of values around the mean.&#013; Recommended Margin of Error : 90% - 99%">
+                          <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                          <img>
+                        </b>
+                      </sup>and <b>Margin of Error </b>
+                      <sup>
+                        <b title="The margin of error means the degree of uncertainty that your survey results might have.&#013; Recommended Margin of Error : 3% - 10%">
+                          <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                          <img>
+                        </b>
+                      </sup>The default values for Confidence Interval and Margin of Error are already mentioned below.
+                    </h9>
+                  
+                    <div class="card-body col-12">	
+                        <div class="col">
+                          <div class="row">
+                            <label for="Input1" class="form-label" >Confidence Interval (%)</label>
+                            <input type="number" class="form-control" onkeyup="enable_button('Sample_Size_submit_1')"  value="{{form.ConversionInterval}}" name="confidence_Interval_Input" min=0 max=100>
+                          </div>
+                          <div class="row">
+                            <label for="Input2" class="form-label">Margin Error(%)</label>
+                            <input type="number" class="form-control" onkeyup="enable_button('Sample_Size_submit_1')" value = "{{form.MarginError}}" name="margin_Error_Input" min=0 max=100>
+                          </div>
+                        </div>
+                        <div class = "card-body">
+                          <div class="text-center">
+                            <button type="submit" class="button-18" for = "Sample_Size_submit_1" id = "Sample_Size_submit_1" name = "Sample_Size_submit_1" disabled onclick="spinner_button()">Submit</button>	
+                          </div>
+                              
+                              <div class="card-body">
+                                {% if form.final_result %}
+                              
+                                <table>
+                                  <tr>
+                                    <th width="10px" >Minimum Sample Size (Basic):</th>
+                                    <td width="10px" >{{form.basic_result}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th width="10px" >Minimum Sample Size (Evan Millers):</th>
+                                    <td width="10px" >{{form.evan_millers}}</td>
+                                  </tr>
+                                  <tfoot>
+                                    <th width="10px" >Final Minimum Sample Size:                           
+                                    </th>
+                                    <td width="10px" >{{form.final_result}}</td>
+                                  </tfoot>
+                                </table>
+                                {% endif %}
+
+                                <div class="text-center">
+                                  <h9><i>The Final Minimum Sample Size is the greater value of the two sample sizes.</i></h9>
+                                </div>                         
+                              </div>                     
+                            
+                        </div>
+                    </div>    
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                  <!--Evan Miller's-->
+                  <div class="card-body col-12">
+                  <h9>Required values for the calculation are - <b>Baseline Conversion Rate </b>
+                    <sup>
+                      <b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. ">
+                        <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                        <img>
+                      </b>
+                    </sup>, <b>Minimum Detectable Effect </b>
+                    <sup>
+                      <b title="The Minimum detectable Effect is the relative minimum increase over the baseline that you are willing to detect in the experiment. ">
+                        <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                        <img>
+                      </b>
+                    </sup>, <b>Statistical Power </b>
+                    <sup>
+                      <b title="Statistical Power is the likelihood that you will detect a difference between variant A and variant B. &#013; A Higher power is always prefered.&#013; Minimum of 80% is usually recommended">
+                        <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                        <img>
+                      </b>
+                    </sup> and <b>Statistical level </b>
+                    <sup>
+                      <b title="Statistic level is the level of error you're willing to accept in your test. &#013; Usually 1% to 5%. ">
+                        <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                        <img>
+                      </b>
+                    </sup>. The default values for Statistical Power and Statistical Level are already mentioned below.
+                  </h9>
+                  <div>
+                    <div class = "card-body col-12">
+                        <div class="row g-3">
+                          <div class="col-sm">
+                            <label for="Input1" class="form-label" >Baseline Conversion Rate (%)</label>
+                            <input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')" value = "{{form.BaselineRate}}" name="baseline_Rate_Input" min=0 max=100>
+                          </div>
+                          <div class="col-sm">
+                            <label for="Input2" class="form-label" >Minimum Detectable Effect (%)</label>
+                            <input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{{form.DetectableEffect}}" name="detectable_Effect_Input" min=0 max=100>
+                          </div>
+                        </div>
+                        <div class = "row g-3">
+                          <div class="col-sm">
+                            <label for="Input3" class="form-label" >Significance Power (%)</label>
+                            <input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{{form.SignificantPower}}" name="significance_Power_Input" min=0 max=100>
+                          </div>
+                          <div class="col-sm">
+                            <label for="Input14" class="form-label">Significance level (%)</label>
+                            <input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{{form.SignificantLevel}}" name="significance_Level_Input" min=0 max=100>
+                          </div>
+                        </div>
+                        <div class = "card-body">											
+                          <div class="text-center">
+                            <button type="submit" class="button-18" name ="Sample_Size_submit_2" id = "Sample_Size_submit_2" disabled onclick="spinner_button()">Submit</button>                          
+                          </div>
+                          
+                              <div class="card-body">
+                                <table>
+                                  <tr>
+                                    <th width="10px" >Minimum Sample Size (Basic):</th>
+                                    <td width="10px" >{{form.basic_result}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th width="10px" >Minimum Sample Size (Evan Millers):</th>
+                                    <td width="10px" >{{form.evan_millers}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th width="10px" >Final Minimum Sample Size:                           
+                                    </th>
+                                    <td width="10px" >{{form.final_result}}</td>
+                                  </tr> 
+                                </table>                          
+                              </div>                     
+                                      
+                        </div>																				 
+                    </div> 
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>				
+           <hr>
+           <!--  End Calculator -->
+          </fieldset>			
+          <!-- Section 1 Start --> 
+  
+         
+        
+           <!-- Starts Modal  -->
+           <!-- Condition 1 Starts -->
+           {% if Verification == "True" %}
+           <div id= "modal_message" class ="pagetitle">
+            <h1> </h1>
+           </div>
+           <div class = "card">
+            <div class = "card-body">
+                <div class="alert alert-warning" role="alert">
+                  <strong>Warning : The base data selected isn't enough for the number of Experiments with the required minimum sample size. </strong>
+                </div>
+              <p><i><b>Please solve this to proceed forward.</b></i><br> 
+               Please do one of the following : <br>
+              1. Decrease the number of Experiments<br> 
+              2. Decrease the minimum sample size<br>
+              3. Increase the base data
+              </p>
+              <h2></h2>
+              <table>
+                <tr>
+                  <th>Total Cases (Control case + Test case/s)</th>
+                  <td>{{form.Total_cases}}</td>
+                </tr>
+                <tr>
+                  <th>Minimum Sample Size per case</th>
+                  <td>{{form.final_result}}</td>
+                </tr>
+                <tr>
+                  <th>Required Base Data</th>
+                  <td>{{form.required_db}}</td>
+                </tr>
+                <tr>
+                  <th>Base Data</th>
+                  <td>{{form.Current_Count}}</td>
+                </tr>
+              </table>
+            </div>
+           </div>
+           <hr> 
+           {% endif %}
+           <!-- Condition 1 Ends  -->
+  
+          <!-- Condition 2 Starts -->
+           {% if Verification == "False" %}
+           <div id= "Test_cases" class ="pagetitle">
+            <h1> </h1>
+           </div>
+           <div class = "card">
+            <div class = "card-body">
+              {% if form.Error == "Error-lessRecords" %}
+              <div class="alert alert-warning" role="alert">
+                <strong>Warning : Reduce the number of records in test cases. </strong>
+              </div>
+              {% endif %}
+                <p><b>{{form.Records_Available}}</b></p>
+                <div class="card-body  row "> 
+                  {{new_Tests}}
                   {% for i in range(1, form.Total_cases) %} 
-                  <div class="mx-auto">
-                    <div class="form-group row">
-                      <label for="colFormLabel" class="col-sm-4 col-form-label">Campaign Name for Experiment {{i}}</label>
-                      <div class="col-sm-8">
-                        <input type="text" class="form-control" id="Campaign_Name_{{i}}" name="Campaign_Name_{{i}}" value = "{{ form['Campaign_Name_'+ i|string] }}" onkeyup="enable_button('Final_submit')">
-                      </div>
-                    </div>
+                  <div class="col-3">
+                     <label for="Test_case{{i}}" class="form-label">Test Case {{i}}</label>
+                    <input type="number" class="form-control" id = "Test_case_{{i}}" name="Test_case_{{i}}" value="{{ form['Test_case_'+ i|string] }}" min = {{form.final_result}} onchange="enable_button('Test_cases_button')">
                   </div>
                   {% endfor %} 
-                  {% endif %}
-                
-                  <div class="col-md-4">                
-                      <label for="Date_of_requirement" class="form-label">Date of Requirement</label>                
-                  <div class = "card-body">
-                    <text>{{date}}</text> 
-                  </div>   
-                  </div>
-                  <div class="col-md-4">
-                    <label for="campaign_start_date" class="form-label">Campaign Start Date</label>
-                    <input type="date" class="form-control" id = "campaign_start_date" name="campaign_start_date" value = "{{form.CampaignStartdate}}" onkeyup="enable_button('Sampling_Technique_submit')">
-                  </div>
-                  <div class="col-md-4"><label for="campaign_end_date" class="form-label">Campaign End Date</label>
-                    <input type="date" class="form-control" name="campaign_end_date" id="campaign_end_date" value = "{{form.CampaignEnddate}}" onkeyup="enable_button('Sampling_Technique_submit')">
-                  </div>
-                  <div class="col-md-4"><label for="Campaign_type_input" class="form-label">Campaign Type</label>
-                    <select name = "Campaign_type_input" id="Campaign_type_input" class="form-select" onchange="enable_button('Final_submit')">
-                      <option selected value="Push">Push</option>
-                      <option value="InApp-Pop">InApp-Pop</option>
-                      <option value="Inbox">Inbox</option>
-                      <option value="Banner">Banner</option>
-                    </select>
-                    <script>
-                      document.querySelector('#Campaign_type_input').value = "{{form.CampaignType}}";
-                     </script> 
-                  </div>
-                  <div class="col-md-4">
-                    <label for="Conversion_metric_input" class="form-label">Conversion Metric</label>
-                    <select name = "Conversion_metric_input" id ="Conversion_metric_input" class="form-select" onchange="enable_button('Final_submit')">
-                      <option selected value="Retention rate">Retention rate</option>
-                      <option value="Digitization">Digitization</option>
-                      <option value="App Launch">App Launch</option>
-                      <option value="FD Booked">FD Booked</option>
-                      <option value="B2B Order Placed">B2B Order Placed</option>
-                    </select>
-                    <script>
-                      document.querySelector('#Conversion_metric_input').value = "{{form.ConversionMetric}}";
-                     </script> 
-                  </div>
-                  <div class="col-md-4">
-                      <label for="Conversion_period" class="form-label">Conversion Period (in Days)</label>
-                        <input type="text" class="form-control" name = "Conversion_period_input" id="Conversion_period_input" value = "{{form.ConversionPeriod}}" onkeyup="enable_button('Final_submit')">
-                      </div>
-                      <div class="text-center">
-                        <button type="submit" class="button-18" id = "Final_submit" name = "Final_submit" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
-                      </div>                    
-                      {% if form.ExcelUpdate %}
-                      <div class="alert alert-warning" role="alert">
-                        <strong>Warning : {{form.ExcelUpdate}} </strong> 
-                      </div>
-                      {% endif %}
-                     
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="button-18" name ="Test_cases_button" for = "Test_cases_button" id = "Test_cases_button" onclick="spinner_button()" {% if Section_open > 2 %}disabled{% endif %} >Submit</button>                          
+                </div>          
+            </div>
+           </div>
+          </div>
+        </div> 
+           <hr> 
+           {% endif %}
+           <!-- Condition 2 ends -->
+           <!-- Ends Modal  -->
+    
+  
+          <!-- Section 3 Start -->
+          <!-- Start Sampling Technique -->
+          <fieldset {% if Section_open < 3 %}disabled{% endif %}>
+            <div id="sampling_technique" class="pagetitle">
+              <h1>Sampling Technique</h1>
+            </div>
+            <div class="card  ">
+              {% if form.Sampling_Result == "Sampling Successful" %}
+              <!-- Green -->
+              <div class="alert alert-success" role="alert">
+               {{form.Operator}} {{form.Sampling_Result}} 
+              </div>                        
+              {% elif form.Sampling_Result %}
+              <!-- Yellow -->
+              <div class="alert alert-warning" role="alert">
+                {{form.Sampling_Result}}
+              </div>                      
+              {% endif %}
+                <div class="card-body">
+                        <button type="submit" value="Suggest Sampling Technique" class="button-18" name = "Button_id" id = "Button_id" onclick="spinner_button()" {% if Verification == "True" or form.Sample_suggestion %}disabled{% endif %}>Suggest Sampling Technique</button>
+                        <div class = "card-body">
+                          <b>{% if form.Sample_suggestion %}Suggested Technique :{{form.Sample_suggestion}}{% endif %}</b>
+                        </div>
+                      <p>The types of Sampling Techniques are : <b>Simple Random Sampling </b>
+                        <sup>
+                          <b title="In statistics, a simple random sample is a subset of individuals chosen from a larger set in which a subset of individuals are chosen randomly, all with the same probability. -Wiki">
+                            <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                            <img>
+                          </b>
+                        </sup>, <b>Systematic Sampling </b>
+                        <sup>
+                          <b title="In statistics, a systematic sample is a method involving the selection of elements from an ordered sampling frame. -Wiki">
+                            <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                            <img>
+                          </b>
+                        </sup> and <b>Stratified Sampling</b>
+                        <sup>
+                          <b title="In statistics, stratified sampling is a method of sampling from a population which can be partitioned into subpopulations.-Wiki">
+                            <img src="{{url_for('static', filename='image/information_symbol.jpg')}}" alt="Bajaj" style="width:10px; height:10px">
+                            <img>
+                          </b>
+                        </sup>
+                      </p>
+                      </p>
+                        <div> 
+                          <div class="col-4">
+                            <select class="form-select" name = "operator" id="operator" class="operator" onchange="enable_button('Sampling_Technique_submit')">
+                              <option value="Default" disabled >Choose : </option>
+                              <option value="Random">Simple Random Sampling</option>
+                              <option value="Systematic">Systematic Sampling</option>
+                              <option value="Stratified">Stratified Sampling</option>
+                            </select>
+                          </div> 
+                          <script>
+                            document.querySelector('#operator').value = "{{form.Operator}}";
+                           </script>              
+                          <div class = "card-body">  
+                            <div class="text-center">
+                              <button type="submit" class="button-18" id = "Sampling_Technique_submit"  onclick="spinner_button()" name = "Sampling_Technique_submit" disabled {% if Verification == "True" %}disabled{% endif %}>Submit</button>
+                            </div>
+                          </div>          
+                            <div class="progress" style="height: 6px;visibility: hidden" id="Progress_bar_visibility">
+                              <div class="progress-bar progress-bar-striped progress-bar-animated" id = "myprogressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%; " ></div>
+                            </div>                                      
+                          <script>
+                            function update() {
+                                var element = document.getElementById("myprogressBar");  
+                                document.getElementById("Progress_bar_visibility").style.visibility = "visible";  
+                               
+                                var width = 1;
+                                var identity = setInterval(scene, 10);
+                                function scene() {
+                                if (width >= 100) {
+                                    clearInterval(identity);
+                                } else {
+                                    width++; 
+                                    element.style.width = width + '%'; 
+                                    }
+                                }
+                            }
+                            </script>
+                        </div>            
                 </div>
             </div>
-          </div>
-          <hr>
-        </fieldset>      
-        <!-- Section 4 End -->
-        <!-- End Campaign Details -->
-      </fieldset>
-        <!--Start Download Section --> 
-				{% if form.Download == True %}
-				 <div class="card " id = "Second_Part">
-						<div class="card-body">
-							<h5 class="card-title">Download</span></h5>
-							<div class="text-center">
-                <button type="submit" class="button-18" for = "Download_button" id = "Download_button" name = "Download_button">Download</button>						
-                <button type="submit" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button">Edit</button>		
-                <!-- <a class="button-18" type="submit" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a>         -->
+            <hr>
+         <!-- End of Sampling Technique-->
+  
+                 <!-- Start Stratify On --> 
+                 {% if form.Operator == 'Stratified' %} 
+                 <div id="stratify_on" class="pagetitle">
+                   <h1>Stratify On:</h1>
+                   <h9>Please select the columns to stratify on.</h9>
+                 </div>
+                 <div class="card">
+                   {% if form.Error == "Stratification_columns" %}
+                   <div class="alert alert-warning" role="alert">
+                     <strong>Warning : Choose atleast one column to stratify on </strong>
+                   </div>
+                   {% endif %}
+                   <div class="card-body  row "> {% for i in stratification_columns %} <div class="col-3" onchange="enable_button('stratify_button')">                 
+                       <input class="form-check-input" type="checkbox" id="Strat{{i.key}}" name = "Strat{{i.key}}" {% if i.value == True %}checked{% endif %}>
+                       <label class="form-check-label"  >{{i.key}}</label>               
+                   </div> 
+                     {% endfor %}
+                     <div class="text-center">
+                         <button type="submit" class="button-18" for = "stratify_button" onclick="spinner_button()" id = "stratify_button" name = "stratify_button">Submit</button>     
+                     </div>  
+                   </div>
+               </div>
+               <hr> 
+               {% endif %}
+          
+                 <!-- End  Stratify On -->
+          </fieldset>
+          <!-- Section 3 End -->
+  
+          <!-- Section 4 Start-->
+          <fieldset {% if Section_open < 4 %}disabled{% endif %}>
+          <!-- Start Campaign Details-->   
+            <div id="campaign_details" class="pagetitle">
+              <h1>Campaign Details</h1>
+            </div>
+            <div class="card  ">
+              <div class="card-body">
+                  <div class = "row g-3">
+                    <div class="mx-auto">
+                     
+                      {% if form.Campaign_Details_Error%}
+                      <div class="alert alert-warning" role="alert">
+                        {{form.Campaign_Details_Error}}
+                      </div>   
+                      {% endif %}
+                 
+                      <div class="form-group row">
+                        <label for="colFormLabel" class="col-sm-4 col-form-label"><b>Master Campaign Name</b></label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" id="campaign_name_input" name="campaign_name_input" value = "{{form.CampaignName}}" onkeyup="enable_button('Final_submit')">
+                        </div>
+                      </div>
+                    </div>
+    
+                  
+                    {% if form.Total_cases != 2 %}
+                    {% for i in range(1, form.Total_cases) %} 
+                    <div class="mx-auto">
+                      <div class="form-group row">
+                        <label for="colFormLabel" class="col-sm-4 col-form-label">Campaign Name for Experiment {{i}}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control" id="Campaign_Name_{{i}}" name="Campaign_Name_{{i}}" value = "{{ form['Campaign_Name_'+ i|string] }}" onkeyup="enable_button('Final_submit')">
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %} 
+                    {% endif %}
+                  
+                    <div class="col-md-4">                
+                        <label for="Date_of_requirement" class="form-label">Date of Requirement</label>                
+                    <div class = "card-body">
+                      <text>{{date}}</text> 
+                    </div>   
+                    </div>
+                    <div class="col-md-4">
+                      <label for="campaign_start_date" class="form-label">Campaign Start Date</label>
+                      <input type="date" class="form-control" id = "campaign_start_date" name="campaign_start_date" value = "{{form.CampaignStartdate}}" onkeyup="enable_button('Sampling_Technique_submit')">
+                    </div>
+                    <div class="col-md-4"><label for="campaign_end_date" class="form-label">Campaign End Date</label>
+                      <input type="date" class="form-control" name="campaign_end_date" id="campaign_end_date" value = "{{form.CampaignEnddate}}" onkeyup="enable_button('Sampling_Technique_submit')">
+                    </div>
+                    <div class="col-md-4"><label for="Campaign_type_input" class="form-label">Campaign Type</label>
+                      <select name = "Campaign_type_input" id="Campaign_type_input" class="form-select" onchange="enable_button('Final_submit')">
+                        <option selected value="Push">Push</option>
+                        <option value="InApp-Pop">InApp-Pop</option>
+                        <option value="Inbox">Inbox</option>
+                        <option value="Banner">Banner</option>
+                      </select>
+                      <script>
+                        document.querySelector('#Campaign_type_input').value = "{{form.CampaignType}}";
+                       </script> 
+                    </div>
+                    <div class="col-md-4">
+                      <label for="Conversion_metric_input" class="form-label">Conversion Metric</label>
+                      <select name = "Conversion_metric_input" id ="Conversion_metric_input" class="form-select" onchange="enable_button('Final_submit')">
+                        <option selected value="Retention rate">Retention rate</option>
+                        <option value="Digitization">Digitization</option>
+                        <option value="App Launch">App Launch</option>
+                        <option value="FD Booked">FD Booked</option>
+                        <option value="B2B Order Placed">B2B Order Placed</option>
+                      </select>
+                      <script>
+                        document.querySelector('#Conversion_metric_input').value = "{{form.ConversionMetric}}";
+                       </script> 
+                    </div>
+                    <div class="col-md-4">
+                        <label for="Conversion_period" class="form-label">Conversion Period (in Days)</label>
+                          <input type="text" class="form-control" name = "Conversion_period_input" id="Conversion_period_input" value = "{{form.ConversionPeriod}}" onkeyup="enable_button('Final_submit')">
+                        </div>
+                        <div class="text-center">
+                          <button type="submit" class="button-18" id = "Final_submit" name = "Final_submit" onclick="spinner_button()" {% if Verification == "True" %}disabled{% endif %}>Submit</button>
+                        </div>                    
+                        {% if form.ExcelUpdate %}
+                        <div class="alert alert-warning" role="alert">
+                          <strong>Warning : {{form.ExcelUpdate}} </strong> 
+                        </div>
+                        {% endif %}
+                       
+                  </div>
               </div>
-						</div>
-					</div>
-        <hr> 
-				{% endif %} 
-        <!-- End Download Section-->
-			</form>
-
-			<script>
-				window.scrollTo({ top: document.getElementById("{{form.location}}").getBoundingClientRect().top - 70, behavior: 'smooth'})
-			</script>
-		
-    </main>
+            </div>
+            <hr>
+          </fieldset>      
+          <!-- Section 4 End -->
+          <!-- End Campaign Details -->
+        </fieldset>
+          <!--Start Download Section --> 
+          {% if form.Download == True %}
+           <div class="card " id = "Second_Part">
+              <div class="card-body">
+                <h5 class="card-title">Download</span></h5>
+                <div class="text-center">
+                  <button type="submit" class="button-18" for = "Download_button" id = "Download_button" name = "Download_button" onclick="spinner_button()" >Download</button>						
+                  <button type="submit" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button" onclick="history.back(); spinner_button()">Edit</button>		
+                  <!-- <a class="button-18" type="submit" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a>         -->
+                </div>
+              </div>
+            </div>
+          <hr> 
+          {% endif %} 
+          <!-- End Download Section-->
+        </form>
+  
+        <script>
+          window.scrollTo({ top: document.getElementById("{{form.location}}").getBoundingClientRect().top - 70, behavior: 'smooth'})
+        </script>
+      
+      </main>
+   
+    
 
     <!--End #main -->
     <!-- ======= Footer ======= -->

@@ -13,7 +13,9 @@ file_name = None
 Flask_App = Flask(__name__) 
 
 
+
 THIS_FOLDER = Path(__file__).parent.resolve()
+path = (str(THIS_FOLDER)+"\\output.xlsx")
 #To have a variable 'final_data' for storing the current database 
 # final_data = str(THIS_FOLDER)+"\\DUMMY_DB.csv"
 data_Original = pd.read_csv(str(THIS_FOLDER)+"\\DUMMY_DB.csv")
@@ -294,11 +296,6 @@ def evan_Millers(input1, input2, input3, input4):
         result = round(n)
         return result 
 
-#To display the intial page 
-@Flask_App.route('/Index', methods=['GET'])
-def index():
-    return render_template('Index1.html')
-
 
 @Flask_App.route('/',methods=['GET' , "POST"])
 def New_Testing():
@@ -445,14 +442,20 @@ def New_Testing():
                 forms['location'] = "modal_message"
 
        if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != '' and request.form.get("Final_submit") != None):           
-            forms["Campaign_Details_Error"] = ""
+            # forms["Campaign_Details_Error"] = "Please fill all the details to proceed."
             if ((len(Sub_Campaign_Names) != int(forms["Experiment"]) and (int(forms["Experiment"]) != 1)) or ('' in Sub_Campaign_Names)): 
-                forms["Campaign_Details_Error"] = "Please fill in all the Sub Campaign Names"
+                forms["Campaign_Details_Error"] = "Please fill in all the Sub Campaign Names."
+            if (forms['CampaignName'] == '' or forms['CampaignStartdate'] == '' or forms['CampaignEnddate'] == '' or forms['ConversionPeriod'] == ''): 
+                forms["Campaign_Details_Error"] = "Please fill all the details to proceed."
             if (datetime.strptime(forms["CampaignStartdate"], '%Y-%m-%d') > datetime.strptime(forms["CampaignEnddate"], '%Y-%m-%d')):
-               forms["Campaign_Details_Error"] = "The Campaign End Date should be after the Campaign Start DateStart date"
+               forms["Campaign_Details_Error"] = "The campaign end date should be after the campaign start date"
             if (forms["Campaign_Details_Error"] == ""):    
                     array_output_final = [forms["Hypothesis"],forms['Experiment'],selected_features,forms["final_result"],test_size,forms["Operator"],selected_columns,forms["CampaignName"], Sub_Campaign_Names, today, forms['CampaignStartdate'], forms['CampaignEnddate'], forms['CampaignType'], forms['ConversionMetric'], forms['ConversionPeriod']]
-                    forms ["Download"] = True  
+                    forms ["Download"] = True 
+    #    if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != '' and request.form.get("Final_submit") != None): 
+             
+ 
+            
        if (forms["Sampling_Result"] == "Sampling Successful" and len(selected_features)!= 0):
                 #Campaign Details section opens up 
                 Section_open = 4
@@ -461,6 +464,7 @@ def New_Testing():
             try : 
                  excel_update(array_output_final)
                  path = (str(THIS_FOLDER)+"\\output.xlsx")
+                 forms ["Download"] = True 
                  return send_file(path, as_attachment=True)
             except : 
                   forms["ExcelUpdate"] = "There is a problem while updating the Excel. Please Try again."
@@ -468,7 +472,43 @@ def New_Testing():
 
        return render_template('New_Testing.html', test_size = test_size, Stratification_columns = Stratification_columns, selected_features = selected_features, array_output_final = array_output_final,  Sub_Campaign_Names = Sub_Campaign_Names, Section_open = Section_open, stratification_columns = Stratification_columns, selected_columns =selected_columns, sum = sum, Success = True, form = forms, features = Features, date = today, Verification =  verification) 
     return render_template('New_Testing.html' , array_output_final = array_output_final, Section_open = Section_open, features = Features, Stratification_columns=Stratification_columns, date = today, form = forms)
-  
+
+#To display the intial page 
+@Flask_App.route('/Index', methods=['GET'])
+def index():
+    # control_values = [31, 40, 28, 51, 42, 82, 56, 78, 19, 20, 13, 14, 23, 17, 16, 18, 20]
+
+    def features(data):
+            return data['Master_campaign_name'].unique()
+
+    def Create_required_table (data, choosen_Master_name):
+            Sub_data = data[data['Master_campaign_name'] == choosen_Master_name]
+            Sub_data = Sub_data.fillna(0)
+            Sub_data['Conversion_percent'] = (Sub_data['converted']/Sub_data['users'])*100
+            Sub_data['app_active_percent'] = (Sub_data['app_active']/Sub_data['users'])*100
+            Sub_data['app_launched_percent'] = (Sub_data['app_launched']/Sub_data['users'])*100
+            row = []
+            For_rows = Sub_data[['group', 'sent_flag','campaign']].values.tolist()
+            # For_rows = For_rows.values.tolist()
+            for i in For_rows: 
+                if (i[0] == 'Control'):
+                    row.append('Control_base')
+                # data.append ()
+                elif (i[0] == 'Test' and i[1] == 1.0):
+                    row.append(i[2])
+                elif (i[0] == 'Test' and i[1] == 0.0):
+                    row.append('Unsent_Test_base')
+            Sub_data["Campaign_Reference"] = row
+            return Sub_data
+    
+    data = data = pd.read_csv('C:/Users/Sandhya/OneDrive/Desktop/AB_testing_framework/AB_Testing_V4/AB_testing_V3/AB_testing_report_format_new.csv')
+    Master_names = features(data)
+    choosen_Master_name = 'BBPS_campaign2'
+    Required_table = Create_required_table (data, choosen_Master_name)
+    Form_2 = {}
+    return render_template('Index1.html', Required_table = Required_table["Campaign_Reference"],Master_names = Master_names )  
+
+
 if __name__ == '__main__':
     Flask_App.debug = True
     Flask_App.run(port= 5128)   
