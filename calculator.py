@@ -474,39 +474,92 @@ def New_Testing():
     return render_template('New_Testing.html' , array_output_final = array_output_final, Section_open = Section_open, features = Features, Stratification_columns=Stratification_columns, date = today, form = forms)
 
 #To display the intial page 
-@Flask_App.route('/Index', methods=['GET'])
+@Flask_App.route('/Index', methods=['GET','POST'])
 def index():
     # control_values = [31, 40, 28, 51, 42, 82, 56, 78, 19, 20, 13, 14, 23, 17, 16, 18, 20]
 
-    def features(data):
+
+
+
+    def Names(data):
             return data['Master_campaign_name'].unique()
 
+    def stacked_bar_chart(data, choosen_Master_name, choose_customer_segment, column_name):
+        Sub_data = data[data['Master_campaign_name'] == choosen_Master_name]
+        Sub_data = Sub_data[Sub_data['customer_segment'] == choose_customer_segment]
+        Sub_data = Sub_data.fillna(0)
+        column_name_percentage = column_name + str('_percent')
+        Sub_data[column_name_percentage] = round((Sub_data[column_name]/Sub_data['users'])*100,2)
+        row = []
+        For_rows = Sub_data[['group', 'sent_flag','campaign']].values.tolist()
+        for i in For_rows: 
+            if (i[0].lower() == 'control'):
+                row.append('Control_base')
+            # data.append ()
+            elif (i[0].lower() == 'test' and i[1] == 1.0):
+                row.append(i[2])
+            elif (i[0].lower() == 'test' and i[1] == 0.0):
+                row.append('Unsent_Test_base')
+        Sub_data["X_axis_variables"] = row
+        Sub_data = Sub_data[['X_axis_variables',column_name_percentage, 'customer_segment']]
+        Sub_data = Sub_data.sort_values("X_axis_variables") 
+        return Sub_data
+
+
     def Create_required_table (data, choosen_Master_name):
-            Sub_data = data[data['Master_campaign_name'] == choosen_Master_name]
-            Sub_data = Sub_data.fillna(0)
-            Sub_data['Conversion_percent'] = (Sub_data['converted']/Sub_data['users'])*100
-            Sub_data['app_active_percent'] = (Sub_data['app_active']/Sub_data['users'])*100
-            Sub_data['app_launched_percent'] = (Sub_data['app_launched']/Sub_data['users'])*100
-            row = []
-            For_rows = Sub_data[['group', 'sent_flag','campaign']].values.tolist()
-            # For_rows = For_rows.values.tolist()
-            for i in For_rows: 
-                if (i[0] == 'Control'):
-                    row.append('Control_base')
-                # data.append ()
-                elif (i[0] == 'Test' and i[1] == 1.0):
-                    row.append(i[2])
-                elif (i[0] == 'Test' and i[1] == 0.0):
-                    row.append('Unsent_Test_base')
-            Sub_data["Campaign_Reference"] = row
-            return Sub_data
+        Sub_data = data[data['Master_campaign_name'] == choosen_Master_name]
+        Sub_data = Sub_data[Sub_data['customer_segment'] == 'ETB']
+        Sub_data = Sub_data.fillna(0)
+        Sub_data['Conversion_percent'] = np.where(Sub_data['converted'] > 0, round(((Sub_data['converted']/Sub_data['users']))*100,2), 0)
+        Sub_data['app_active_percent'] = np.where(Sub_data['app_active'] > 0, round(((Sub_data['app_active']/Sub_data['users']))*100,2), 0)   
+        Sub_data['app_launched_percent'] = np.where(Sub_data['app_launched'] > 0, round(((Sub_data['app_launched']/Sub_data['users']))*100,2), 0)
+       
+        row = []
+        For_rows = Sub_data[['group', 'sent_flag','campaign']].values.tolist()
+        # For_rows = For_rows.values.tolist()
+        for i in For_rows: 
+            if (i[0].lower() == 'control'):
+                row.append('Control_base')
+            # data.append ()
+            elif (i[0].lower() == 'test' and i[1] == 1.0):
+                row.append(i[2])
+            elif (i[0].lower() == 'test' and i[1] == 0.0):
+                row.append('Unsent_Test_base')
+        Sub_data["Campaign_Reference"] = row
+        Sub_data = Sub_data[['Campaign_Reference', 'app_launched_percent','app_active_percent','Conversion_percent','sent']]
+        Sub_data.set_index(['Campaign_Reference'])
+        Sub_data = Sub_data.transpose()
+        Sub_data = Sub_data.T.to_dict('list')                   
+        return Sub_data
     
-    data = data = pd.read_csv('C:/Users/Sandhya/OneDrive/Desktop/AB_testing_framework/AB_Testing_V4/AB_testing_V3/AB_testing_report_format_new.csv')
-    Master_names = features(data)
-    choosen_Master_name = 'BBPS_campaign2'
-    Required_table = Create_required_table (data, choosen_Master_name)
-    Form_2 = {}
-    return render_template('Index1.html', Required_table = Required_table["Campaign_Reference"],Master_names = Master_names )  
+    data = pd.read_csv('C:/Users/Sandhya/OneDrive/Desktop/AB_testing_framework/AB_Testing_V4/AB_testing_V3/AB_testing_report_format_new-master-2.csv')
+    Master_names = Names(data)
+    # choosen_Master_name = 'BBPS_campaign'
+    Form = {}
+    Form['Master_Campaign_Name'] = request.form['Master_name_input'] if (request.form.get('Master_name_input') != None) else ''
+    if (Form['Master_Campaign_Name'] != ''):
+         choosen_Master_name = Form['Master_Campaign_Name']
+         Info_dictionary = Create_required_table (data, choosen_Master_name)
+         new_table = pd.DataFrame.from_dict(Info_dictionary)
+         Table_html = new_table.to_html()
+         ETB = "ETB"
+         NTB = "NTB"
+         PTB = "PTB"
+         Dictionary_multichart ={}
+         list_columns = ["converted","app_launched","app_active"]
+         for i in list_columns : 
+            j = str(i + "_percent")
+            Dictionary_multichart [j] = [{'name' : ETB, 'data' : stacked_bar_chart(data, choosen_Master_name, ETB, i)[j].tolist()},{'name' : NTB, 'data' : stacked_bar_chart(data, choosen_Master_name,NTB, i)[j].tolist()},{'name' : PTB, 'data' :  stacked_bar_chart(data, choosen_Master_name,PTB, i)[j].tolist()}]
+          
+    
+    else : 
+         Info_dictionary = ''
+         Table_html = ''
+         Dictionary_multichart = ''
+
+    
+
+    return render_template('index1.html', Dictionary_multichart = Dictionary_multichart, Info_dictionary =Info_dictionary,Master_names = Master_names, Table_html = Table_html)  
 
 
 if __name__ == '__main__':
