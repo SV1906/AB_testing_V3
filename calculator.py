@@ -476,20 +476,58 @@ def New_Testing():
 #To display the intial page 
 @Flask_App.route('/Index', methods=['GET','POST'])
 def index():
-    # control_values = [31, 40, 28, 51, 42, 82, 56, 78, 19, 20, 13, 14, 23, 17, 16, 18, 20]
-
-
-
 
     def Names(data):
             return data['Master_campaign_name'].unique()
 
-    def stacked_bar_chart(data, choosen_Master_name, choose_customer_segment, column_name):
+    # def stacked_bar_chart(data, choosen_Master_name, choose_customer_segment, column_name):
+    #     Sub_data = data[data['Master_campaign_name'] == choosen_Master_name]
+    #     Sub_data = Sub_data[Sub_data['customer_segment'] == choose_customer_segment]
+    #     Sub_data = Sub_data.fillna(0)
+    #     column_name_percentage = column_name + str('_percent')
+    #     Sub_data[column_name_percentage] = round((Sub_data[column_name]/Sub_data['users'])*100,2)
+    #     row = []
+    #     For_rows = Sub_data[['group', 'sent_flag','campaign']].values.tolist()
+    #     for i in For_rows: 
+    #         if (i[0].lower() == 'control'):
+    #             row.append('Control_base')
+    #         # data.append ()
+    #         elif (i[0].lower() == 'test' and i[1] == 1.0):
+    #             row.append(i[2])
+    #         elif (i[0].lower() == 'test' and i[1] == 0.0):
+    #             row.append('Unsent_Test_base')
+    #     Sub_data["X_axis_variables"] = row
+    #     Sub_data = Sub_data[['X_axis_variables',column_name_percentage, 'customer_segment']]
+    #     Sub_data = Sub_data.sort_values("X_axis_variables") 
+    #     return Sub_data
+
+
+    # def Create_required_table (data, choosen_Master_name):
+    #     Sub_data = data[data['Master_campaign_name'] == choosen_Master_name]
+    #     Sub_data = Sub_data[Sub_data['customer_segment'] == 'ETB']
+    #     Sub_data = Sub_data.fillna(0)
+    #     Sub_data['Conversion_percent'] = np.where(Sub_data['converted'] > 0, round(((Sub_data['converted']/Sub_data['users']))*100,2), 0)
+    #     Sub_data['app_active_percent'] = np.where(Sub_data['app_active'] > 0, round(((Sub_data['app_active']/Sub_data['users']))*100,2), 0)   
+    #     Sub_data['app_launched_percent'] = np.where(Sub_data['app_launched'] > 0, round(((Sub_data['app_launched']/Sub_data['users']))*100,2), 0)
+       
+    #     row = []
+    #     For_rows = Sub_data[['group', 'sent_flag','campaign']].values.tolist()
+    #     # For_rows = For_rows.values.tolist()
+    #     for i in For_rows: 
+    #         if (i[0].lower() == 'control'):
+    #             row.append('Control_base')
+    #         # data.append ()
+    #         elif (i[0].lower() == 'test' and i[1] == 1.0):
+    #             row.append(i[2])
+    #         elif (i[0].lower() == 'test' and i[1] == 0.0):
+    #             row.append('Unsent_Test_base')
+    #     Sub_data["Campaign_Reference"] = row                 
+    #     return Sub_data
+
+    #To create a main reference table 
+    def create_main_table(choosen_Master_name, data) : 
         Sub_data = data[data['Master_campaign_name'] == choosen_Master_name]
-        Sub_data = Sub_data[Sub_data['customer_segment'] == choose_customer_segment]
         Sub_data = Sub_data.fillna(0)
-        column_name_percentage = column_name + str('_percent')
-        Sub_data[column_name_percentage] = round((Sub_data[column_name]/Sub_data['users'])*100,2)
         row = []
         For_rows = Sub_data[['group', 'sent_flag','campaign']].values.tolist()
         for i in For_rows: 
@@ -501,65 +539,84 @@ def index():
             elif (i[0].lower() == 'test' and i[1] == 0.0):
                 row.append('Unsent_Test_base')
         Sub_data["X_axis_variables"] = row
-        Sub_data = Sub_data[['X_axis_variables',column_name_percentage, 'customer_segment']]
-        Sub_data = Sub_data.sort_values("X_axis_variables") 
-        return Sub_data
-
-
-    def Create_required_table (data, choosen_Master_name):
-        Sub_data = data[data['Master_campaign_name'] == choosen_Master_name]
-        Sub_data = Sub_data[Sub_data['customer_segment'] == 'ETB']
-        Sub_data = Sub_data.fillna(0)
-        Sub_data['Conversion_percent'] = np.where(Sub_data['converted'] > 0, round(((Sub_data['converted']/Sub_data['users']))*100,2), 0)
+        Sub_data['converted_percent'] = np.where(Sub_data['converted'] > 0, round(((Sub_data['converted']/Sub_data['users']))*100,2), 0)
         Sub_data['app_active_percent'] = np.where(Sub_data['app_active'] > 0, round(((Sub_data['app_active']/Sub_data['users']))*100,2), 0)   
         Sub_data['app_launched_percent'] = np.where(Sub_data['app_launched'] > 0, round(((Sub_data['app_launched']/Sub_data['users']))*100,2), 0)
-       
-        row = []
-        For_rows = Sub_data[['group', 'sent_flag','campaign']].values.tolist()
-        # For_rows = For_rows.values.tolist()
-        for i in For_rows: 
-            if (i[0].lower() == 'control'):
-                row.append('Control_base')
-            # data.append ()
-            elif (i[0].lower() == 'test' and i[1] == 1.0):
-                row.append(i[2])
-            elif (i[0].lower() == 'test' and i[1] == 0.0):
-                row.append('Unsent_Test_base')
-        Sub_data["Campaign_Reference"] = row
-        Sub_data = Sub_data[['Campaign_Reference', 'app_launched_percent','app_active_percent','Conversion_percent','sent']]
-        Sub_data.set_index(['Campaign_Reference'])
-        Sub_data = Sub_data.transpose()
-        Sub_data = Sub_data.T.to_dict('list')                   
+
+        Sub_data = Sub_data.drop(['campaign', 'conversion_event', 'group', 'sent_flag', 'Master_campaign_name'], axis=1)
+        Sub_data = Sub_data.sort_values("X_axis_variables") 
         return Sub_data
+    
+    #To get the values from the main_table 
+    def get_from_maintable (Main_table,Customer_type, percentage_what):
+        Sub_data = Main_table[Main_table['customer_segment'] == Customer_type]
+        Sub_data = Sub_data[['X_axis_variables',percentage_what, 'customer_segment']]
+        Sub_data = Sub_data.sort_values("X_axis_variables") 
+        return Sub_data[percentage_what].tolist()
+    
+    #To get the total values for the line graph 
+
+    def Total_percentage(Main_table): 
+        Values = Main_table['X_axis_variables'].unique()
+        Values = Values.tolist()
+        Total = []
+        for i in Values : 
+            Sub_data_2 = Main_table[Main_table['X_axis_variables'] == i]
+            little_Total = round((sum(Sub_data_2['converted'])/sum(Sub_data_2['users']))*100,2) 
+            Total.append(little_Total)
+        return Total
+
+
+    #To create the series using the maintable, get_from_maintable and totalvalues 
+    def get_series (Main_table) :    
+        list_MainFrame = []
+        Dictionary_MainFrame ={}
+        list_columns = ['converted_percent','app_active_percent','app_launched_percent']
+        # list_customer_segment = ['Total','ETB', 'PTB', 'NTB']
+        for i in range(len(list_columns)) : 
+            list_MainFrame= [{'name' : 'Total', 'type' : 'line', 'data': Total_percentage(Main_table)}]
+            list_MainFrame.append({'name' : 'ETB', 'type' : 'bar', 'data': get_from_maintable(Main_table,'ETB', 'converted_percent')})
+            list_MainFrame.append({'name' : 'NTB', 'type' : 'bar', 'data': get_from_maintable(Main_table,'NTB', 'app_active_percent')})
+            list_MainFrame.append({'name' : 'PTB', 'type' : 'bar', 'data': get_from_maintable(Main_table,'PTB', 'app_launched_percent')})
+            Dictionary_MainFrame[str(list_columns[i])] = list_MainFrame
+        return Dictionary_MainFrame 
+
     
     data = pd.read_csv('C:/Users/Sandhya/OneDrive/Desktop/AB_testing_framework/AB_Testing_V4/AB_testing_V3/AB_testing_report_format_new-master-2.csv')
     Master_names = Names(data)
-    # choosen_Master_name = 'BBPS_campaign'
     Form = {}
     Form['Master_Campaign_Name'] = request.form['Master_name_input'] if (request.form.get('Master_name_input') != None) else ''
     if (Form['Master_Campaign_Name'] != ''):
          choosen_Master_name = Form['Master_Campaign_Name']
-         Info_dictionary = Create_required_table (data, choosen_Master_name)
-         new_table = pd.DataFrame.from_dict(Info_dictionary)
-         Table_html = new_table.to_html()
-         ETB = "ETB"
-         NTB = "NTB"
-         PTB = "PTB"
-         Dictionary_multichart ={}
-         list_columns = ["converted","app_launched","app_active"]
-         for i in list_columns : 
-            j = str(i + "_percent")
-            Dictionary_multichart [j] = [{'name' : ETB, 'data' : stacked_bar_chart(data, choosen_Master_name, ETB, i)[j].tolist()},{'name' : NTB, 'data' : stacked_bar_chart(data, choosen_Master_name,NTB, i)[j].tolist()},{'name' : PTB, 'data' :  stacked_bar_chart(data, choosen_Master_name,PTB, i)[j].tolist()}]
-          
-    
+         Main_table = create_main_table(choosen_Master_name, data)
+         Series = get_series (Main_table)
+
+        #  Info_dictionary = Create_required_table (data, choosen_Master_name)
+        #  ETB = "ETB"
+        #  NTB = "NTB"
+        #  PTB = "PTB"
+        #  Total_name = "Total"
+        #  Dictionary_multichart =[]
+        #  list_columns = ["converted","app_launched","app_active"]
+        #  for i in list_columns : 
+        #     j = str(i + "_percent")
+        #     Dictionary_multichart [j] = [{'name' : Total_name,'type':'line', 'data' : [0.2,0.17,0.09,0.14,0.15]},{'name' : ETB, 'type' : 'bar','data' : stacked_bar_chart(data, choosen_Master_name, ETB, i)[j].tolist()},{'name' : NTB, 'type' : 'bar','data' : stacked_bar_chart(data, choosen_Master_name,NTB, i)[j].tolist()},{'name' : PTB, 'type' : 'bar','data' :  stacked_bar_chart(data, choosen_Master_name,PTB, i)[j].tolist()}]
+        
+        #  Info_dictionary = Info_dictionary[['Campaign_Reference', 'app_launched_percent','app_active_percent','Conversion_percent','sent']]
+        #  Info_dictionary = Info_dictionary.sort_values('Campaign_Reference')
+        #  Info_dictionary.set_index(['Campaign_Reference'])
+        #  Info_dictionary= Info_dictionary.transpose()
+        #  Info_dictionary = Info_dictionary.T.to_dict('list')  
+         
     else : 
          Info_dictionary = ''
-         Table_html = ''
+
          Dictionary_multichart = ''
+         Series = ''
 
     
 
-    return render_template('index1.html', Dictionary_multichart = Dictionary_multichart, Info_dictionary =Info_dictionary,Master_names = Master_names, Table_html = Table_html)  
+    return render_template('index1.html', Series = Series ,Dictionary_multichart = Dictionary_multichart, Info_dictionary =Info_dictionary,Master_names = Master_names)  
 
 
 if __name__ == '__main__':

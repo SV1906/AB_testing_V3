@@ -115,32 +115,25 @@
                       <option selected value="Choose" disabled>Choose : </option>
                       {% for i in Master_names %} 
                       <option value="{{i}}">{{i}}</option>
-                      {% endfor %}              
+                      {% endfor %}  
                     </select>
-                  </div> 
-                  <div class = "col-3">
-                    <button type="submit" class="button-18" for = "Hypothesis_button" id = "Hypothesis_button" name = "Hypothesis_button" >Submit</button>     
-                  </div>
-                </div>
-
-                <!-- {{Dictionary_multichart.converted_percent}} -->
-
-                <!-- {{Info_dictionary.sent}} -->
-                <!-- {% if Info_dictionary %} -->
-                <div class = "card-body">
-                  <div class = "card">
-                    <div class = "card-body">
-                      <p>Summary</p>
-                      <p></p>
+                  </div>                  
+                    <div class = "col-1">
+                      <button type="submit" class="button-18" for = "Hypothesis_button" id = "Hypothesis_button" name = "Hypothesis_button" >Submit</button>     
                     </div>
-                  </div>
+                    <div class = "col-7">
+                      <div class = "card">
+                        <div class="text-center">
+                          <p><b>Summary</b></p>
+                        </div>                      
+                        <p></p>                     
+                     </div>
+                    </div>
+                  </div>               
                 </div>  
-                {% endif %}
-               
-               
                 <div class = "card-body">
                   <div class = "row">
-                    <div class="col-12">
+                    <!-- <div class="col-12">
                           <div id="Conversion_Chart"></div> 
                     </div>
                     <div class="col-12"> 
@@ -149,183 +142,82 @@
                   </div>
                   <div class="col-12">
                       <div id="App_Active_Chart"></div>
-                  </div>
+                  </div> -->
                  
-                    <div class="col-12">
+                  <div class="col-12">
                       <div id="Chart2"></div>
                   </div>
+                  <div class="col-12">
+                    <div id="Chart3"></div>
+                </div>
+                <div class="col-12">
+                  <div id="Chart4"></div>
+              </div>
+
                   <div class="col-12">
                     <div class = "card-body">
                       <div id="Donut_Chart"></div>
                     </div>                   
-                </div>
-
-        
+                  </div>
                 </div>
                 
                 <script>
                 
-                  function multibarchart(series_name_multichart, x_axis_names){
-                  // var options = {          
-                  //         series: [{'name': 'ETB',
-                  //         'type':'bar',
-                        
-                  //          'data': [0.11, 0.08, 0.08, 0.14, 0.15]},
-                  //          {'name': 'NTB', 
-                  //          'type':'bar',
-                        
-                  //          'data': [3.64, 0.5, 0.8, 0.29, 4.49]},
-                  //           {'name': 'PTB', 
-                  //           'type':'bar',
-                        
-                  //           'data': [0.83, 7.5, 0.0, 0.5, 0.0]}, 
-                  //           { name: 'Total',
-                          
-                  //          type: 'line',
-                  //           data: [0.1, 0.2, 0.3, 0.6, 0.8]}
-                  //         ],
-                  //         grid: {
-                  //         borderColor: '#e7e7e7',
-                  //         row: {
-                  //           colors: ['#f3f3f3', 'transparent'], 
-                  //           opacity: 0.7
-                  //         },
-                  //       },      
-                  //         chart: {
-                  //         // type: 'bar',
-                  //         type : 'line',
-                  //         stacked : false, 
-                  //         height: 600,
-                  //       },
-                  //       toolbar: {
-                  //         show: true
-                  //       },
-                  //       zoom: {
-                  //         enabled: true
-                  //       },
-                  //       style : {
-                  //         stroke: {
-                  //         curve: 'smooth'
-                  //       },
-                  //       color: '#000'
+                  function multibarchart(series_name_multichart, x_axis_names){               
+                        var options = {                         
+                            series: 
+                            series_name_multichart, 
+                            //  [
+                            // { name: 'Total',
+                            //     type: 'line',
+                            //     data: [0.2,0.17,0.09,0.14,0.15]}, 
+                            //     {
+                            // name: 'ETB',
+                            //   'type':'bar',
+                            //     'data': [0.11, 0.08, 0.08, 0.14, 0.15]},
 
-                  //     },
-                  //       plotOptions: {
-                  //         bar: {
-                  //           horizontal: false,    
-                  //           dataLabels: {
-                  //             enabled: true,
-                  //         }
-                  //         }
-                  //       },
-                  //       dataLabels: {
-                  //       enabled: true,
-                  //                   y: {
-                  //                     formatter: function (val) {
-                  //                       return val + "%"
-                  //                     }
-                  //                   }, 
-                  //                   style : {
-                  //                     color : '#FFF'
-                  //                   }
-                             
-                  //           },
-                  
-                  //       stroke: {
-                  //         width: [2, 2, 2]
-                  //       }
-                  //       ,
-                  //       title: {
-                  //         text: 'Conversion Rate '
-                  //       },
-                  //       xaxis: {
-                  //         categories: x_axis_names,
-                  //         style: {
-                  //          fontSize: 1,
-                  //          cssClass: 'apexcharts-xaxis-label'
-                  //          },
-                  //         labels: {
-                  //            rotate: -45,
-                  //            trim: false,
-                  //            maxHeight: 200,
-                  //            fontSize : '1px',      
-                  //            },
-                  //       },
-                  //       colors:['#002D62', '#4B9CD3', '#89CFF0', '#000']
-                  //       ,
-                  //       yaxis: {
-                  //         title: {
-                  //           text: "Percentage %"
-                  //         },
-                  //       },
-                  //       tooltip: {
-                  //         enabled: true,
-                  //         y: {
-                  //           formatter: function (val) {
-                  //             return val + "%"
-                  //           }
-                  //         }
-                  //       },
-                  //       fill: {
-                  //         opacity: 0.5
-                  //       },
-                  //       legend: {
-                  //         position: 'top',
-                  //         offsetX: 40
-                  //       }
-                  //       };
-                        var options = {
-                          
-                            series: [
-                            { name: 'Total',
-                                type: 'line',
-                                data: [0.1, 0.2, 0.3, 0.6, 0.8]}, 
-                                {
-                            name: 'ETB',
-                              'type':'column',
-                                'data': [0.11, 0.08, 0.08, 0.14, 0.15]},
+                            //     {name: 'NTB', 
+                            //     'type':'bar',
+                            //     'data': [3.64, 0.5, 0.8, 0.29, 4.49]},
 
-                                {name: 'NTB', 
-                                'type':'column',
-                                'data': [3.64, 0.5, 0.8, 0.29, 4.49]},
-
-                                {name: 'PTB', 
-                                type:'column',
-                                'data': [0.83, 7.5, 0.0, 0.5, 0.0]}
-                               ],
+                            //     {name: 'PTB', 
+                            //     type:'bar',
+                            //     'data': [0.83, 7.5, 0.0, 0.5, 0.0]}
+                            //    ],
                             chart: {
                             height: 800,
                             width : '100%', 
                             type: 'line',
-                            // stacked : 'true', 
+                            // stacked : 'false', 
+                          },
+                          plotOptions: {
+                            bar: {
+                              columnWidth: ['45%'],
+                            dataLabels: {                          
+                              position: 'top',                     
+                            }
+                          },                           
                           },
                           stroke: {
                             width: [4,0, 0, 0]
                           },
                           title: {
-                            text: 'Conversion Rate'
-                          
+                            text: 'Conversion Rate'                       
                           },
-                          colors:['#000','#002D62', '#4B9CD3', '#89CFF0'],
+                          colors:['#000','#28a4fc','#26e7a6', '#ffb41c'],
                           dataLabels: {
                             enabled: true,
+                            formatter: function (val) {
+                                  return val+"%"
+                              },
                             enabledOnSeries: [0],
                             style : {
-                              colors : [ '#000', '#000', '#000', '#000',],
-                              fontSize: '10px'
+                              colors : [ '#000', '#000', '#000', '#000'],
+                              fontSize: '7px'
                             }   
                           },
-                         
-                         
-                          xaxis: {
-                            // categories: ['test1', 'test2', 'test3', 'test4', 'control'],
-                            
-                          // style: {
-                          //  fontSize: 1,
-                          //  cssClass: 'apexcharts-xaxis-label'
-                          //  },
+                          xaxis: {        
                           labels: {
-
                              trim: false,
                              minHeight: 400,
                              maxHeight: 500,    
@@ -336,116 +228,87 @@
                               fontSize : '7px'
                             }
                              },
-                             categories : x_axis_names,
-                            // categories : , 
-
-                            //  tickPlacement: 'on',
+                             categories : x_axis_names,                          
+                          },
+                          fill: {
+                            opacity: 0.7
                           },
                           yaxis: 
                           [
                                 {
-                                  seriesName: 'ETB' ,
-                                  axisTicks: {
-                                    show: true
-                                  },
-                                  axisBorder: {
-                                    show: true,
-                                  },
+                                  seriesName: 'Line' ,                    
                                   title: {
                                     text: "Line graph"
-                                  }
-                                },
-                                {
-                                  seriesName: 'NTB' ,
-                                  // axisTicks: {
-                                  //   show: true
-                                  // },
-                                  // axisBorder: {
-                                  //   show: true,
-                                  // },
-                                  title: {
-                                    text: "Line graph"
-                                  }
-                                },
-                                {
-                                  seriesName: 'PTB' ,
-                                  // axisTicks: {
-                                  //   show: true
-                                  // },
-                                  // axisBorder: {
-                                  //   show: true,
-                                  // },
-                                  // title: {
-                                  //   text: "Line graph"
-                                  // }
-                                },
-                                {
-                                  seriesName: 'ETB',
-                                  show: false 
-                                }, 
-                                {
-                                  seriesName: 'PTB',
-                                  show: false 
-                                }, 
-                                // {
-                                //   seriesName: 'NTB',
-                                //   show: false 
-                                // }, 
-                                // {
-                                //   seriesName: 'NTB',
-                                //   show: false 
-                                // }, 
-                                // {
-                                //   seriesName: 'PTB',
-                                //   show: false
-                                // },
-                                // {
-                                //   seriesName: 'NTB',
-                                //   show: false
-                                // }, 
-                                {
+                                  },
+                                  showAlways : false,                              
+                                },                             
+                                {                              
                                   opposite: true,
-                                  seriesName: 'Line',
-                                  // axisTicks: {
-                                  //   show: true
-                                  // },
-                                  // axisBorder: {
-                                  //   show: true,
-                                  // },
+                                  seriesName: undefined,                                             
                                   title: {
                                     text: "Columns graph"
+                                  }, 
+                                  showAlways : false,   
+                                  forceNiceScale: true,  
+                                  axisTicks: {
+                                  show: true
+                                },
+                                axisBorder: {
+                                  show: true,
+                                },                  
+                                  min: 0,
+                                  max: 8,
+                                },
+                                {                              
+                                  opposite: true,  
+                                  seriesName: undefined,                               
+                                  title: {
+                                    text: "Columns graph"
+                                  }, 
+                                  show: false,
+                                  axisTicks: {
+                                  show: true
+                                },
+                                axisBorder: {
+                                  show: true,
+                                },                                                           
+                                  min: 0,
+                                  max: 8,
+                                },
+                                {                              
+                                  opposite: true,
+                                  seriesName: undefined,
+                                  title: {
+                                    text: "Columns graph"
+                                  }, 
+                                  show: false,
+                                  min: 0,
+                                  max: 8,
+                                },                           
+                              ],
+                              tooltip: {
+                                y: {
+                                  formatter: function (val) {
+                                    return val + "%"
                                   }
                                 }
-
-                              ],
+                              },
                               legend: {
                             position: 'top'
-                          }, 
-                        //   [
-                        //     {
-                        //     // enabledOnSeries: [0,1,2],   
-                        //     title: {
-                        //       enabledOnSeries: [0,1,2], 
-                        //       text: 'Total percentage'
-                        //     },
-                        //   }, 
-                        //   {
-                        //     // enabledOnSeries: [3], 
-                        //     enabledOnSeries: [3], 
-                        //     opposite: true,
-                        //     title: {
-                        //       text: 'ETB/PTB/NTB percentage',
-                        //     }
-                        //   }, 
-                        // ]
+                          },                    
                           };
-    
                         return options;
                       }
                     
                 var series_name_multichart = {{Dictionary_multichart.converted_percent| safe}}
+                var series_name_multichart_2 = {{Dictionary_multichart.app_launched_percent| safe}}
+                var series_name_multichart_3 = {{Dictionary_multichart.app_active_percent| safe}}
+                
                 document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Chart2"), multibarchart(series_name_multichart, x_axis_names)).render();});
-     
+                document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Chart3"), multibarchart(series_name_multichart_2, x_axis_names)).render();});
+                document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Chart4"), multibarchart(series_name_multichart_3, x_axis_names)).render();});
+
+
                  am4core.ready(function() {
 
                
@@ -499,9 +362,9 @@
                   }); // end am4core.ready()
 
 
-                  var data1 = {{Info_dictionary.Conversion_percent | safe}}
-                  var data2 = {{Info_dictionary.app_launched_percent | safe}}
-                  var data3 = {{Info_dictionary.app_active_percent | safe}}
+                  // var data1 = {{Info_dictionary.Conversion_percent | safe}}
+                  // var data2 = {{Info_dictionary.app_launched_percent | safe}}
+                  // var data3 = {{Info_dictionary.app_active_percent | safe}}
                   var x_axis_names  = {{Info_dictionary.Campaign_Reference | safe}}
                   var user_data = {{Info_dictionary.sent | safe}}
 
