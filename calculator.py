@@ -442,18 +442,27 @@ def New_Testing():
                 forms['location'] = "modal_message"
 
        if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != '' and request.form.get("Final_submit") != None):           
-            # forms["Campaign_Details_Error"] = "Please fill all the details to proceed."
+            forms["Campaign_Details_Error"] = ""
             if ((len(Sub_Campaign_Names) != int(forms["Experiment"]) and (int(forms["Experiment"]) != 1)) or ('' in Sub_Campaign_Names)): 
-                forms["Campaign_Details_Error"] = "Please fill in all the Sub Campaign Names."
-            if (forms['CampaignName'] == '' or forms['CampaignStartdate'] == '' or forms['CampaignEnddate'] == '' or forms['ConversionPeriod'] == ''): 
-                forms["Campaign_Details_Error"] = "Please fill all the details to proceed."
+                forms["Campaign_Details_Error"] = "Please fill in all the Sub Campaign Names"
             if (datetime.strptime(forms["CampaignStartdate"], '%Y-%m-%d') > datetime.strptime(forms["CampaignEnddate"], '%Y-%m-%d')):
-               forms["Campaign_Details_Error"] = "The campaign end date should be after the campaign start date"
+               forms["Campaign_Details_Error"] = "The Campaign End Date should be after the Campaign Start DateStart date"
             if (forms["Campaign_Details_Error"] == ""):    
                     array_output_final = [forms["Hypothesis"],forms['Experiment'],selected_features,forms["final_result"],test_size,forms["Operator"],selected_columns,forms["CampaignName"], Sub_Campaign_Names, today, forms['CampaignStartdate'], forms['CampaignEnddate'], forms['CampaignType'], forms['ConversionMetric'], forms['ConversionPeriod']]
-                    forms ["Download"] = True 
-    #    if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != '' and request.form.get("Final_submit") != None): 
-             
+                    forms ["Download"] = True  
+
+    #    if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != '' and request.form.get("Final_submit") != None):           
+    
+    #         if ((len(Sub_Campaign_Names) != int(forms["Experiment"]) and (int(forms["Experiment"]) != 1)) or ('' in Sub_Campaign_Names)): 
+    #             forms["Campaign_Details_Error"] = "Please fill in all the Sub Campaign Names."
+    #         if (forms['CampaignName'] == '' or forms['CampaignStartdate'] == '' or forms['CampaignEnddate'] == '' or forms['ConversionPeriod'] == ''): 
+    #             forms["Campaign_Details_Error"] = "Please fill all the details to proceed."
+    #         if (datetime.strptime(forms["CampaignStartdate"], '%Y-%m-%d') > datetime.strptime(forms["CampaignEnddate"], '%Y-%m-%d')):
+    #            forms["Campaign_Details_Error"] = "The campaign end date should be after the campaign start date"
+    #         if (forms["Campaign_Details_Error"] == ""):    
+    #                 array_output_final = [forms["Hypothesis"],forms['Experiment'],selected_features,forms["final_result"],test_size,forms["Operator"],selected_columns,forms["CampaignName"], Sub_Campaign_Names, today, forms['CampaignStartdate'], forms['CampaignEnddate'], forms['CampaignType'], forms['ConversionMetric'], forms['ConversionPeriod']]
+    #                 forms ["Download"] = True 
+              
  
             
        if (forms["Sampling_Result"] == "Sampling Successful" and len(selected_features)!= 0):
@@ -555,47 +564,50 @@ def index():
         end_list = []
         for i in (notes): 
             list_hopefull_last_one = []
-            for j in range(len(notes)+1): 
-                 list_hopefull_last_one.append(max(notes[i][j]['data']))
-            # list_hopefull_last_one.append(max(notes[i][1]['data']))
-            # list_hopefull_last_one.append(max(notes[i][2]['data']))
-            # list_hopefull_last_one.append(max(notes[i][3]['data']))
+            for j in range(len(notes)+1):
+                try : 
+                    Max_number = max(notes[i][j]['data'])
+                except : 
+                    Max_number = 0 
+                list_hopefull_last_one.append(Max_number) 
             end_list.append(max(list_hopefull_last_one))
         return end_list 
 
     
     data = pd.read_csv('C:/Users/Sandhya/OneDrive/Desktop/AB_testing_framework/AB_Testing_V4/AB_testing_V3/AB_testing_report_format_new-master-2.csv')
     Master_names = Names(data)
-    Form = {}
-    Form['Master_Campaign_Name'] = request.form['Master_name_input'] if (request.form.get('Master_name_input') != None) else ''
+    Form_graph = {}
+    Form_graph['Master_Campaign_Name'] = request.form['Master_name_input'] if (request.form.get('Master_name_input') != None) else ''
     
     # Rowlist = [['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0803', 'ETB', 46552.0, 284.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0803', 'NTB', 1100.0, 0.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0803', 'PTB', 600.0, 0.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0903', 'NTB', 1000.0, 0.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0903', 'ETB', 35484.0, 195.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0903', 'PTB', 400.0, 0.0], ['BPAY_RV_MPN_BBPS_MOBILE-PREPAID_RMSDIFFICULT_0803', 'ETB', 29774.0, 160.0], ['BPAY_RV_MPN_BBPS_MOBILE-PREPAID_RMSDIFFICULT_0803', 'PTB', 1000.0, 0.0], ['BPAY_RV_MPN_BBPS_MOBILE-PREPAID_RMSDIFFICULT_0803', 'NTB', 500.0, 1.0], ['Control_base', 'ETB', 0.0, 0.0], ['Control_base', 'PTB', 0.0, 0.0], ['Control_base', 'NTB', 0.0, 0.0], ['Unsent_Test_base', 'PTB', 0.0, 0.0], ['Unsent_Test_base', 'ETB', 0.0, 0.0], ['Unsent_Test_base', 'NTB', 0.0, 0.0]]
     Row_list =[]
-    if (Form['Master_Campaign_Name'] != ''):
-         choosen_Master_name = Form['Master_Campaign_Name']
+    if (Form_graph['Master_Campaign_Name'] != ''):
+         choosen_Master_name = Form_graph['Master_Campaign_Name']
          Main_table = create_main_table(choosen_Master_name, data)
          Series = get_series(Main_table)
          Max_values = max_value_for_graph(Series)
          new_index = 1
         #  Rowlist = ['Hey']
-
+         X_axis_names = Main_table['X_axis_variables'].tolist()
          for index, rows in Main_table.iterrows():
             # my_list =[rows.clicks]
             my_list =[new_index, rows.X_axis_variables,rows.customer_segment, rows.sent, rows.clicks, rows.users, rows.converted, rows.app_launched, rows.app_active,rows.converted_percent,rows.app_active_percent,rows.app_launched_percent]
             Row_list.append(my_list)
             new_index += 1
+        
     else : 
 
          Series = ''
          Main_table = ''
          Max_values = ''
-         Row_list = ['Yes']
+         Row_list = ''
+         X_axis_names = ''
 
 
-    return render_template('index1.html', Row_list = Row_list, Series = Series , Max_values = Max_values, Master_names = Master_names)  
+    return render_template('index1.html', Form_graph = Form_graph, X_axis_names = X_axis_names, Row_list = Row_list, Series = Series , Max_values = Max_values, Master_names = Master_names)  
 
 
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(port= 5128)   
+    Flask_App.run(port= 5129)   
     

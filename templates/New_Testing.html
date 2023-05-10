@@ -103,8 +103,7 @@
           <fieldset id="First_Part" {% if form.Download == True %}disabled{% endif %}>    
           <!-- Start hypothesis -->
           <div id="hypothesis_section" class="pagetitle">
-            {{Sub_Campaign_Names}}
-            {{test_size}}
+  
             <h1>Hypothesis</h1>
             <!-- {{selected_features}} -->
           </div>
@@ -336,7 +335,8 @@
                           <div class="text-center">
                             <button type="submit" class="button-18" name ="Sample_Size_submit_2" id = "Sample_Size_submit_2" disabled onclick="spinner_button()">Submit</button>                          
                           </div>
-                          
+                            
+                          {% if form.final_result %}
                               <div class="card-body">
                                 <table>
                                   <tr>
@@ -353,7 +353,8 @@
                                     <td width="10px" >{{form.final_result}}</td>
                                   </tr> 
                                 </table>                          
-                              </div>                     
+                              </div>  
+                              {% endif %}                   
                                       
                         </div>																				 
                     </div> 
@@ -666,7 +667,7 @@
               <div class="card-body">
                 <h5 class="card-title">Download</span></h5>
                 <div class="text-center">
-                  <button type="submit" class="button-18" for = "Download_button" id = "Download_button" name = "Download_button" onclick="spinner_button()" >Download</button>						
+                  <button type="submit" class="button-18" for = "Download_button" id = "Download_button" name = "Download_button" >Download</button>						
                   <button type="submit" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button" onclick="history.back(); spinner_button()">Edit</button>		
                   <!-- <a class="button-18" type="submit" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a>         -->
                 </div>
