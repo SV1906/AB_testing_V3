@@ -110,7 +110,7 @@
               <div class = "card-body">
                 <h2>Reports</h2>
                 <div class = "row">
-                  <div class="col-3">
+                  <div class="col-4">
                     <select name = "Master_name_input" id="Master_name_input" for = "Master_name_input" class="form-select" >
                       <option selected value="Choose" disabled>Choose : </option>
                       {% for i in Master_names %} 
@@ -121,78 +121,88 @@
                     <div class = "col-1">
                       <button type="submit" class="button-18" for = "Hypothesis_button" id = "Hypothesis_button" name = "Hypothesis_button" >Submit</button>     
                     </div>
-                    <div class = "col-7">
-                      <div class = "card">
-                        <div class="text-center">
-                          <p><b>Summary</b></p>
-                        </div>                      
-                        <p></p>                     
-                     </div>
-                    </div>
-                  </div>               
-                </div>  
-                <div class = "card-body">
-                  <div class = "row">
-                    <!-- <div class="col-12">
-                          <div id="Conversion_Chart"></div> 
-                    </div>
-                    <div class="col-12"> 
-                        <div id="App_Launched_Chart"></div>        
-                    </div>
+                  </div>  
+  
+                  <div class="col-12">
+                    <div class="text-center">    
+                    <div id="Chart2"></div>
                   </div>
-                  <div class="col-12">
-                      <div id="App_Active_Chart"></div>
-                  </div> -->
-                 
-                  <div class="col-12">
-                      <div id="Chart2"></div>
                   </div>
-                  <div class="col-12">
-                    <div id="Chart3"></div>
-                </div>
-                <div class="col-12">
-                  <div id="Chart4"></div>
-              </div>
+                  
+                  
+                    <div class="col-6">
+                    
+                      <div id="Chart3"></div>
+                  
+                  </div>
+                  <div class="col-6">
+                    
+                    <div id="Chart4"></div>
+              </div> 
 
-                  <div class="col-12">
-                    <div class = "card-body">
-                      <div id="Donut_Chart"></div>
-                    </div>                   
-                  </div>
-                </div>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Index</th>
+                      <th scope="col">Campaign Name</th>
+                      <th scope="col">Customer Segment</th>
+                      <th scope="col">Sent</th>
+                      <th scope="col">Clicks</th>
+                      <th scope="col">Users</th>
+                      <th scope="col">converted </th>
+                      <th scope="col">app_launched</th>
+                      <th scope="col">app_active </th>
+                      <th scope="col">converted_percent</th>
+                      <th scope="col">app_active_percent</th>
+                    
+                    </tr>
+                  </thead>
+                  
+                  <tbody> 
+
+                    {% for i in Row_list %} 
+                    <tr>
+                      {% for j in i %}
+                      <td>{{j}}</th>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    <!-- <tr>
+                      <th scope="row">2</th>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                    </tr> -->
+                    <!-- <tr>
+                      <th scope="row">3</th>
+                      <td>Larry</td>
+                      <td>the Bird</td>
+                      <td>@twitter</td>
+                    </tr> -->
+                  </tbody>
+                </table>
+              </div>
                 
+                 
+                </div>  
+            
+
+                {{Max_values}}
                 <script>
                 
-                  function multibarchart(series_name_multichart, x_axis_names){               
+                  function multibarchart(series_name_multichart,  maximim_max, name){               
                         var options = {                         
                             series: 
                             series_name_multichart, 
-                            //  [
-                            // { name: 'Total',
-                            //     type: 'line',
-                            //     data: [0.2,0.17,0.09,0.14,0.15]}, 
-                            //     {
-                            // name: 'ETB',
-                            //   'type':'bar',
-                            //     'data': [0.11, 0.08, 0.08, 0.14, 0.15]},
-
-                            //     {name: 'NTB', 
-                            //     'type':'bar',
-                            //     'data': [3.64, 0.5, 0.8, 0.29, 4.49]},
-
-                            //     {name: 'PTB', 
-                            //     type:'bar',
-                            //     'data': [0.83, 7.5, 0.0, 0.5, 0.0]}
-                            //    ],
                             chart: {
-                            height: 800,
-                            width : '100%', 
+                            height: 300,
+                            width : 500, 
                             type: 'line',
-                            // stacked : 'false', 
                           },
                           plotOptions: {
                             bar: {
-                              columnWidth: ['45%'],
+                              columnWidth: ['30%'],
                             dataLabels: {                          
                               position: 'top',                     
                             }
@@ -202,7 +212,7 @@
                             width: [4,0, 0, 0]
                           },
                           title: {
-                            text: 'Conversion Rate'                       
+                            text: name                     
                           },
                           colors:['#000','#28a4fc','#26e7a6', '#ffb41c'],
                           dataLabels: {
@@ -219,20 +229,34 @@
                           xaxis: {        
                           labels: {
                              trim: false,
-                             minHeight: 400,
-                             maxHeight: 500,    
-                            rotate: '-45', 
+                            //  minHeight: 100,
+                            //  maxHeight: 100,    
+                            // rotate: '-45', 
                             rotateAlways: true,
                             style : 
                             {
                               fontSize : '7px'
                             }
                              },
-                             categories : x_axis_names,                          
+                             categories : ["a", "b", "c", "d", "e"],                          
                           },
                           fill: {
                             opacity: 0.7
                           },
+                          grid: {
+                          row: {
+                              colors: ['#e5e5e5', 'transparent'],
+                              opacity: 0.5
+                          }, 
+                          // column: {
+                          //     colors: ['#f8f8f8', 'transparent'],
+                          // }, 
+                          xaxis: {
+                            lines: {
+                              show: true
+                            }
+                          }
+                        },
                           yaxis: 
                           [
                                 {
@@ -240,7 +264,7 @@
                                   title: {
                                     text: "Line graph"
                                   },
-                                  showAlways : false,                              
+                                  showAlways : true,                              
                                 },                             
                                 {                              
                                   opposite: true,
@@ -248,7 +272,7 @@
                                   title: {
                                     text: "Columns graph"
                                   }, 
-                                  showAlways : false,   
+                                  showAlways : true,   
                                   forceNiceScale: true,  
                                   axisTicks: {
                                   show: true
@@ -257,7 +281,7 @@
                                   show: true,
                                 },                  
                                   min: 0,
-                                  max: 8,
+                                  max: maximim_max,
                                 },
                                 {                              
                                   opposite: true,  
@@ -273,7 +297,7 @@
                                   show: true,
                                 },                                                           
                                   min: 0,
-                                  max: 8,
+                                  max: maximim_max,
                                 },
                                 {                              
                                   opposite: true,
@@ -283,7 +307,7 @@
                                   }, 
                                   show: false,
                                   min: 0,
-                                  max: 8,
+                                  max: maximim_max,
                                 },                           
                               ],
                               tooltip: {
@@ -300,225 +324,178 @@
                         return options;
                       }
                     
-                var series_name_multichart = {{Dictionary_multichart.converted_percent| safe}}
-                var series_name_multichart_2 = {{Dictionary_multichart.app_launched_percent| safe}}
-                var series_name_multichart_3 = {{Dictionary_multichart.app_active_percent| safe}}
+                var series_name_multichart = {{Series.converted_percent | safe}}
+                var series_name_multichart_2 = {{Series.app_launched_percent| safe}}
+                var series_name_multichart_3 = {{Series.app_active_percent| safe}}
+                var max_1 = {{Max_values[0] | safe}}
+                var max_2 = {{Max_values[1] | safe}}
+                var max_3 = {{Max_values[2] | safe}}
+                // var x_axis_names  = ["a","b","c","d","e"]
                 
-                document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Chart2"), multibarchart(series_name_multichart, x_axis_names)).render();});
-                document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Chart3"), multibarchart(series_name_multichart_2, x_axis_names)).render();});
-                document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Chart4"), multibarchart(series_name_multichart_3, x_axis_names)).render();});
+                document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Chart2"), multibarchart(series_name_multichart, max_1, "Conversion Rate")).render();});
+                document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Chart3"), multibarchart(series_name_multichart_2, max_2, "App Launch Rate")).render();});
+                document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Chart4"), multibarchart(series_name_multichart_3, max_3, "App Active Rate")).render();});
 
-
-                 am4core.ready(function() {
-
-               
-                  am4core.useTheme(am4themes_animated);
               
 
-                
-                  var chart = am4core.create("chartdiv", am4charts.XYChart3D);
-
-                  // Add data
-                  chart.data = [{
-                    "year": 2005,
-                    "income": 23.5,
-                    "color": chart.colors.next()
-                  }, {
-                    "year": 2006,
-                    "income": 26.2,
-                    "color": chart.colors.next()
-                  }, {
-                    "year": 2007,
-                    "income": 30.1,
-                    "color": chart.colors.next()
-                  }, {
-                    "year": 2008,
-                    "income": 29.5,
-                    "color": chart.colors.next()
-                  }, {
-                    "year": 2009,
-                    "income": 24.6,
-                    "color": chart.colors.next()
-                  }];
-
-                  // Create axes
-                  var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
-                  categoryAxis.dataFields.category = "year";
-                  categoryAxis.numberFormatter.numberFormat = "#";
-                  categoryAxis.renderer.inversed = true;
-
-                  var  valueAxis = chart.xAxes.push(new am4charts.ValueAxis()); 
-
-                  // Create series
-                  var series = chart.series.push(new am4charts.ColumnSeries3D());
-                  series.dataFields.valueX = "income";
-                  series.dataFields.categoryY = "year";
-                  series.name = "Income";
-                  series.columns.template.propertyFields.fill = "color";
-                  series.columns.template.tooltipText = "{valueX}";
-                  series.columns.template.column3D.stroke = am4core.color("#fff");
-                  series.columns.template.column3D.strokeOpacity = 0.2;
-
-                  }); // end am4core.ready()
 
 
-                  // var data1 = {{Info_dictionary.Conversion_percent | safe}}
-                  // var data2 = {{Info_dictionary.app_launched_percent | safe}}
-                  // var data3 = {{Info_dictionary.app_active_percent | safe}}
-                  var x_axis_names  = {{Info_dictionary.Campaign_Reference | safe}}
-                  var user_data = {{Info_dictionary.sent | safe}}
-
-                  function donutchart(user_data, x_axis_names) {
-                    var options = {
-                        series: user_data,
-                        // name: x_axis_names,
-                        chart: {
-                        width: 800,
-                        type: 'donut',
-                      },
-                      plotOptions: {                      
-                        pie: {
-                          donut: {
-                            labels: {
-                              show: true,
-                              total: {
-                                showAlways: true,
-                                show: true
-                              }
-                            }
-                          }
-                        }       
-                      },
-                      labels: x_axis_names,
-                      dataLabels: {
-                        enabled: true
-                      },
-                      title: {
-                        text: 'Sent Users', 
-                        align: 'center', 
-                        style: {
-                         fontSize:  '20px',
-                         fontFamily:  undefined,
-                         color:  '#263238'
-                    },
-                  
-                      },
-                      responsive: [{
-                        breakpoint: 480,
-                        options: {
-                          chart: {
-                            width: 200
-                          },       
-                          legend: {
-                            position: 'bottom'
-                            // show : true
-                          }
-                        }
-                      }]
-                      };
-                      return options; 
-                  }
-
-                  
-                  function myFunction(series_input, name, x_axis_names) {
-                    options = {
-                    series: [series_input],
-                    labels : x_axis_names,
-                      chart: {
-                      type: 'bar',
-                      height: 200
-                    },
-                    legend: {
-                      show: true, 
-                      position : 'top'
-                    },
-                    title: {
-                    text: String(name),
-                    align: 'centre',
-                    margin: 10,
-                    offsetX: 0,
-                    offsetY: 0,
-                    floating: false,
-                    style: {
-                      fontSize:  '16px',
-                      fontFamily:  undefined,
-                      color:  '#263238'
-                    },
-                    },
-                    plotOptions: {
-                      bar: {
-                        horizontal: true,
-                        dataLabels: {
-                          
-                          position: 'top',
-                          formatter: function (val) {
-                          return val + "%"
-                          },
-                        },
-
-                      }
-                    },
-                    dataLabels: {                     
-                      offsetX: -6,
-                      formatter: function (val) {
-                          return val + "%"
-                          },
-                      style: {
-                        fontSize: '12px',
-                        colors: ['#fff']
-                      }
-                    },
-                    
-                    stroke: {
-                      show: true,
-                      width: 1,
-                      colors: ['#fff']
-                    },
-                    colors: [ '#145DA0'],
-                    tooltip: {
-                      shared: true,
-                      intersect: false
-                    },
+ 
              
-                    grid: {
-                    position: 'front'
-                    },
-                    fill: {
-                    type: 'gradient',
-                    gradient: {
-                      shade: 'light',
-                      type: "vertical",
-                      shadeIntensity: 0.25,
-                      gradientToColors: undefined,
-                      inverseColors: true,
-                      opacityFrom: 0.85,
-                      opacityTo: 0.85,
-                      stops: [50, 0, 100]
-                    },
-                  }
-                    
-                    };
-                    return options; 
-                    }
-                    
-                    var series = {name : "Conversion Rate", data : data1}
-                    var series2 = {name : "App Launch Percent",data: data2}
-                    var series3 =  {name : "App Active percent",data: data3}
-                    var name = "Conversion Rate"
-                    var name2 = "App Launch Percent"
-                    var name3 = "App Active percent"
 
-                    // final_options = 
-                    document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Conversion_Chart"), myFunction(series, name, x_axis_names)).render();});
-                    
-                    // final_options2 = myFunction(series2)
-                    document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#App_Launched_Chart"), myFunction(series2, name2, x_axis_names)).render();});
+             
 
-                    // final_options3 = myFunction(series3)
-                    document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#App_Active_Chart"), myFunction(series3, name3, x_axis_names)).render();});
+                  // function donutchart(user_data, x_axis_names) {
+                  //   var options = {
+                  //       series: user_data,
+                  //       // name: x_axis_names,
+                  //       chart: {
+                  //       width: 800,
+                  //       type: 'donut',
+                  //     },
+                  //     plotOptions: {                      
+                  //       pie: {
+                  //         donut: {
+                  //           labels: {
+                  //             show: true,
+                  //             total: {
+                  //               showAlways: true,
+                  //               show: true
+                  //             }
+                  //           }
+                  //         }
+                  //       }       
+                  //     },
+                  //     labels: x_axis_names,
+                  //     dataLabels: {
+                  //       enabled: true
+                  //     },
+                  //     title: {
+                  //       text: 'Sent Users', 
+                  //       align: 'center', 
+                  //       style: {
+                  //        fontSize:  '20px',
+                  //        fontFamily:  undefined,
+                  //        color:  '#263238'
+                  //   },
+                  
+                  //     },
+                  //     responsive: [{
+                  //       breakpoint: 480,
+                  //       options: {
+                  //         chart: {
+                  //           width: 200
+                  //         },       
+                  //         legend: {
+                  //           position: 'bottom'
+                  //           // show : true
+                  //         }
+                  //       }
+                  //     }]
+                  //     };
+                  //     return options; 
+                  // }
+
+                  
+                  // function myFunction(series_input, name, x_axis_names) {
+                  //   options = {
+                  //   series: [series_input],
+                  //   labels : x_axis_names,
+                  //     chart: {
+                  //     type: 'bar',
+                  //     height: 200
+                  //   },
+                  //   legend: {
+                  //     show: true, 
+                  //     position : 'top'
+                  //   },
+                  //   title: {
+                  //   text: String(name),
+                  //   align: 'centre',
+                  //   margin: 10,
+                  //   offsetX: 0,
+                  //   offsetY: 0,
+                  //   floating: false,
+                  //   style: {
+                  //     fontSize:  '16px',
+                  //     fontFamily:  undefined,
+                  //     color:  '#263238'
+                  //   },
+                  //   },
+                  //   plotOptions: {
+                  //     bar: {
+                  //       horizontal: true,
+                  //       dataLabels: {
+                          
+                  //         position: 'top',
+                  //         formatter: function (val) {
+                  //         return val + "%"
+                  //         },
+                  //       },
+
+                  //     }
+                  //   },
+                  //   dataLabels: {                     
+                  //     offsetX: -6,
+                  //     formatter: function (val) {
+                  //         return val + "%"
+                  //         },
+                  //     style: {
+                  //       fontSize: '12px',
+                  //       colors: ['#fff']
+                  //     }
+                  //   },
+                    
+                  //   stroke: {
+                  //     show: true,
+                  //     width: 1,
+                  //     colors: ['#fff']
+                  //   },
+                  //   colors: [ '#145DA0'],
+                  //   tooltip: {
+                  //     shared: true,
+                  //     intersect: false
+                  //   },
+             
+                  //   grid: {
+                  //   position: 'front'
+                  //   },
+                  //   fill: {
+                  //   type: 'gradient',
+                  //   gradient: {
+                  //     shade: 'light',
+                  //     type: "vertical",
+                  //     shadeIntensity: 0.25,
+                  //     gradientToColors: undefined,
+                  //     inverseColors: true,
+                  //     opacityFrom: 0.85,
+                  //     opacityTo: 0.85,
+                  //     stops: [50, 0, 100]
+                  //   },
+                  // }
+                    
+                  //   };
+                  //   return options; 
+                  //   }
+                    
+                    // var series = {name : "Conversion Rate", data : data1}
+                    // var series2 = {name : "App Launch Percent",data: data2}
+                    // var series3 =  {name : "App Active percent",data: data3}
+                    // var name = "Conversion Rate"
+                    // var name2 = "App Launch Percent"
+                    // var name3 = "App Active percent"
+
+                    // // final_options = 
+                    // document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Conversion_Chart"), myFunction(series, name, x_axis_names)).render();});
+                    
+                    // // final_options2 = myFunction(series2)
+                    // document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#App_Launched_Chart"), myFunction(series2, name2, x_axis_names)).render();});
+
+                    // // final_options3 = myFunction(series3)
+                    // document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#App_Active_Chart"), myFunction(series3, name3, x_axis_names)).render();});
                      
-                    //Donut chart 
-                    document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Donut_Chart"), donutchart(user_data, x_axis_names)).render();});
+                    // //Donut chart 
+                    // document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Donut_Chart"), donutchart(user_data, x_axis_names)).render();});
            
            </script>         
             </div>
