@@ -577,18 +577,18 @@ def index():
     data = pd.read_csv('C:/Users/Sandhya/OneDrive/Desktop/AB_testing_framework/AB_Testing_V4/AB_testing_V3/AB_testing_report_format_new-master-2.csv')
     Master_names = Names(data)
     Form_graph = {}
-    Form_graph['Master_Campaign_Name'] = request.form['Master_name_input'] if (request.form.get('Master_name_input') != None) else ''
+    Form_graph['Master_Campaign_Name'] = request.form['Master_name_input'] if (request.form.get('Master_name_input') != None) else 'Choose:'
     
     # Rowlist = [['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0803', 'ETB', 46552.0, 284.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0803', 'NTB', 1100.0, 0.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0803', 'PTB', 600.0, 0.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0903', 'NTB', 1000.0, 0.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0903', 'ETB', 35484.0, 195.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0903', 'PTB', 400.0, 0.0], ['BPAY_RV_MPN_BBPS_MOBILE-PREPAID_RMSDIFFICULT_0803', 'ETB', 29774.0, 160.0], ['BPAY_RV_MPN_BBPS_MOBILE-PREPAID_RMSDIFFICULT_0803', 'PTB', 1000.0, 0.0], ['BPAY_RV_MPN_BBPS_MOBILE-PREPAID_RMSDIFFICULT_0803', 'NTB', 500.0, 1.0], ['Control_base', 'ETB', 0.0, 0.0], ['Control_base', 'PTB', 0.0, 0.0], ['Control_base', 'NTB', 0.0, 0.0], ['Unsent_Test_base', 'PTB', 0.0, 0.0], ['Unsent_Test_base', 'ETB', 0.0, 0.0], ['Unsent_Test_base', 'NTB', 0.0, 0.0]]
     Row_list =[]
-    if (Form_graph['Master_Campaign_Name'] != ''):
+    if (Form_graph['Master_Campaign_Name'] != 'Choose:'):
          choosen_Master_name = Form_graph['Master_Campaign_Name']
          Main_table = create_main_table(choosen_Master_name, data)
          Series = get_series(Main_table)
          Max_values = max_value_for_graph(Series)
          new_index = 1
         #  Rowlist = ['Hey']
-         X_axis_names = Main_table['X_axis_variables'].tolist()
+         X_axis_names = Main_table['X_axis_variables'].unique().tolist()
          for index, rows in Main_table.iterrows():
             # my_list =[rows.clicks]
             my_list =[new_index, rows.X_axis_variables,rows.customer_segment, rows.sent, rows.clicks, rows.users, rows.converted, rows.app_launched, rows.app_active,rows.converted_percent,rows.app_active_percent,rows.app_launched_percent]
