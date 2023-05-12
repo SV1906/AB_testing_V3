@@ -16,8 +16,7 @@ Flask_App = Flask(__name__)
 
 THIS_FOLDER = Path(__file__).parent.resolve()
 path = (str(THIS_FOLDER)+"\\output.xlsx")
-#To have a variable 'final_data' for storing the current database 
-# final_data = str(THIS_FOLDER)+"\\DUMMY_DB.csv"
+#To have a variable 'data_Originial' for storing the current database 
 data_Original = pd.read_csv(str(THIS_FOLDER)+"\\DUMMY_DB.csv")
 #To have a varible 'today' with today's date - required for Date of Requirement
 today = date.today()
@@ -25,7 +24,7 @@ today = today.strftime("%d-%m-%Y")
 #To have a varible 'button_variable' for the Suggest Sampling technique button 
 button_variable = "False" 
 Test_case_button = False 
-#To declare a global array 'array_output_final' for storing the values required to update the master sheet  
+#To declare a global array 'array_output_final', Sub_Campaign_Names, selected_features and selected_columns for storing the values required to update the master sheet  
 array_output_final = []
 Sub_Campaign_Names = []
 selected_features = []
@@ -33,7 +32,6 @@ selected_columns = []
 
 #To globally declare the variable form 
 forms = {'Total_cases': 2, 'Experiment': '1', 'ConversionInterval':'' , 'MarginError':'' , 'BaselineRate':'' , 'DetectableEffect':'' , 'SignificantPower':'' , 'SignificantLevel':'' ,'Campaign_Name_1' : '', 'Campaign_Name_2': '', 'Operator' : 'Default', 'Hypothesis':'', 'CampaignName' : '','CampaignStartdate' : '','CampaignEnddate' : '', 'CampaignType':'Push' , 'ConversionMetric':'Retention Rate' ,'ConversionPeriod' : ''}
-# test_size = [] 
 
 #To dynamically return the features from the database 
 #Removal of the columns - Profile phone and SignUp date 
@@ -46,7 +44,6 @@ def features(data, selected_features):
              new_feature = {'key': feature, 'value': True}
         else : 
              new_feature = {'key': feature, 'value': False}
-        # new_feature = {'key': feature, 'value': False}
         new_features.append(new_feature)
     return new_features
  
@@ -188,9 +185,6 @@ def Systematic_Sampling_result(data, test_size):
              else : 
                  return "Sampling Successful but problem with saving in file."
         except :             
-            # if (sum(test_size) == 0):
-            #       return "Final Minimum size can't be zero"
-            # else : 
                  return "Change the base data"
         
 
@@ -321,8 +315,6 @@ def New_Testing():
                 if ((i['key'] in selected_features) and (request.form.get("Edit_button") == None) and (request.form.get("Download_button") == None)): 
                     selected_features.remove(i['key'])
        selected_features = list(set(selected_features))
-                
-
        global selected_columns
        for i in Stratification_columns: 
             variable = "Strat" + i['key']
@@ -356,12 +348,15 @@ def New_Testing():
        
        global Sub_Campaign_Names
 
+       
        if (len(Sub_Campaign_Names) != int(forms['Experiment'])): 
             Sub_Campaign_Names = [""]*int(forms['Experiment'])
-
+  
+       
        if (int(forms['Experiment']) == 1): 
             Sub_Campaign_Names[0]= forms['CampaignName']
        
+
        for i in range(1,int(forms["Experiment"])+1):
              variable = "Campaign_Name_" + str(i)
              forms[variable] = ''
@@ -431,10 +426,9 @@ def New_Testing():
                         forms["Error"] ="Error-lessRecords"
                     else : 
                          forms["Records_Available"] = "Records Available for Allocation : " + str(forms['Current_Count'] - forms['final_result'] - forms['Sum'])
-                        #Have a better if statement below. 
+                
                          global Test_case_button
                          if ((request.form.get('Test_cases_button') != None) or (Test_case_button == True)): 
-                        #    Sampling Techniques opens up only when the button is clicked 
                              Section_open = 3
                              Test_case_button = True                
             if(verification == "True") : 
@@ -510,16 +504,15 @@ def index():
         Sub_data = Sub_data.sort_values("X_axis_variables") 
         return Sub_data
     
-    #To get the values from the main_table 
+    #To get the values from the main_table to use in Series for the calculation
     def get_from_maintable (Main_table,Customer_type, percentage_what):
         Sub_data = Main_table[Main_table['customer_segment'] == Customer_type]
         Sub_data = Sub_data[['X_axis_variables',percentage_what, 'customer_segment']]
         Sub_data = Sub_data.sort_values("X_axis_variables") 
         return Sub_data[percentage_what].tolist()
     
-    #To get the total values for the line graph 
 
-   #Create a total table
+   #To return the total percentage of the table for the line graph calculation 
     def Total_percentage(Main_table):
             Main_table
             Values = Main_table['X_axis_variables'].unique()
@@ -540,7 +533,7 @@ def index():
                 air_quality = pd.concat([ New_dataframe, Total_dataframe], axis=1)   
             return air_quality
 
-    #To create the series using the maintable, get_from_maintable and totalvalues 
+    #To create the series that will be used for the line graph + column graphs 
     def get_series (Main_table) :    
         list_MainFrame = [] 
         Dictionary_MainFrame ={}
@@ -553,7 +546,7 @@ def index():
             Dictionary_MainFrame[str(list_columns[i])] = list_MainFrame
         return Dictionary_MainFrame 
     
-    #To find the maximum value in the entire table 
+    #To find the maximum value in the entire table for using it in the graph scaling 
     def max_value_for_graph (notes):        
         end_list = []
         for i in (notes): 
@@ -567,6 +560,7 @@ def index():
             end_list.append(max(list_hopefull_last_one))
         return end_list 
     
+    #To add the total values for each Sub_campaign_Name using this function 
     def Total_percentage_add(Main_table):
         Values = Main_table['X_axis_variables'].unique().tolist()
         #This if-else is there because in case there is only one customer segment (ETB, PTB,NTB) then we don't need an All segment. 
@@ -592,17 +586,16 @@ def index():
         else : 
              return Main_table
              
-             
-    
-
+    #To return the Zscore and Pvalue when given the details of Test Conversion, Control Conversion, Test Number,Control Number
     def Z_Score_P_Value(TC, CC, TN, CN): 
             test_CR = (TC/TN)
             control_CR = (CC/CN)
             total_CR = ((TC+CC)/(TN+CN))
             Z_score_value = (test_CR - control_CR)/(math.sqrt(total_CR*(1-total_CR)*((1/TN) + (1/CN))))
-            # Probability distribution
-            return [round(Z_score_value,4) , round(norm.pdf(Z_score_value),4)]
+            # Probability distribution formula used for the calculation of P-value 
+            return [round(Z_score_value,4) , round(norm.sf(Z_score_value),4)]
     
+    #To return a table with the Z-score and P-value for each row 
     def Get_Zscore_PValue(Main_table): 
         Main_dummy_table = pd.DataFrame()
         
@@ -629,7 +622,8 @@ def index():
                     Values = Z_Score_P_Value(Sub_data["converted"][i], CC, Sub_data["users"][i], CN)
                     Sub_data['Zscore'][i] =  Values[0]
                     # Sub_data['Pvalue'][i] =  Values[1]
-                    Sub_data['Pvalue'][i] =  round(abs(int(Sub_data['Conversion_sign'][i]) - (Values[1])),4)
+                    # Sub_data['Pvalue'][i] =  round(abs(int(Sub_data['Conversion_sign'][i]) - (Values[1])),4)
+                    Sub_data['Pvalue'][i] = round((Values[1]),4)
                     Sub_data['Significance'][i] = "Significant" if Sub_data['Pvalue'][i] < 0.05 else "Insignificant"  
             Main_dummy_table = pd.concat([Main_dummy_table,Sub_data])
 
@@ -647,10 +641,11 @@ def index():
          Main_table = create_main_table(choosen_Master_name, data)  #This line creates a sub table with the choosen Master Name       
          Series = get_series(Main_table) #This line returns the Series that can be used in the line+column graphs. All the line+column graph's series are gotten using this method  
          Max_values = max_value_for_graph(Series) #This line return the max value in each graph so that it can scale accordingly [Column graph]
-         new_index = 1 
-         X_axis_names = Main_table['X_axis_variables'].unique().tolist() #To get the X-axis variable names 
-         Main_table = Total_percentage_add(Main_table) 
-         Main_table = Get_Zscore_PValue(Main_table)
+         new_index = 1 #
+         X_axis_names = Main_table['X_axis_variables'].unique().tolist() #To get the X-axis variable names for the u
+         Main_table = Total_percentage_add(Main_table) #To add the total percentage values to the table 
+         Main_table = Get_Zscore_PValue(Main_table) #To Get the Z_score and P_values for all the values other than 'Control Base' and 'Unsent Test data' 
+         #To save the table in the Row_list for displaying purpose 
          for index, rows in Main_table.iterrows():         
             my_list =[new_index, rows.Sub_Campaign_Name, rows.customer_segment, rows.sent, rows.clicks, rows.users, rows.converted, rows.app_launched, rows.app_active,rows.converted_percent,rows.app_active_percent,rows.app_launched_percent,rows.Zscore, rows.Pvalue, rows.Significance]
             Row_list.append(my_list)

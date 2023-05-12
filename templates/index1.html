@@ -160,7 +160,7 @@
                       {% if j == "Insignificant" %}
                       <td style = "background-color: #990000; color:white;">{{j}}</th>
                       {% elif j == "Significant" %}
-                      <td style = "background-color: green;">{{j}}</th>
+                      <td style = "background-color: green; color:white;">{{j}}</th>
                       {% else %}
                       <td>{{j}}</th>
                       {% endif %}
@@ -232,20 +232,20 @@
                           fill: {
                             opacity: 0.8
                           },
-                          grid: {
-                          // row: {
-                          //     colors: ['#e5e5e5', 'transparent'],
-                          //     opacity: 0.5
-                          // }, 
-                          // column: {
-                          //     colors: ['#f8f8f8', 'transparent'],
-                          // }, 
-                          // xaxis: {
-                          //   lines: {
-                          //     show: true
-                          //   }
-                          // }
-                        },
+                        //   grid: {
+                        //   row: {
+                        //       colors: ['#e5e5e5', 'transparent'],
+                        //       opacity: 0.5
+                        //   }, 
+                        //   column: {
+                        //       colors: ['#f8f8f8', 'transparent'],
+                        //   }, 
+                        //   xaxis: {
+                        //     lines: {
+                        //       show: true
+                        //     }
+                        //   }
+                        // },
                           yaxis: 
                           [
                                 {
@@ -320,7 +320,7 @@
                 var max_2 = {{Max_values[1] | safe}}
                 var max_3 = {{Max_values[2] | safe}}
                 var x_axis_names = {{X_axis_names | safe}}
-                // var x_axis_names  = ["a","b","c","d","e"]
+        
                 
                 document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Chart2"), multibarchart(series_name_multichart, max_1, "Conversion Rate", x_axis_names)).render();});
                 document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Chart3"), multibarchart(series_name_multichart_2, max_2, "App Launch Rate" , x_axis_names)).render();});
