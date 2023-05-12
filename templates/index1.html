@@ -14,11 +14,6 @@
   <!-- Favicons -->
   <link href="{{url_for('static', filename='image/apple-touch-icon1.png')}}" rel="icon">
   <link href="{{url_for('static', filename='image/apple-touch-icon1.png')}}" rel="apple-touch-icon">
-<!-- 
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-    <path fill="#FFF" d="…"></path>
-  </svg> -->
-
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -125,11 +120,9 @@
                       <button type="submit" class="button-18" for = "Hypothesis_button" id = "Hypothesis_button" name = "Hypothesis_button" >Submit</button>     
                     </div>
                   </div>  
-  
                   <div class="col-12">             
                     <div id="Chart2"></div>
-                  </div>
-               
+                  </div>             
                     <div class="col-12">
                     
                       <div id="Chart3"></div>
@@ -155,30 +148,25 @@
                       <th scope="col">Converted %</th>
                       <th scope="col">App Active %</th>
                       <th scope="col">App Launched %</th>
-                      <!-- <th scope="col">Z-Score</th>
-                      <th scope="col">P-value</th> -->
+                      <th scope="col">Z-Score</th>
+                      <th scope="col">P-value</th>
+                      <th scope="col">Significance</th>
                     </tr>
                   </thead>                
                   <tbody> 
                     {% for i in Row_list %} 
                     <tr>
                       {% for j in i %}
+                      {% if j == "Insignificant" %}
+                      <td style = "background-color: #990000; color:white;">{{j}}</th>
+                      {% elif j == "Significant" %}
+                      <td style = "background-color: green;">{{j}}</th>
+                      {% else %}
                       <td>{{j}}</th>
-                        {% endfor %}
+                      {% endif %}
+                      {% endfor %}
                     </tr>
                     {% endfor %}
-                    <!-- <tr>
-                      <th scope="row">2</th>
-                      <td>Jacob</td>
-                      <td>Thornton</td>
-                      <td>@fat</td>
-                    </tr> -->
-                    <!-- <tr>
-                      <th scope="row">3</th>
-                      <td>Larry</td>
-                      <td>the Bird</td>
-                      <td>@twitter</td>
-                    </tr> -->
                   </tbody>
                 </table>
               </div>
@@ -189,7 +177,7 @@
                 </div>  
             
 
-                <!-- {{Max_values}} -->
+              
                 <script>
                 
                   function multibarchart(series_name_multichart,  maximim_max, name, x_axis_names){               
@@ -347,158 +335,6 @@
 
              
 
-                  // function donutchart(user_data, x_axis_names) {
-                  //   var options = {
-                  //       series: user_data,
-                  //       // name: x_axis_names,
-                  //       chart: {
-                  //       width: 800,
-                  //       type: 'donut',
-                  //     },
-                  //     plotOptions: {                      
-                  //       pie: {
-                  //         donut: {
-                  //           labels: {
-                  //             show: true,
-                  //             total: {
-                  //               showAlways: true,
-                  //               show: true
-                  //             }
-                  //           }
-                  //         }
-                  //       }       
-                  //     },
-                  //     labels: x_axis_names,
-                  //     dataLabels: {
-                  //       enabled: true
-                  //     },
-                  //     title: {
-                  //       text: 'Sent Users', 
-                  //       align: 'center', 
-                  //       style: {
-                  //        fontSize:  '20px',
-                  //        fontFamily:  undefined,
-                  //        color:  '#263238'
-                  //   },
-                  
-                  //     },
-                  //     responsive: [{
-                  //       breakpoint: 480,
-                  //       options: {
-                  //         chart: {
-                  //           width: 200
-                  //         },       
-                  //         legend: {
-                  //           position: 'bottom'
-                  //           // show : true
-                  //         }
-                  //       }
-                  //     }]
-                  //     };
-                  //     return options; 
-                  // }
-
-                  
-                  // function myFunction(series_input, name, x_axis_names) {
-                  //   options = {
-                  //   series: [series_input],
-                  //   labels : x_axis_names,
-                  //     chart: {
-                  //     type: 'bar',
-                  //     height: 200
-                  //   },
-                  //   legend: {
-                  //     show: true, 
-                  //     position : 'top'
-                  //   },
-                  //   title: {
-                  //   text: String(name),
-                  //   align: 'centre',
-                  //   margin: 10,
-                  //   offsetX: 0,
-                  //   offsetY: 0,
-                  //   floating: false,
-                  //   style: {
-                  //     fontSize:  '16px',
-                  //     fontFamily:  undefined,
-                  //     color:  '#263238'
-                  //   },
-                  //   },
-                  //   plotOptions: {
-                  //     bar: {
-                  //       horizontal: true,
-                  //       dataLabels: {
-                          
-                  //         position: 'top',
-                  //         formatter: function (val) {
-                  //         return val + "%"
-                  //         },
-                  //       },
-
-                  //     }
-                  //   },
-                  //   dataLabels: {                     
-                  //     offsetX: -6,
-                  //     formatter: function (val) {
-                  //         return val + "%"
-                  //         },
-                  //     style: {
-                  //       fontSize: '12px',
-                  //       colors: ['#fff']
-                  //     }
-                  //   },
-                    
-                  //   stroke: {
-                  //     show: true,
-                  //     width: 1,
-                  //     colors: ['#fff']
-                  //   },
-                  //   colors: [ '#145DA0'],
-                  //   tooltip: {
-                  //     shared: true,
-                  //     intersect: false
-                  //   },
-             
-                  //   grid: {
-                  //   position: 'front'
-                  //   },
-                  //   fill: {
-                  //   type: 'gradient',
-                  //   gradient: {
-                  //     shade: 'light',
-                  //     type: "vertical",
-                  //     shadeIntensity: 0.25,
-                  //     gradientToColors: undefined,
-                  //     inverseColors: true,
-                  //     opacityFrom: 0.85,
-                  //     opacityTo: 0.85,
-                  //     stops: [50, 0, 100]
-                  //   },
-                  // }
-                    
-                  //   };
-                  //   return options; 
-                  //   }
-                    
-                    // var series = {name : "Conversion Rate", data : data1}
-                    // var series2 = {name : "App Launch Percent",data: data2}
-                    // var series3 =  {name : "App Active percent",data: data3}
-                    // var name = "Conversion Rate"
-                    // var name2 = "App Launch Percent"
-                    // var name3 = "App Active percent"
-
-                    // // final_options = 
-                    // document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Conversion_Chart"), myFunction(series, name, x_axis_names)).render();});
-                    
-                    // // final_options2 = myFunction(series2)
-                    // document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#App_Launched_Chart"), myFunction(series2, name2, x_axis_names)).render();});
-
-                    // // final_options3 = myFunction(series3)
-                    // document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#App_Active_Chart"), myFunction(series3, name3, x_axis_names)).render();});
-                     
-                    // //Donut chart 
-                    // document.addEventListener("DOMContentLoaded", () => {new ApexCharts(document.querySelector("#Donut_Chart"), donutchart(user_data, x_axis_names)).render();});
-           
            </script>         
             </div>
             

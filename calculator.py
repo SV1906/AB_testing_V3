@@ -8,11 +8,11 @@ from pathlib import Path
 import numpy as np
 from csv import writer
 from datetime import datetime 
+from scipy.stats import norm
+import statistics
 
 file_name = None 
 Flask_App = Flask(__name__) 
-
-
 
 THIS_FOLDER = Path(__file__).parent.resolve()
 path = (str(THIS_FOLDER)+"\\output.xlsx")
@@ -128,7 +128,6 @@ def get_form_parameters():
 
 
 def sample_suggest(): 
-
     return "Systematic Sampling"   
 
 #To verify if with the chosen sample size, number of experiment and current count it is possible to do the furture calculations 
@@ -498,7 +497,6 @@ def index():
         for i in For_rows: 
             if (i[0].lower() == 'control'):
                 row.append('Control_base')
-            # data.append ()
             elif (i[0].lower() == 'test' and i[1] == 1.0):
                 row.append(i[2])
             elif (i[0].lower() == 'test' and i[1] == 0.0):
@@ -537,7 +535,6 @@ def index():
                 Total_dataframe = Total_dataframe.T
                 Total_dataframe = Total_dataframe.reset_index()
                 Total_dataframe.columns = ['Campaign_Reference', 'Total_percent']
-    #             Total[['a','b','c']] = pd.DataFrame(Total_dataframe.Total_percent.tolist(), index= Total_dataframe.index)
                 New_dataframe = pd.DataFrame(Total_dataframe['Total_percent'].to_list(), columns=['converted_percent','app_launched_percent','app_active_percent'])
                 Total_dataframe = Total_dataframe['Campaign_Reference']
                 air_quality = pd.concat([ New_dataframe, Total_dataframe], axis=1)   
@@ -545,14 +542,11 @@ def index():
 
     #To create the series using the maintable, get_from_maintable and totalvalues 
     def get_series (Main_table) :    
-        list_MainFrame = []
-        Dictionary_MainFrame_max = {}
+        list_MainFrame = [] 
         Dictionary_MainFrame ={}
         list_columns = ['converted_percent','app_active_percent','app_launched_percent']
-        list_customer_segment = ['Total','ETB', 'PTB', 'NTB']
         for i in range(len(list_columns)) : 
             list_MainFrame= [{'name' : 'Total', 'type' : 'line', 'data': Total_percentage(Main_table)[list_columns[i]].tolist()}]
-    #         max_value = max(list_MainFrame['data'])
             list_MainFrame.append({'name' : 'ETB', 'type' : 'bar', 'data': get_from_maintable(Main_table,'ETB', list_columns[i])})
             list_MainFrame.append({'name' : 'NTB', 'type' : 'bar', 'data': get_from_maintable(Main_table,'NTB', list_columns[i])})
             list_MainFrame.append({'name' : 'PTB', 'type' : 'bar', 'data': get_from_maintable(Main_table,'PTB', list_columns[i])})
@@ -572,38 +566,105 @@ def index():
                 list_hopefull_last_one.append(Max_number) 
             end_list.append(max(list_hopefull_last_one))
         return end_list 
-
     
-    data = pd.read_csv('C:/Users/Sandhya/OneDrive/Desktop/AB_testing_framework/AB_Testing_V4/AB_testing_V3/AB_testing_report_format_new-master-2.csv')
+    def Total_percentage_add(Main_table):
+        Values = Main_table['X_axis_variables'].unique().tolist()
+        #This if-else is there because in case there is only one customer segment (ETB, PTB,NTB) then we don't need an All segment. 
+        if (len(Main_table['customer_segment'].unique().tolist()) > 1) :        
+            Total_all = []
+            for i in Values : 
+                Sub_data_2 = Main_table[Main_table['X_axis_variables'] == i]
+                Total = []
+                Total_sent = sum((Sub_data_2['sent']))
+                Total_clicks = sum((Sub_data_2['clicks']))
+                Total_users = sum((Sub_data_2['users']))
+                Total_converted = sum((Sub_data_2['converted']))
+                Total_App_Launched = sum((Sub_data_2['app_launched']))
+                Total_App_Active = sum((Sub_data_2['app_active']))
+                Total_converted_percent = round((Total_converted/Total_users)*100,2)
+                Total_App_Active_percent = round((Total_App_Active/Total_users)*100,2)
+                Total_App_Launched_percent = round((Total_App_Launched/Total_users)*100,2)
+                Conversion = statistics.mean(Sub_data_2['Conversion_sign'])
+                Total_all.append(["ALL",Conversion, Total_sent, Total_clicks,  Total_users,Total_converted,Total_App_Launched, Total_App_Active,i,Total_converted_percent, Total_App_Active_percent, Total_App_Launched_percent,])
+            Total_all = pd.DataFrame(Total_all)
+            Total_all.columns = ['customer_segment','Conversion_sign','sent','clicks','users','converted','app_launched','app_active','X_axis_variables','converted_percent','app_active_percent','app_launched_percent']
+            return Main_table.append(Total_all)
+        else : 
+             return Main_table
+             
+             
+    
+
+    def Z_Score_P_Value(TC, CC, TN, CN): 
+            test_CR = (TC/TN)
+            control_CR = (CC/CN)
+            total_CR = ((TC+CC)/(TN+CN))
+            Z_score_value = (test_CR - control_CR)/(math.sqrt(total_CR*(1-total_CR)*((1/TN) + (1/CN))))
+            # Probability distribution
+            return [round(Z_score_value,4) , round(norm.pdf(Z_score_value),4)]
+    
+    def Get_Zscore_PValue(Main_table): 
+        Main_dummy_table = pd.DataFrame()
+        
+        list_abc = Main_table['customer_segment'].unique()
+        Main_table["Sub_Campaign_Name"] = Main_table['X_axis_variables']
+        Sub = Main_table[['customer_segment', 'sent', 'clicks', 'users', 'converted',
+            'app_launched', 'app_active', 'X_axis_variables', 'converted_percent',
+            'app_active_percent', 'app_launched_percent',"Sub_Campaign_Name", 'Conversion_sign']]
+        Sub["Zscore"] = ''
+        Sub["Pvalue"] = ''
+        Sub['Significance'] = ''
+
+        for i in list_abc:
+            Sub_data = Sub[Sub['customer_segment'] == i]
+            Sub_data["Zscore"] = np.where((Sub_data['X_axis_variables'] == "Unsent_Test_base") | (Sub_data['X_axis_variables'] == "Control_base"), "NA", 0)
+            Sub_data["Pvalue"] = np.where((Sub_data['X_axis_variables'] == "Unsent_Test_base") | (Sub_data['X_axis_variables'] == "Control_base"), "NA", 0)
+
+            Sub_data = Sub_data.set_index(['X_axis_variables'])
+            CC = Sub_data["converted"]["Control_base"]
+            CN = Sub_data["users"]["Control_base"]
+
+            for i in Sub_data.index:
+                if (Sub_data['Zscore'][i] != "NA"):
+                    Values = Z_Score_P_Value(Sub_data["converted"][i], CC, Sub_data["users"][i], CN)
+                    Sub_data['Zscore'][i] =  Values[0]
+                    # Sub_data['Pvalue'][i] =  Values[1]
+                    Sub_data['Pvalue'][i] =  round(abs(int(Sub_data['Conversion_sign'][i]) - (Values[1])),4)
+                    Sub_data['Significance'][i] = "Significant" if Sub_data['Pvalue'][i] < 0.05 else "Insignificant"  
+            Main_dummy_table = pd.concat([Main_dummy_table,Sub_data])
+
+        return Main_dummy_table.sort_values(["Sub_Campaign_Name",'customer_segment'])
+
+
+    data = pd.read_csv(str(THIS_FOLDER) + "\\AB_testing_report_format_new-master-2.csv")
     Master_names = Names(data)
     Form_graph = {}
     Form_graph['Master_Campaign_Name'] = request.form['Master_name_input'] if (request.form.get('Master_name_input') != None) else 'Choose:'
     
-    # Rowlist = [['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0803', 'ETB', 46552.0, 284.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0803', 'NTB', 1100.0, 0.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0803', 'PTB', 600.0, 0.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0903', 'NTB', 1000.0, 0.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0903', 'ETB', 35484.0, 195.0], ['BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0903', 'PTB', 400.0, 0.0], ['BPAY_RV_MPN_BBPS_MOBILE-PREPAID_RMSDIFFICULT_0803', 'ETB', 29774.0, 160.0], ['BPAY_RV_MPN_BBPS_MOBILE-PREPAID_RMSDIFFICULT_0803', 'PTB', 1000.0, 0.0], ['BPAY_RV_MPN_BBPS_MOBILE-PREPAID_RMSDIFFICULT_0803', 'NTB', 500.0, 1.0], ['Control_base', 'ETB', 0.0, 0.0], ['Control_base', 'PTB', 0.0, 0.0], ['Control_base', 'NTB', 0.0, 0.0], ['Unsent_Test_base', 'PTB', 0.0, 0.0], ['Unsent_Test_base', 'ETB', 0.0, 0.0], ['Unsent_Test_base', 'NTB', 0.0, 0.0]]
     Row_list =[]
     if (Form_graph['Master_Campaign_Name'] != 'Choose:'):
          choosen_Master_name = Form_graph['Master_Campaign_Name']
-         Main_table = create_main_table(choosen_Master_name, data)
-         Series = get_series(Main_table)
-         Max_values = max_value_for_graph(Series)
-         new_index = 1
-        #  Rowlist = ['Hey']
-         X_axis_names = Main_table['X_axis_variables'].unique().tolist()
-         for index, rows in Main_table.iterrows():
-            # my_list =[rows.clicks]
-            my_list =[new_index, rows.X_axis_variables,rows.customer_segment, rows.sent, rows.clicks, rows.users, rows.converted, rows.app_launched, rows.app_active,rows.converted_percent,rows.app_active_percent,rows.app_launched_percent]
+         Main_table = create_main_table(choosen_Master_name, data)  #This line creates a sub table with the choosen Master Name       
+         Series = get_series(Main_table) #This line returns the Series that can be used in the line+column graphs. All the line+column graph's series are gotten using this method  
+         Max_values = max_value_for_graph(Series) #This line return the max value in each graph so that it can scale accordingly [Column graph]
+         new_index = 1 
+         X_axis_names = Main_table['X_axis_variables'].unique().tolist() #To get the X-axis variable names 
+         Main_table = Total_percentage_add(Main_table) 
+         Main_table = Get_Zscore_PValue(Main_table)
+         for index, rows in Main_table.iterrows():         
+            my_list =[new_index, rows.Sub_Campaign_Name, rows.customer_segment, rows.sent, rows.clicks, rows.users, rows.converted, rows.app_launched, rows.app_active,rows.converted_percent,rows.app_active_percent,rows.app_launched_percent,rows.Zscore, rows.Pvalue, rows.Significance]
             Row_list.append(my_list)
             new_index += 1
-        
+         
     else : 
-
+    #To return blank values in case the user didn't choosen the Master Campaign Name yet 
          Series = ''
          Main_table = ''
          Max_values = ''
          Row_list = ''
          X_axis_names = ''
 
-
+    #To render the index1 template with these values 
     return render_template('index1.html', Form_graph = Form_graph, X_axis_names = X_axis_names, Row_list = Row_list, Series = Series , Max_values = Max_values, Master_names = Master_names)  
 
 
