@@ -42,3 +42,5 @@ Index ,Hypothesis ,No_of_experiments,Selected_features,Minimum_sample_size ,Test
 41,H,3,['Ptb'],452,"[452, 452, 452]",Systematic,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3']",26-04-2023,28-04-2023,30-04-2023,Push,Retention rate,20
 42,H,3,['Android'],452,"[452, 452, 452]",Systematic,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3']",10-05-2023,2023-05-24,2023-05-28,Push,Retention rate,20
 43,Dummy,2,"['Android', 'Ptb']",452,"[800, 900]",Stratified,"['Temp Block', 'No Emi Card']",XYZ,"['ExperimentName2', 'Exper2']",11-05-2023,2023-05-26,2023-05-28,InApp-Pop,App Launch,20
+44,H,3,"['Ptb', 'Android']",452,"[452, 452, 452]",Random,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3']",15-05-2023,2023-05-16,2023-05-20,Push,Retention rate,20
+45,Defin,2,"['Android', 'Ntb']",452,"[2000, 3000]",Stratified,"['30_Days_Active', 'Perm Block']",XYZ,"['ExperimentName2', 'Exper2']",15-05-2023,2023-05-17,2023-05-28,Push,Retention rate,17

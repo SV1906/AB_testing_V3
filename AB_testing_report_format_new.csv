@@ -1,9 +1,0 @@
-﻿group,sent_flag,customer_segment,Master_campaign_name,campaign,sent,clicks,users,converted,app_launched,app_active,
-Control,null,ETB,BBPS_campaign,null,null,null,8870177,12802,null,null,0.14%
-Test,1,ETB,BBPS_campaign,BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0803,46569,284,46553,52,42106,44774,0.11%
-Test,1,ETB,BBPS_campaign,BPAY_RV_MPN_BBPS_MOBILE-PREPAID_RMSDIFFICULT_0803,29780,161,29773,23,25648,27377,0.08%
-Test,null,ETB,BBPS_campaign,null,null,null,3712720,5656,null,null,0.15%
-Test,1,ETB,BBPS_campaign,BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_0903,35498,195,35491,29,31019,34031,0.08%
-Control,null,ETB,BBPS_campaign2,null,null,null,8870177,1200,null,null,
-Test,1,ETB,BBPS_campaign2,BPAY_RV_MPN_BBPS_DTH_RMSMODERATE_1003,46000,200,46000,10,42000,44000,
-Test,null,ETB,BBPS_campaign2,null,null,null,370000,2600,null,null,

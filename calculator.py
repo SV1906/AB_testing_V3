@@ -292,7 +292,6 @@ def evan_Millers(input1, input2, input3, input4):
 
 @Flask_App.route('/',methods=['GET' , "POST"])
 def New_Testing():
-
     Section_open = 0
     verification = ""
     test_size = []
@@ -330,9 +329,8 @@ def New_Testing():
        if (forms["BaselineRate"] != '' and forms["DetectableEffect"] != '' and forms["SignificantPower"] != '' and forms["SignificantLevel"] != ''):           
            forms ["evan_millers"] =  evan_Millers(forms["BaselineRate"], forms["DetectableEffect"], forms["SignificantPower"], forms["SignificantLevel"])
            forms["final_result"] = compare_size(forms["evan_millers"],forms["basic_result"])
-     
        
-    #    global test_size
+    #  global test_size 
        for i in range(1,int(forms["Experiment"])+1):
              variable = "Test_case_" + str(i)
              #To make sure that a blank values isn't submitted to the Test_Case inputs 
@@ -347,15 +345,12 @@ def New_Testing():
                      forms[variable] = array_output_final[4][i-1] 
        
        global Sub_Campaign_Names
-
        
        if (len(Sub_Campaign_Names) != int(forms['Experiment'])): 
             Sub_Campaign_Names = [""]*int(forms['Experiment'])
-  
        
        if (int(forms['Experiment']) == 1): 
-            Sub_Campaign_Names[0]= forms['CampaignName']
-       
+            Sub_Campaign_Names[0]= forms['CampaignName']    
 
        for i in range(1,int(forms["Experiment"])+1):
              variable = "Campaign_Name_" + str(i)
@@ -464,11 +459,13 @@ def New_Testing():
        
        if (request.form.get("Download_button") != None): 
             try : 
+                 
                  excel_update(array_output_final)
                  path = (str(THIS_FOLDER)+"\\output.xlsx")
                  forms ["Download"] = True 
                  return send_file(path, as_attachment=True)
             except : 
+                  #One of the times this error occurs is when the Exc
                   forms["ExcelUpdate"] = "There is a problem while updating the Excel. Please Try again."
                   forms ["Download"] = True 
 
@@ -478,7 +475,8 @@ def New_Testing():
 #To display the intial page 
 @Flask_App.route('/Index', methods=['GET','POST'])
 def index():
-
+    
+    #It returns all the unique Campaign Names 
     def Names(data):
             return data['Master_campaign_name'].unique()
 
@@ -546,7 +544,8 @@ def index():
             Dictionary_MainFrame[str(list_columns[i])] = list_MainFrame
         return Dictionary_MainFrame 
     
-    #To find the maximum value in the entire table for using it in the graph scaling 
+    #To find the maximum value in the entire table 
+    #This is a required value for the graph as it helps in the creation of the Y axis for the columns 
     def max_value_for_graph (notes):        
         end_list = []
         for i in (notes): 
@@ -595,7 +594,8 @@ def index():
             # Probability distribution formula used for the calculation of P-value 
             return [round(Z_score_value,4) , round(norm.sf(Z_score_value),4)]
     
-    #To return a table with the Z-score and P-value for each row 
+    #To return a table with the Z-score and P-value for each row. 
+    #this function makes use of the Z_Score_P_Value function for the calculation of values 
     def Get_Zscore_PValue(Main_table): 
         Main_dummy_table = pd.DataFrame()
         
@@ -624,13 +624,21 @@ def index():
                     # Sub_data['Pvalue'][i] =  Values[1]
                     # Sub_data['Pvalue'][i] =  round(abs(int(Sub_data['Conversion_sign'][i]) - (Values[1])),4)
                     Sub_data['Pvalue'][i] = round((Values[1]),4)
+                    #Higher the better, P value 
+                    #Lower the better, 1-P value 
+                    if (Sub_data['Conversion_sign'][i]):
+                         Sub_data['Pvalue'][i] =  round(abs(int(Sub_data['Conversion_sign'][i]) - (Values[1])),4)         
+                    else : 
+                         Sub_data['Pvalue'][i] = round((Values[1]),4)              
                     Sub_data['Significance'][i] = "Significant" if Sub_data['Pvalue'][i] < 0.05 else "Insignificant"  
             Main_dummy_table = pd.concat([Main_dummy_table,Sub_data])
 
         return Main_dummy_table.sort_values(["Sub_Campaign_Name",'customer_segment'])
 
-
+    #To read the csv file with all the details about the result/reporting 
+    #The file should be csv while using read_csv 
     data = pd.read_csv(str(THIS_FOLDER) + "\\AB_testing_report_format_new-master-2.csv")
+    #Master_names is the name of all the Campaign Names 
     Master_names = Names(data)
     Form_graph = {}
     Form_graph['Master_Campaign_Name'] = request.form['Master_name_input'] if (request.form.get('Master_name_input') != None) else 'Choose:'
@@ -662,7 +670,9 @@ def index():
     #To render the index1 template with these values 
     return render_template('index1.html', Form_graph = Form_graph, X_axis_names = X_axis_names, Row_list = Row_list, Series = Series , Max_values = Max_values, Master_names = Master_names)  
 
-
+#It will run on Port no - 5129. The number is flexible. 
+# http://localhost:<PORT NO>
+# Example : http://localhost:5129
 if __name__ == '__main__':
     Flask_App.debug = True
     Flask_App.run(port= 5129)   
