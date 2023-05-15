@@ -44,3 +44,4 @@ Index ,Hypothesis ,No_of_experiments,Selected_features,Minimum_sample_size ,Test
 43,Dummy,2,"['Android', 'Ptb']",452,"[800, 900]",Stratified,"['Temp Block', 'No Emi Card']",XYZ,"['ExperimentName2', 'Exper2']",11-05-2023,2023-05-26,2023-05-28,InApp-Pop,App Launch,20
 44,H,3,"['Ptb', 'Android']",452,"[452, 452, 452]",Random,[],XYZ,"['ExperimentName2', 'Exper2', 'Experiment3']",15-05-2023,2023-05-16,2023-05-20,Push,Retention rate,20
 45,Defin,2,"['Android', 'Ntb']",452,"[2000, 3000]",Stratified,"['30_Days_Active', 'Perm Block']",XYZ,"['ExperimentName2', 'Exper2']",15-05-2023,2023-05-17,2023-05-28,Push,Retention rate,17
+46,hhhhhhy,2,"['Digitisation_Flag_3In1', 'Android']",803,"[803, 803]",Random,[],Master Campaign Name ,"['Exper1', 'Exper2']",15-05-2023,2023-05-15,2023-05-20,Push,Retention rate,90

@@ -335,9 +335,13 @@ def New_Testing():
              variable = "Test_case_" + str(i)
              #To make sure that a blank values isn't submitted to the Test_Case inputs 
              if (request.form.get(variable) != None) : 
-                 #If it's not empty 
-                 forms[variable] = request.form[variable] 
-                 forms['Sum'] += int(forms[variable])
+                 if (int(request.form[variable]) < int(forms['final_result'])):
+                      forms[variable] = forms['final_result']
+                      forms['Sum'] += int(forms[variable])
+                 else :     
+                    #If it's not empty 
+                    forms[variable] = request.form[variable] 
+                    forms['Sum'] += int(forms[variable])
              else : 
                 # If it's empty 
                 forms[variable] = forms['final_result']
@@ -428,16 +432,19 @@ def New_Testing():
                              Test_case_button = True                
             if(verification == "True") : 
                 forms['location'] = "modal_message"
-
-       if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != '' and request.form.get("Final_submit") != None):           
-            forms["Campaign_Details_Error"] = ""
-            if ((len(Sub_Campaign_Names) != int(forms["Experiment"]) and (int(forms["Experiment"]) != 1)) or ('' in Sub_Campaign_Names)): 
-                forms["Campaign_Details_Error"] = "Please fill in all the Sub Campaign Names"
-            if (datetime.strptime(forms["CampaignStartdate"], '%Y-%m-%d') > datetime.strptime(forms["CampaignEnddate"], '%Y-%m-%d')):
-               forms["Campaign_Details_Error"] = "The Campaign End Date should be after the Campaign Start DateStart date"
-            if (forms["Campaign_Details_Error"] == ""):    
-                    array_output_final = [forms["Hypothesis"],forms['Experiment'],selected_features,forms["final_result"],test_size,forms["Operator"],selected_columns,forms["CampaignName"], Sub_Campaign_Names, today, forms['CampaignStartdate'], forms['CampaignEnddate'], forms['CampaignType'], forms['ConversionMetric'], forms['ConversionPeriod']]
-                    forms ["Download"] = True  
+   
+       if (request.form.get("Final_submit") != None): 
+        if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != ''):           
+                forms["Campaign_Details_Error"] = ""
+                if ((len(Sub_Campaign_Names) != int(forms["Experiment"]) and (int(forms["Experiment"]) != 1)) or ('' in Sub_Campaign_Names)): 
+                    forms["Campaign_Details_Error"] = "Please fill in all the Sub Campaign Names"
+                if (datetime.strptime(forms["CampaignStartdate"], '%Y-%m-%d') > datetime.strptime(forms["CampaignEnddate"], '%Y-%m-%d')):
+                    forms["Campaign_Details_Error"] = "The Campaign End Date should be after the Campaign Start Date"
+                if (forms["Campaign_Details_Error"] == ""):    
+                        array_output_final = [forms["Hypothesis"],forms['Experiment'],selected_features,forms["final_result"],test_size,forms["Operator"],selected_columns,forms["CampaignName"], Sub_Campaign_Names, today, forms['CampaignStartdate'], forms['CampaignEnddate'], forms['CampaignType'], forms['ConversionMetric'], forms['ConversionPeriod']]
+                        forms ["Download"] = True  
+        else : 
+                forms["Campaign_Details_Error"] = "Please fill the form below completely"        
 
     #    if (forms["CampaignName"] != '' and forms["CampaignStartdate"] != '' and forms["CampaignEnddate"] != '' and forms["CampaignType"] != '' and forms["ConversionMetric"] != '' and forms["ConversionPeriod"] != '' and request.form.get("Final_submit") != None):           
     
