@@ -115,6 +115,8 @@ def get_form_parameters():
     Form["Sampling_Result"] =""
     Form["Download"] = False
 
+
+
     # To save the details regarding the button clicked and the ID where it's supposed to get scrolled to 
     Button_Section = {"Sample_Size_submit_1":"sample_size", "Sample_Size_submit_2":"sample_size","Features_button":"select_filters","Sampling_Technique_submit":"sampling_technique","Final_submit":"campaign_details","Random_button":"sampling_technique","Test_cases_button":"Test_cases","stratify_button":"sampling_technique","Button_id":"sampling_technique", "Edit_button":"hypothesis_section"}
     for key,value in Button_Section.items(): 
@@ -166,6 +168,7 @@ def Systematic_Sampling_result(data, test_size):
         threshold_control = max(test_size)*5
         Test = []
         Total = len(test_size)
+        data.index.name = "Index"
         try : 
              for i in range(0, Total): 
                  step = (len(data)/test_size[i])
@@ -193,6 +196,7 @@ def Random_Sampling_result(data, test_size,minimum_size):
     Total = len(test_size)
     loop_flag = 0 
     threshold_control = max(test_size)*5 + minimum_size
+    data.index.name = "Index"
     try :
         for i in range(0, Total): 
             control, test = train_test_split(data, test_size=test_size[i])
@@ -218,6 +222,7 @@ def Stratification_result(data, test_size,Selected, minimum_size):
     loop_flag = 0 
     y = data[Selected]
     threshold_control = max(test_size)*5 + minimum_size
+    data.index.name = "Index"
     try :
         for i in range(0, Total): 
             control, test = train_test_split(data, test_size=test_size[i], stratify= y)
@@ -304,7 +309,13 @@ def New_Testing():
        global selected_features
        global Features
 
-       global array_output_final       
+       global array_output_final  
+       global selected_columns
+       global Sub_Campaign_Names
+
+      
+
+     
        for i in Features: 
             if ((request.form.get(i['key'])) or ((i['key'] in selected_features) and (request.form.get("Edit_button") != None))):
                 i['value'] = True
@@ -314,13 +325,31 @@ def New_Testing():
                 if ((i['key'] in selected_features) and (request.form.get("Edit_button") == None) and (request.form.get("Download_button") == None)): 
                     selected_features.remove(i['key'])
        selected_features = list(set(selected_features))
-       global selected_columns
+       
        for i in Stratification_columns: 
             variable = "Strat" + i['key']
             if ((request.form.get(variable)) or ((i['key'] in selected_columns) and  (request.form.get("Edit_button") != None))) :
                 i['value'] = True
             else : 
                 i ['value'] = False 
+
+       if (request.form.get("Reset_button") != None):
+          test_size = []
+          selected_features = []
+          selected_columns = []
+          array_output_final = []
+          Sub_Campaign_Names = []
+          Section_open = 0
+          forms = {}
+          verification = ""
+          forms = {'Total_cases': 2, 'Experiment': '1', 'ConversionInterval':'' , 'MarginError':'' , 'BaselineRate':'' , 'DetectableEffect':'' , 'SignificantPower':'' , 'SignificantLevel':'' ,'Campaign_Name_1' : '', 'Campaign_Name_2': '', 'Operator' : 'Default', 'Hypothesis':'', 'CampaignName' : '','CampaignStartdate' : '','CampaignEnddate' : '', 'CampaignType':'Push' , 'ConversionMetric':'Retention Rate' ,'ConversionPeriod' : ''}
+          forms['Sum'] = 0
+          forms['evan_millers'] = 0
+          forms['final_result'] = 0
+          forms['basic_result'] = 0
+          forms['Records_Available'] = 0 
+          forms["Sampling_Result"] =""
+          forms["Download"] = False
       
        if (forms["ConversionInterval"] != '' and forms["MarginError"] != ''):   
             forms ["basic_result"] = basic_Sample_Size(forms["ConversionInterval"], forms["MarginError"])
@@ -348,7 +377,7 @@ def New_Testing():
                 if (len(array_output_final) > 0):
                      forms[variable] = array_output_final[4][i-1] 
        
-       global Sub_Campaign_Names
+       
        
        if (len(Sub_Campaign_Names) != int(forms['Experiment'])): 
             Sub_Campaign_Names = [""]*int(forms['Experiment'])
@@ -365,7 +394,7 @@ def New_Testing():
              else : 
                     forms[variable] = Sub_Campaign_Names[i-1]
 
-       base_data_input =  base_data(data_Original, selected_features)  
+       base_data_input =  base_data(data_Original, selected_features) 
        forms["Current_Count"] = db_count(data_Original, selected_features)
       
        dummy_test_size =[]
@@ -476,6 +505,9 @@ def New_Testing():
                   forms["ExcelUpdate"] = "There is a problem while updating the Excel. Please Try again."
                   forms ["Download"] = True 
 
+       
+          
+
        return render_template('New_Testing.html', test_size = test_size, Stratification_columns = Stratification_columns, selected_features = selected_features, array_output_final = array_output_final,  Sub_Campaign_Names = Sub_Campaign_Names, Section_open = Section_open, stratification_columns = Stratification_columns, selected_columns =selected_columns, sum = sum, Success = True, form = forms, features = Features, date = today, Verification =  verification) 
     return render_template('New_Testing.html' , array_output_final = array_output_final, Section_open = Section_open, features = Features, Stratification_columns=Stratification_columns, date = today, form = forms)
 
@@ -535,8 +567,8 @@ def index():
                 Total_dataframe.columns = ['Campaign_Reference', 'Total_percent']
                 New_dataframe = pd.DataFrame(Total_dataframe['Total_percent'].to_list(), columns=['converted_percent','app_launched_percent','app_active_percent'])
                 Total_dataframe = Total_dataframe['Campaign_Reference']
-                air_quality = pd.concat([ New_dataframe, Total_dataframe], axis=1)   
-            return air_quality
+                final_output = pd.concat([ New_dataframe, Total_dataframe], axis=1)   
+            return final_output
 
     #To create the series that will be used for the line graph + column graphs 
     def get_series (Main_table) :    
@@ -648,16 +680,18 @@ def index():
     #Master_names is the name of all the Campaign Names 
     Master_names = Names(data)
     Form_graph = {}
-    Form_graph['Master_Campaign_Name'] = request.form['Master_name_input'] if (request.form.get('Master_name_input') != None) else 'Choose:'
+    Form_graph['Master_Campaign_Name'] = 'Default'
+    Form_graph['Master_Campaign_Name'] = request.form['Master_name_input'] if (request.form.get('Master_name_input') != None) else Form_graph['Master_Campaign_Name']
+    # Form_graph['Master_Campaign_Name'] = request.form['Master_name_input'] if (request.form.get('Master_name_input') != None) else 'Default'
     
     Row_list =[]
-    if (Form_graph['Master_Campaign_Name'] != 'Choose:'):
+    if (Form_graph['Master_Campaign_Name'] != 'Default'):
          choosen_Master_name = Form_graph['Master_Campaign_Name']
          Main_table = create_main_table(choosen_Master_name, data)  #This line creates a sub table with the choosen Master Name       
          Series = get_series(Main_table) #This line returns the Series that can be used in the line+column graphs. All the line+column graph's series are gotten using this method  
          Max_values = max_value_for_graph(Series) #This line return the max value in each graph so that it can scale accordingly [Column graph]
-         new_index = 1 #
-         X_axis_names = Main_table['X_axis_variables'].unique().tolist() #To get the X-axis variable names for the u
+         new_index = 1 #for the
+         X_axis_names = Main_table['X_axis_variables'].unique().tolist() #To get the X-axis variable names for the X-axis 
          Main_table = Total_percentage_add(Main_table) #To add the total percentage values to the table 
          Main_table = Get_Zscore_PValue(Main_table) #To Get the Z_score and P_values for all the values other than 'Control Base' and 'Unsent Test data' 
          #To save the table in the Row_list for displaying purpose 

@@ -167,6 +167,7 @@
                   // Number(quantity)
                   if (a >= 0 && a < 100 && b >= 0 && b < 100){
                     document.getElementById('cover-spin').style.visibility = 'visible'; 
+                    // return true; 
                   }
                 }
                 function spinner_Evan_Millers_button(){
@@ -176,6 +177,7 @@
                   var d = document.getElementById("significance_Level_Input").value   
                   if (a >= 0 && a < 100 && b >= 0 && b <100 && c >= 0 && c <100 && d >= 0 && d <100){
                     document.getElementById('cover-spin').style.visibility = 'visible'; 
+                    // return true; 
                   }
                 }
                 
@@ -316,7 +318,7 @@
                                 {% endif %}
 
                                 <div class="text-center">
-                                  <h9><i>The Final Minimum Sample Size is the greater value of the two sample sizes.</i></h9>
+                                  <h9><i>The Final Minimum Sample Size is the greater value from the two calculations</i></h9>
                                 </div>                         
                               </div>                     
                             
@@ -358,21 +360,21 @@
                         <div class="row g-3">
                           <div class="col-sm">
                             <label for="Input1" class="form-label" >Baseline Conversion Rate (%)</label>
-                            <input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')" value = "{{form.BaselineRate}}" name="baseline_Rate_Input" id = "baseline_Rate_Input" min=0 max=100>
+                            <input type="number" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')" value = "{{form.BaselineRate}}" name="baseline_Rate_Input" id = "baseline_Rate_Input" min=0 max=100>
                           </div>
                           <div class="col-sm">
                             <label for="Input2" class="form-label" >Minimum Detectable Effect (%)</label>
-                            <input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{{form.DetectableEffect}}" name="detectable_Effect_Input" id = "detectable_Effect_Input" min=0 max=100>
+                            <input type="number" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{{form.DetectableEffect}}" name="detectable_Effect_Input" id = "detectable_Effect_Input" min=0 max=100>
                           </div>
                         </div>
                         <div class = "row g-3">
                           <div class="col-sm">
                             <label for="Input3" class="form-label" >Significance Power (%)</label>
-                            <input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{{form.SignificantPower}}" name="significance_Power_Input" id = "significance_Power_Input" min=0 max=100>
+                            <input type="number" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{{form.SignificantPower}}" name="significance_Power_Input" id = "significance_Power_Input" min=0 max=100>
                           </div>
                           <div class="col-sm">
                             <label for="Input14" class="form-label">Significance level (%)</label>
-                            <input type="text" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{{form.SignificantLevel}}" name="significance_Level_Input" id = "significance_Level_Input" min=0 max=100>
+                            <input type="number" class="form-control" onkeyup="enable_button('Sample_Size_submit_2')"  value = "{{form.SignificantLevel}}" name="significance_Level_Input" id = "significance_Level_Input" min=0 max=100>
                           </div>
                         </div>
                         <div class = "card-body">											
@@ -398,7 +400,10 @@
                                   </tr> 
                                 </table>                          
                               </div>  
-                              {% endif %}                   
+                              {% endif %}   
+                              <div class="text-center">
+                                <h9><i>The Final Minimum Sample Size is the greater value from the two calculations</i></h9>
+                              </div>                 
                                       
                         </div>																				 
                     </div> 
@@ -553,10 +558,10 @@
                               <button type="submit" class="button-18" id = "Sampling_Technique_submit"  onclick="spinner_button()" name = "Sampling_Technique_submit" disabled {% if Verification == "True" %}disabled{% endif %}>Submit</button>
                             </div>
                           </div>          
-                            <div class="progress" style="height: 6px;visibility: hidden" id="Progress_bar_visibility">
+                            <!-- <div class="progress" style="height: 6px;visibility: hidden" id="Progress_bar_visibility">
                               <div class="progress-bar progress-bar-striped progress-bar-animated" id = "myprogressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%; " ></div>
-                            </div>                                      
-                          <script>
+                            </div>                                       -->
+                          <!-- <script>
                             function update() {
                                 var element = document.getElementById("myprogressBar");  
                                 document.getElementById("Progress_bar_visibility").style.visibility = "visible";  
@@ -572,7 +577,7 @@
                                     }
                                 }
                             }
-                            </script>
+                            </script> -->
                         </div>            
                 </div>
             </div>
@@ -597,7 +602,7 @@
                    </div> 
                      {% endfor %}
                      <div class="text-center">
-                         <button type="submit" class="button-18" for = "stratify_button" onclick="spinner_button()" id = "stratify_button" name = "stratify_button">Submit</button>     
+                         <button type="submit" class="button-18" for = "stratify_button" onclick="spinner_button()" id = "stratify_button" name = "stratify_button" disabled>Submit</button>     
                      </div>  
                    </div>
                </div>
@@ -633,7 +638,7 @@
                       </div>
                     </div>
     
-                  
+                    {% if Success == True %}
                     {% if form.Total_cases != 2 %}
                     {% for i in range(1, form.Total_cases) %} 
                     <div class="mx-auto">
@@ -645,6 +650,7 @@
                       </div>
                     </div>
                     {% endfor %} 
+                    {% endif %}
                     {% endif %}
                   
                     <div class="col-md-4">                
@@ -690,8 +696,8 @@
                         </div>
                        
                         <div class="text-center">
-                          <i> Please click on this submit to complete the form </i>
-                          <br> 
+                          <!-- <i> Please click on this submit to complete the form </i>
+                          <br>  -->
                           <button type="submit" class="button-18" id = "Final_submit" name = "Final_submit" onclick="spinner_button()" {% if Verification == "True" %}disabled{% endif %}>Final Submit</button>
                         </div>                    
                         {% if form.ExcelUpdate %}
@@ -716,6 +722,8 @@
                 <div class="text-center">
                   <button type="submit" class="button-18" for = "Download_button" id = "Download_button" name = "Download_button" >Download</button>						
                   <!-- <button type="submit" class="button-18" for = "Edit_button" id = "Edit_button" name = "Edit_button" onclick="spinner_button()">Edit</button>		 -->
+                  <button type="submit" class="button-18" for = "Reset_button" id = "Reset_button" name = "Reset_button" onclick="spinner_button()">New Hypothesis</button>		
+
                   <!-- <a class="button-18" type="submit" href= "#hypothesis_section" id = "Edit_button" name = "Edit_button"  for = "Edit_button" onclick="history.back()">Edit</a>         -->
                 </div>
               </div>
