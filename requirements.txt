@@ -2,3 +2,7 @@ scipy
 pandas
 flask
 kneed
+numpy
+pandas
+scikit-learn
+statistics 
