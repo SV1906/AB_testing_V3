@@ -6,3 +6,5 @@ numpy
 pandas
 scikit-learn
 statistics 
+pytest
+pathlib
