@@ -68,4 +68,4 @@ jobs:
           docker pull $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
           docker stop abtesting-container || true
           docker rm abtesting-container || true
-          docker run -d --name abtesting-container -p 8000:8000 $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
+          docker run -p 5129:5129 sv1906/abtesting
