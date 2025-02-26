@@ -1,7 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
-name: Python application
+name: CI/CD Pipeline
 
 on:
   push:
@@ -17,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -31,32 +28,44 @@ jobs:
 
       - name: Run tests
         run: pytest PythonTesting.py
-  build:
 
+  build-and-deploy:
+    needs: test  # Ensures tests pass before proceeding
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Login to DockerHub
-      uses: docker/login-action@v1
-      with:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build, tag, and push image to DockerHub
-      env:
-        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        IMAGE_NAME: abtesting
-      run: |
-        docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME .
-        docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
-        docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest        
+      - name: Build and push Docker image
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          IMAGE_NAME: abtesting
+        run: |
+          docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME .
+          docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
+
+      - name: Pull and deploy Docker container
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          IMAGE_NAME: abtesting
+        run: |
+          docker pull $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
+          docker stop abtesting-container || true
+          docker rm abtesting-container || true
+          docker run -d --name abtesting-container -p 8000:8000 $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
