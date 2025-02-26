@@ -47,5 +47,5 @@ COPY . .
 # Expose the port that the application listens on.
 EXPOSE 8000
 
-# Run the application.
-CMD run calculator.py
+ENTRYPOINT ["python"]
+CMD ["calculator.py"] 
