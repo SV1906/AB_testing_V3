@@ -15,9 +15,13 @@ file_name = None
 Flask_App = Flask(__name__) 
 
 THIS_FOLDER = Path(__file__).parent.resolve()
-path = (str(THIS_FOLDER)+"\\output.xlsx")
+# path = (str(THIS_FOLDER)+"\\output.xlsx")
+path = str(THIS_FOLDER) / "output.xlsx"
 #To have a variable 'data_Originial' for storing the current database 
-data_Original = pd.read_csv(str(THIS_FOLDER)+"\\DUMMY_DB.csv")
+# data_Original = pd.read_csv(str(THIS_FOLDER)+"\\DUMMY_DB.csv")
+data_Original = pd.read_csv(str(THIS_FOLDER) / "DUMMY_DB.csv")
+
+
 #To have a varible 'today' with today's date - required for Date of Requirement
 today = date.today()
 today = today.strftime("%d-%m-%Y")
