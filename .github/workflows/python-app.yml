@@ -60,12 +60,9 @@ jobs:
           docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME .
           docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
 
-      - name: Pull and deploy Docker container
+      - name: Pull Docker container
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           IMAGE_NAME: abtesting
         run: |
           docker pull $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
-          docker stop abtesting-container || true
-          docker rm abtesting-container || true
-          docker run -p 5129:5129 sv1906/abtesting
