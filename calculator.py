@@ -680,7 +680,9 @@ def index():
 
     #To read the csv file with all the details about the result/reporting 
     #The file should be csv while using read_csv 
-    data = pd.read_csv(str(THIS_FOLDER) + "\\AB_testing_report_format_new-master-2.csv")
+    data = pd.read_csv(Path(THIS_FOLDER) / "AB_testing_report_format_new-master-2.csv")
+
+    
     #Master_names is the name of all the Campaign Names 
     Master_names = Names(data)
     Form_graph = {}
