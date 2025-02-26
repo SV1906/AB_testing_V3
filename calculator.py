@@ -720,5 +720,7 @@ def index():
 # Example : http://localhost:5129
 if __name__ == '__main__':
     Flask_App.debug = True
-    Flask_App.run(port= 5129)   
+    # Flask_App.run(port= 5129)   
+    Flask_App.run(host="0.0.0.0", port=5129, debug=True)
+
     
